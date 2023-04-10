@@ -4,7 +4,7 @@ import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 
 // $FF: renamed from: d
-public final class class_3 {
+public final class Audio {
    // $FF: renamed from: b int
    private static int field_329 = 0;
    // $FF: renamed from: a java.lang.String[]
@@ -22,7 +22,7 @@ public final class class_3 {
    // $FF: renamed from: a javax.microedition.media.PlayerListener
    private PlayerListener field_336;
 
-   public class_3(PlayerListener var1) {
+   public Audio(PlayerListener var1) {
       this.field_336 = var1;
    }
 

@@ -2,13 +2,12 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.midlet.MIDlet;
 
-// $FF: renamed from: b
-public final class class_2 extends class_1 {
+public final class Game extends GameCanvas {
    // $FF: renamed from: a long
    public long field_328;
 
-   public class_2(MIDlet var1, int var2) {
-      super(var1, var2);
+   public Game(MIDlet midlet, int resume) {
+      super(midlet, resume);
    }
 
    // $FF: renamed from: e (boolean) void
@@ -30,48 +29,50 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: aa () void
    private void method_265() {
-      if (class_1.field_21 < class_1.field_17) {
-         int var1 = class_1.field_17 - class_1.field_21 >> 1;
-         class_1.field_26.translate(var1, 0);
+      if (GameCanvas.field_21 < GameCanvas.field_17) {
+         int var1 = GameCanvas.field_17 - GameCanvas.field_21 >> 1;
+         GameCanvas.field_26.translate(var1, 0);
       }
 
-      class_1.field_26.setClip(0, class_1.field_23, class_1.field_21, class_1.field_22);
-      class_0.method_1(class_1.field_26, class_1.field_226[0], class_1.field_226[1], true);
-      this.method_34(class_1.field_26, super.field_221 == 1 || super.field_221 == 5);
+      GameCanvas.field_26.setClip(0, GameCanvas.field_23, GameCanvas.field_21, GameCanvas.field_22);
+      class_0.method_1(GameCanvas.field_26, GameCanvas.field_226[0], GameCanvas.field_226[1], true);
+      this.method_34(GameCanvas.field_26, super.field_221 == 1 || super.field_221 == 5);
       this.method_264(false);
       this.method_207();
-      if (!class_1.field_125) {
+      if (!GameCanvas.field_125) {
          this.method_109();
       }
 
       this.method_113();
-      this.method_33(class_1.field_26, super.field_221 == 1 || super.field_221 == 5);
+      this.method_33(GameCanvas.field_26, super.field_221 == 1 || super.field_221 == 5);
       this.method_264(true);
-      if (class_1.field_125) {
+      if (GameCanvas.field_125) {
          this.method_109();
       }
 
-      if (class_1.field_21 < class_1.field_17) {
-         class_1.field_26.translate(-(class_1.field_17 - class_1.field_21 >> 1), 0);
+      if (GameCanvas.field_21 < GameCanvas.field_17) {
+         GameCanvas.field_26.translate(-(GameCanvas.field_17 - GameCanvas.field_21 >> 1), 0);
       }
 
       this.method_28();
-      class_1.field_26.setClip(0, 0, class_1.field_17, class_1.field_16);
+      GameCanvas.field_26.setClip(0, 0, GameCanvas.field_17, GameCanvas.field_16);
    }
 
    // $FF: renamed from: ab () void
    private void method_266() {
-      switch (super.field_220) {
+      switch (super.appState) {
          case 1:
             this.method_147();
             break;
          case 2:
+            // field_155 ??? finished game
+            // field_201 ??? menu control?
             if (super.field_201 || super.field_155) {
-               class_1.method_151(0, 0, class_1.field_17, class_1.field_16);
-               class_1.method_152();
-               class_1.field_255 = true;
-               class_1.field_257 = true;
-               class_1.field_256 = true;
+               GameCanvas.method_151(0, 0, GameCanvas.field_17, GameCanvas.field_16);
+               GameCanvas.method_152();
+               GameCanvas.field_255 = true;
+               GameCanvas.field_257 = true;
+               GameCanvas.field_256 = true;
                super.field_201 = false;
             }
 
@@ -84,36 +85,36 @@ public final class class_2 extends class_1 {
             break;
          case 3:
             this.method_155();
-            class_1.field_26.setColor(0);
-            class_1.field_26.fillRect(0, class_1.field_23, class_1.field_18, class_1.field_22);
-            super.field_79 = class_1.field_18 + class_1.field_81[class_1.field_215[super.field_223]][2] >> 1;
+            GameCanvas.field_26.setColor(0);
+            GameCanvas.field_26.fillRect(0, GameCanvas.field_23, GameCanvas.field_18, GameCanvas.field_22);
+            super.field_79 = GameCanvas.field_18 + GameCanvas.field_81[GameCanvas.field_215[super.zone]][2] >> 1;
             int[] var2 = new int[]{82, 100, 108, 116, 100, 84};
-            class_1.method_132(class_1.field_26, class_1.field_28[10], class_1.field_81[10][0], class_1.field_81[10][1], class_1.field_81[10][2], class_1.field_81[10][3], class_1.field_35[0], super.field_79 - class_1.field_81[10][2] - 1, var2[0], 20, false);
-            if (super.field_223 == 6) {
-               class_1.method_132(class_1.field_26, class_1.field_28[10], class_1.field_81[3][0], class_1.field_81[3][1], class_1.field_81[3][2], class_1.field_81[3][3], class_1.field_35[0], super.field_79 - 48, var2[1], 20, false);
+            GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[10][0], GameCanvas.field_81[10][1], GameCanvas.field_81[10][2], GameCanvas.field_81[10][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] - 1, var2[0], 20, false);
+            if (super.zone == 6) {
+               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[3][0], GameCanvas.field_81[3][1], GameCanvas.field_81[3][2], GameCanvas.field_81[3][3], GameCanvas.field_35[0], super.field_79 - 48, var2[1], 20, false);
             } else {
-               class_1.method_132(class_1.field_26, class_1.field_28[10], class_1.field_81[4 + super.field_224][0], class_1.field_81[4 + super.field_224][1], class_1.field_81[4 + super.field_224][2], class_1.field_81[4 + super.field_224][3], class_1.field_35[0], super.field_79 - class_1.field_81[10][2] + 25, var2[2], 20, false);
-               class_1.method_132(class_1.field_26, class_1.field_28[10], class_1.field_81[8][0], class_1.field_81[8][1], class_1.field_81[8][2], class_1.field_81[8][3], class_1.field_35[0], super.field_79 - class_1.field_81[10][2] + 1, var2[3], 20, false);
-               class_1.method_132(class_1.field_26, class_1.field_28[10], class_1.field_81[3][0], class_1.field_81[3][1], class_1.field_81[3][2], class_1.field_81[3][3], class_1.field_35[0], super.field_79 - class_1.field_81[class_1.field_215[super.field_223]][2], var2[4], 20, false);
+               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[4 + super.act][0], GameCanvas.field_81[4 + super.act][1], GameCanvas.field_81[4 + super.act][2], GameCanvas.field_81[4 + super.act][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] + 25, var2[2], 20, false);
+               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[8][0], GameCanvas.field_81[8][1], GameCanvas.field_81[8][2], GameCanvas.field_81[8][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] + 1, var2[3], 20, false);
+               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[3][0], GameCanvas.field_81[3][1], GameCanvas.field_81[3][2], GameCanvas.field_81[3][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[GameCanvas.field_215[super.zone]][2], var2[4], 20, false);
             }
 
-            class_1.method_132(class_1.field_26, class_1.field_28[10], class_1.field_81[class_1.field_215[super.field_223]][0], class_1.field_81[class_1.field_215[super.field_223]][1], class_1.field_81[class_1.field_215[super.field_223]][2], class_1.field_81[class_1.field_215[super.field_223]][3], class_1.field_35[0], super.field_79, var2[5], 24, false);
-            class_1.field_26.drawImage(class_1.field_28[4], class_1.field_18 - 10, class_1.field_20 + (class_1.field_19 >> 1), 20);
-            class_1.field_26.drawImage(class_1.field_28[5], 10, class_1.field_20 + (class_1.field_19 >> 1), 24);
+            GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[GameCanvas.field_215[super.zone]][0], GameCanvas.field_81[GameCanvas.field_215[super.zone]][1], GameCanvas.field_81[GameCanvas.field_215[super.zone]][2], GameCanvas.field_81[GameCanvas.field_215[super.zone]][3], GameCanvas.field_35[0], super.field_79, var2[5], 24, false);
+            GameCanvas.field_26.drawImage(GameCanvas.field_28[4], GameCanvas.field_18 - 10, GameCanvas.field_20 + (GameCanvas.field_19 >> 1), 20);
+            GameCanvas.field_26.drawImage(GameCanvas.field_28[5], 10, GameCanvas.field_20 + (GameCanvas.field_19 >> 1), 24);
             break;
          case 4:
-            class_1.method_151(0, 0, class_1.field_18, class_1.field_23);
-            class_1.method_151(0, class_1.field_23 + class_1.field_22, class_1.field_18, class_1.field_23);
-            class_1.method_152();
+            GameCanvas.method_151(0, 0, GameCanvas.field_18, GameCanvas.field_23);
+            GameCanvas.method_151(0, GameCanvas.field_23 + GameCanvas.field_22, GameCanvas.field_18, GameCanvas.field_23);
+            GameCanvas.method_152();
             super.field_201 = false;
-            class_1.field_257 = true;
-            class_1.field_26.setColor(0);
-            class_1.field_26.fillRect(0, class_1.field_23, class_1.field_18, class_1.field_22);
+            GameCanvas.field_257 = true;
+            GameCanvas.field_26.setColor(0);
+            GameCanvas.field_26.fillRect(0, GameCanvas.field_23, GameCanvas.field_18, GameCanvas.field_22);
          case 5:
          default:
             break;
          case 6:
-            super.field_31[0] = "";
+            super.commandTexts[0] = "";
             this.method_155();
             ++super.field_32;
             this.method_254();
@@ -130,37 +131,37 @@ public final class class_2 extends class_1 {
             break;
          case 10:
          case 11:
-            class_1.method_151(0, 0, class_1.field_17, class_1.field_16);
+            GameCanvas.method_151(0, 0, GameCanvas.field_17, GameCanvas.field_16);
             this.method_265();
-            class_1.field_26.setColor(0);
+            GameCanvas.field_26.setColor(0);
 
-            for(int var1 = 0; var1 < class_1.field_22; var1 += 2) {
-               class_1.field_26.fillRect(0, var1 + class_1.field_23, class_1.field_18, 1);
+            for(int var1 = 0; var1 < GameCanvas.field_22; var1 += 2) {
+               GameCanvas.field_26.fillRect(0, var1 + GameCanvas.field_23, GameCanvas.field_18, 1);
             }
 
-            if (super.field_220 == 11) {
-               this.method_158(super.field_63[85], false);
-               this.method_148(super.field_63[24], 2, 0, super.field_247 == 0);
-               this.method_148(super.field_63[25], 2, 1, super.field_247 == 1);
+            if (super.appState == 11) {
+               this.method_158(super.texts[85], false);
+               this.method_148(super.texts[24], 2, 0, super.currentPauseMenuItem == 0);
+               this.method_148(super.texts[25], 2, 1, super.currentPauseMenuItem == 1);
             } else {
-               this.method_158(super.field_63[60], false);
-               this.method_148(super.field_63[70], 2, 0, super.field_247 == 0);
-               this.method_148(super.field_63[71], 2, 1, super.field_247 == 1);
+               this.method_158(super.texts[60], false);
+               this.method_148(super.texts[70], 2, 0, super.currentPauseMenuItem == 0);
+               this.method_148(super.texts[71], 2, 1, super.currentPauseMenuItem == 1);
             }
 
             super.field_201 = true;
       }
 
-      if (super.field_220 == 4 || super.field_220 == 2) {
+      if (super.appState == 4 || super.appState == 2) {
          this.method_267();
       }
 
       if (super.field_254) {
-         class_1.method_152();
+         GameCanvas.method_152();
          super.field_254 = false;
       }
 
-      if (super.field_220 != 2 || super.field_32 % 5 == 0) {
+      if (super.appState != 2 || super.field_32 % 5 == 0) {
          this.method_26();
       }
 
@@ -171,7 +172,7 @@ public final class class_2 extends class_1 {
       int var1;
       int var2;
       if (super.field_252) {
-         class_1.field_26.setColor(0);
+         GameCanvas.field_26.setColor(0);
 
          for(var1 = 0; var1 < 10; ++var1) {
             if ((var2 = 24 - (super.field_251 - var1) * 4) >= 0) {
@@ -179,7 +180,7 @@ public final class class_2 extends class_1 {
                   var2 = 24;
                }
 
-               class_1.field_26.fillRect(var1 * 24 + (24 - var2), 0, var2, 240);
+               GameCanvas.field_26.fillRect(var1 * 24 + (24 - var2), 0, var2, 240);
             }
          }
 
@@ -193,7 +194,7 @@ public final class class_2 extends class_1 {
 
       this.method_175();
       if (super.field_253) {
-         class_1.field_26.setColor(0);
+         GameCanvas.field_26.setColor(0);
 
          for(var1 = 0; var1 < 10; ++var1) {
             if (super.field_251 - var1 > 0) {
@@ -201,7 +202,7 @@ public final class class_2 extends class_1 {
                   var2 = 24;
                }
 
-               class_1.field_26.fillRect(var1 * 24, class_1.field_20, var2, class_1.field_19);
+               GameCanvas.field_26.fillRect(var1 * 24, GameCanvas.field_20, var2, GameCanvas.field_19);
             }
          }
 
@@ -214,21 +215,21 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_38) {
-         this.method_154(super.field_63[49], class_1.field_18 >> 1, class_1.field_23 + class_1.field_22 - class_1.field_15 - 2, 16777215, 658170);
+         this.method_154(super.texts[49], GameCanvas.field_18 >> 1, GameCanvas.field_23 + GameCanvas.field_22 - GameCanvas.field_15 - 2, 16777215, 658170);
       }
 
    }
 
    public final void paint(Graphics var1) {
       try {
-         class_1.field_26 = var1;
+         GameCanvas.field_26 = var1;
          this.method_266();
          if (super.field_299) {
             Font var2 = var1.getFont();
             String var3;
             int var4;
             if (super.field_298[1]) {
-               if ((var4 = super.field_314[super.field_315]) != 0) {
+               if ((var4 = super.lastFrameLags[super.nextFrameLagIndex]) != 0) {
                   var3 = String.valueOf(1000 / var4);
                } else {
                   var3 = "??";
@@ -236,22 +237,22 @@ public final class class_2 extends class_1 {
 
                var3 = var3 + " fps";
                var1.setColor(0);
-               var1.fillRect(0, 0, var2.stringWidth("XXXXXX"), class_1.field_15);
+               var1.fillRect(0, 0, var2.stringWidth("XXXXXX"), GameCanvas.field_15);
                var1.setColor(16777215);
                var1.drawString(var3, 0, 0, 20);
             }
 
             if (super.field_298[3]) {
-               var3 = Integer.toHexString(class_1.field_226[0]).toUpperCase() + ", " + Integer.toHexString(class_1.field_226[1]).toUpperCase();
+               var3 = Integer.toHexString(GameCanvas.field_226[0]).toUpperCase() + ", " + Integer.toHexString(GameCanvas.field_226[1]).toUpperCase();
                var4 = var2.stringWidth(var3);
                var1.setColor(0);
-               var1.fillRect(class_1.field_18 - var4, 0, var4, class_1.field_15);
+               var1.fillRect(GameCanvas.field_18 - var4, 0, var4, GameCanvas.field_15);
                var1.setColor(16777215);
-               var1.drawString(var3, class_1.field_18, 0, 24);
+               var1.drawString(var3, GameCanvas.field_18, 0, 24);
             }
          }
 
-         class_1.field_26 = null;
+         GameCanvas.field_26 = null;
       } catch (Throwable var5) {
       }
    }
@@ -287,10 +288,10 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: ae () void
    private void method_269() throws Exception {
-      if (this.method_21()) {
-         this.method_11();
+      if (this.handleCommandAction()) {
+         this.resetPressedKeys();
       } else {
-         switch (super.field_220) {
+         switch (super.appState) {
             case 1:
                this.method_146();
                break;
@@ -299,23 +300,23 @@ public final class class_2 extends class_1 {
                if (super.field_155) {
                   super.field_249 = true;
                   super.field_250 = 10;
-                  class_1.field_131 = true;
+                  GameCanvas.field_131 = true;
                }
 
-               class_1.field_95[0] = class_1.method_102();
-               class_1.field_95[1] = class_1.method_103() - 1;
+               GameCanvas.field_95[0] = GameCanvas.method_102();
+               GameCanvas.field_95[1] = GameCanvas.method_103() - 1;
                super.field_284 = 0;
                super.field_285 = 0;
                super.field_282 = false;
                super.field_277 = false;
                super.field_273 = false;
                this.method_57();
-               if (!class_1.field_125) {
+               if (!GameCanvas.field_125) {
                   this.method_116();
                   this.method_268();
                }
 
-               if (!class_1.field_125) {
+               if (!GameCanvas.field_125) {
                   this.method_205();
                }
 
@@ -339,7 +340,7 @@ public final class class_2 extends class_1 {
                this.method_92();
                this.method_173();
                ++super.field_33;
-               if (super.field_33 % 60 == 0 && !class_1.field_131) {
+               if (super.field_33 % 60 == 0 && !GameCanvas.field_131) {
                   super.field_108 = (super.field_108 + 1) % 60;
                   if (super.field_108 == 0) {
                      if (super.field_109 == 9) {
@@ -351,30 +352,30 @@ public final class class_2 extends class_1 {
                   }
                }
 
-               if (class_1.field_130) {
+               if (GameCanvas.field_130) {
                   super.field_108 = 0;
                   super.field_109 = 0;
                }
 
-               if (!class_1.field_118 && super.field_106 >= 100 && super.field_105 < 100) {
-                  super.field_36.method_386(7, 1);
+               if (!GameCanvas.field_118 && super.field_106 >= 100 && super.field_105 < 100) {
+                  super.audio.interruptTrackAndPlay(7, 1);
                   ++super.field_111;
                }
 
-               if (!class_1.field_118 && super.field_106 >= 200 && super.field_105 < 200) {
-                  super.field_36.method_386(7, 1);
+               if (!GameCanvas.field_118 && super.field_106 >= 200 && super.field_105 < 200) {
+                  super.audio.interruptTrackAndPlay(7, 1);
                   ++super.field_111;
                }
 
-               if (!class_1.field_118 && super.field_106 >= 300 && super.field_105 < 300) {
-                  super.field_36.method_386(7, 1);
+               if (!GameCanvas.field_118 && super.field_106 >= 300 && super.field_105 < 300) {
+                  super.audio.interruptTrackAndPlay(7, 1);
                   ++super.field_111;
                }
                break;
             case 3:
-               if (super.field_30[0]) {
-                  super.field_221 = class_1.field_216[super.field_223][super.field_224];
-                  super.field_222 = class_1.field_217[super.field_223][super.field_224];
+               if (super.pressedKeys[0]) {
+                  super.field_221 = GameCanvas.field_216[super.zone][super.act];
+                  super.field_222 = GameCanvas.field_217[super.zone][super.act];
                   super.field_111 = 3;
                   if (super.field_299) {
                      super.field_40 = super.field_301;
@@ -382,25 +383,25 @@ public final class class_2 extends class_1 {
                      super.field_40 = 0;
                   }
 
-                  super.field_107 = 0;
+                  super.score = 0;
                   super.field_202 = true;
                   this.method_42();
-               } else if (super.field_30[4]) {
-                  this.method_11();
-                  super.field_224 = (super.field_224 + 1) % 3;
-                  if (super.field_224 == 0) {
+               } else if (super.pressedKeys[4]) {
+                  this.resetPressedKeys();
+                  super.act = (super.act + 1) % 3;
+                  if (super.act == 0) {
                      this.method_23(true);
                   }
-               } else if (super.field_30[3]) {
-                  this.method_11();
-                  super.field_224 = (super.field_224 + 2) % 3;
-                  if (super.field_224 == 2) {
+               } else if (super.pressedKeys[3]) {
+                  this.resetPressedKeys();
+                  super.act = (super.act + 2) % 3;
+                  if (super.act == 2) {
                      this.method_23(false);
                   }
                }
 
-               if (super.field_223 == 6) {
-                  super.field_224 = 0;
+               if (super.zone == 6) {
+                  super.act = 0;
                }
             case 4:
             case 5:
@@ -417,58 +418,58 @@ public final class class_2 extends class_1 {
                this.method_257();
                break;
             case 9:
-               if (super.field_313 && System.currentTimeMillis() - this.field_328 > 250L) {
+               if (super.rendering && System.currentTimeMillis() - this.field_328 > 250L) {
                   this.field_328 = System.currentTimeMillis();
-                  this.method_260();
+                  this.updateNameInput();
                }
                break;
             case 10:
                super.field_286 = 0;
                super.field_68 = (byte)((super.field_68 + 1) % 24);
-               if (super.field_30[0]) {
-                  this.method_14();
-                  if (super.field_247 == 0) {
-                     super.field_220 = 2;
+               if (super.pressedKeys[0]) {
+                  this.saveConfig();
+                  if (super.currentPauseMenuItem == 0) {
+                     super.appState = 2;
                      super.field_201 = true;
                      super.field_249 = true;
                      super.field_250 = 10;
                      super.field_254 = true;
-                     class_1.field_257 = true;
+                     GameCanvas.field_257 = true;
                      this.method_178();
                      this.method_13();
                   } else {
-                     super.field_220 = 11;
+                     super.appState = 11;
                   }
-               } else if (super.field_30[1]) {
-                  super.field_247 = super.field_247 + 1 & 1;
-               } else if (super.field_30[2]) {
-                  super.field_247 = super.field_247 + 1 & 1;
+               } else if (super.pressedKeys[1]) {
+                  super.currentPauseMenuItem = super.currentPauseMenuItem + 1 & 1;
+               } else if (super.pressedKeys[2]) {
+                  super.currentPauseMenuItem = super.currentPauseMenuItem + 1 & 1;
                }
 
-               this.method_11();
+               this.resetPressedKeys();
                break;
             case 11:
                super.field_286 = 0;
                super.field_68 = (byte)((super.field_68 + 1) % 24);
-               if (super.field_30[0]) {
-                  if (super.field_247 == 0) {
-                     super.field_220 = 1;
+               if (super.pressedKeys[0]) {
+                  if (super.currentPauseMenuItem == 0) {
+                     super.appState = 1;
                      super.field_249 = true;
                      super.field_250 = 10;
-                     this.method_161(false);
+                     this.loadMenu(false);
                   } else {
-                     this.method_11();
-                     super.field_220 = 10;
+                     this.resetPressedKeys();
+                     super.appState = 10;
                      super.field_249 = true;
                      super.field_250 = 10;
                      super.field_254 = true;
                   }
-               } else if (super.field_30[1]) {
-                  this.method_11();
-                  super.field_247 = super.field_247 + 1 & 1;
-               } else if (super.field_30[2]) {
-                  this.method_11();
-                  super.field_247 = super.field_247 + 1 & 1;
+               } else if (super.pressedKeys[1]) {
+                  this.resetPressedKeys();
+                  super.currentPauseMenuItem = super.currentPauseMenuItem + 1 & 1;
+               } else if (super.pressedKeys[2]) {
+                  this.resetPressedKeys();
+                  super.currentPauseMenuItem = super.currentPauseMenuItem + 1 & 1;
                }
          }
 
@@ -478,54 +479,54 @@ public final class class_2 extends class_1 {
 
    public final void run() {
       try {
-         this.method_12();
-         super.field_308 = System.currentTimeMillis();
-         int var1 = 0;
+         this.init();
+         super.startTime = System.currentTimeMillis();
+         int skipFrame = 0;
 
          while(true) {
             while(true) {
-               super.field_309 = System.currentTimeMillis();
+               super.startFrameTime = System.currentTimeMillis();
                this.method_269();
-               ++super.field_306;
-               super.field_310 = (long)(super.field_306 * 16);
-               super.field_311 = System.currentTimeMillis() - super.field_308;
-               if ((long)super.field_312 >= super.field_310 - super.field_311 && var1 <= 7) {
-                  ++var1;
-                  super.field_313 = false;
+               ++super.frame;
+               super.gameElapsedTime = (long)(super.frame * 16);
+               super.appElapsedTime = System.currentTimeMillis() - super.startTime;
+               if ((long)super.minFrameTime >= super.gameElapsedTime - super.appElapsedTime && skipFrame <= 7) {
+                  ++skipFrame;
+                  super.rendering = false;
                } else {
-                  long var2 = System.currentTimeMillis();
-                  var1 = 0;
+                  long startRenderTime = System.currentTimeMillis();
+                  skipFrame = 0;
                   this.method_25();
                   this.repaint();
                   this.serviceRepaints();
-                  ++super.field_307;
-                  super.field_314[super.field_315++] = (int)(System.currentTimeMillis() - var2);
-                  if (super.field_315 == super.field_314.length) {
-                     super.field_315 = 0;
+                  ++super.renderedFrame;
+                  super.lastFrameLags[super.nextFrameLagIndex++] = (int)(System.currentTimeMillis() - startRenderTime);
+                  if (super.nextFrameLagIndex == super.lastFrameLags.length) {
+                     super.nextFrameLagIndex = 0;
                   }
 
-                  super.field_312 = 0;
+                  super.minFrameTime = 0;
 
-                  for(int var4 = 0; var4 < super.field_314.length; ++var4) {
-                     super.field_312 += super.field_314[var4];
+                  for(int i = 0; i < super.lastFrameLags.length; ++i) {
+                     super.minFrameTime += super.lastFrameLags[i];
                   }
 
-                  super.field_312 /= super.field_314.length;
+                  super.minFrameTime /= super.lastFrameLags.length;
                   Thread.yield();
-                  long var9;
-                  if ((var9 = System.currentTimeMillis()) - super.field_309 < 16L) {
+                  long endFrameTime;
+                  if ((endFrameTime = System.currentTimeMillis()) - super.startFrameTime < 16L) {
                      try {
-                        Thread.sleep(16L - (var9 - super.field_309));
-                     } catch (Exception var7) {
+                        Thread.sleep(16L - (endFrameTime - super.startFrameTime));
+                     } catch (Exception exception) {
                      }
                   }
 
-                  super.field_313 = true;
+                  super.rendering = true;
                }
             }
          }
-      } catch (Throwable var8) {
-         var8.printStackTrace();
+      } catch (Throwable error) {
+         error.printStackTrace();
       }
    }
 
@@ -1107,7 +1108,7 @@ public final class class_2 extends class_1 {
                }
             }
 
-            class_1.method_126(102, 0, 0, 24, 24, 0, var2 + super.field_178, var3 + super.field_179);
+            GameCanvas.method_126(102, 0, 0, 24, 24, 0, var2 + super.field_178, var3 + super.field_179);
          }
       }
 
@@ -1115,7 +1116,7 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: c (int, int, int, int, int) void
    private void method_274(int var1, int var2, int var3, int var4, int var5) {
-      method_275(var1, var2, var3, var4, class_1.field_207[var1][var5]);
+      method_275(var1, var2, var3, var4, GameCanvas.field_207[var1][var5]);
    }
 
    // $FF: renamed from: a (int, int, int, int, int[]) void
@@ -1125,15 +1126,15 @@ public final class class_2 extends class_1 {
       int var7;
       switch (var3) {
          case 1:
-            var7 = class_1.field_35[4];
+            var7 = GameCanvas.field_35[4];
             var5 = -var5;
             break;
          case 2:
-            var7 = class_1.field_35[6];
+            var7 = GameCanvas.field_35[6];
             var6 = -var6;
             break;
          case 3:
-            var7 = class_1.field_35[2];
+            var7 = GameCanvas.field_35[2];
             var5 = -var5;
             var6 = -var6;
             break;
@@ -1143,7 +1144,7 @@ public final class class_2 extends class_1 {
 
       var5 = var5 * 4 / 3;
       var6 = var6 * 4 / 3;
-      class_1.method_127(var0, var4[0], var4[1], var4[2], var4[3], var7, var1 + var5, var2 + var6, 3);
+      GameCanvas.method_127(var0, var4[0], var4[1], var4[2], var4[3], var7, var1 + var5, var2 + var6, 3);
    }
 
    // $FF: renamed from: d (int, int, int, int, int) void
@@ -1195,8 +1196,8 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: d (int, int, int, int) void
    private void method_277(int var1, int var2, int var3, int var4) {
-      int var7 = class_1.field_207[120][15][4];
-      int var8 = class_1.field_207[120][15][5];
+      int var7 = GameCanvas.field_207[120][15][4];
+      int var8 = GameCanvas.field_207[120][15][5];
       int var9 = super.field_172;
       int var10 = super.field_170 / 100;
       if (var3 == 1) {
@@ -1207,7 +1208,7 @@ public final class class_2 extends class_1 {
          var10 += 360;
       }
 
-      int var11 = 180 + class_1.method_5(var10) * 90 / 100;
+      int var11 = 180 + GameCanvas.method_5(var10) * 90 / 100;
       if (var9 > 16) {
          this.method_274(120, var1, var2, var3, 15 + (super.field_32 >> 2 & 1));
       }
@@ -1217,8 +1218,8 @@ public final class class_2 extends class_1 {
       int var13;
       for(var13 = 0; var13 < 4; ++var13) {
          int var12 = (var13 + 1) * 16;
-         var5 = var1 + class_1.method_5(var11) * var12 / 100 + var7;
-         var6 = var2 + class_1.method_6(var11) * var12 / 100 + var8;
+         var5 = var1 + GameCanvas.method_5(var11) * var12 / 100 + var7;
+         var6 = var2 + GameCanvas.method_6(var11) * var12 / 100 + var8;
          if (var9 > 16 + var12) {
             this.method_274(120, var5, var6, 0, 17);
          }
@@ -1228,14 +1229,14 @@ public final class class_2 extends class_1 {
          }
       }
 
-      var5 = var1 + var7 + class_1.method_5(var11) * var9 / 100;
-      var6 = var2 + var8 + class_1.method_6(var11) * var9 / 100;
+      var5 = var1 + var7 + GameCanvas.method_5(var11) * var9 / 100;
+      var6 = var2 + var8 + GameCanvas.method_6(var11) * var9 / 100;
       if (var4 == 2) {
-         var13 = var1 + var7 + class_1.method_5(var11) * 96 / 100;
-         int var14 = var2 + var8 + class_1.method_6(var11) * 96 / 100;
+         var13 = var1 + var7 + GameCanvas.method_5(var11) * 96 / 100;
+         int var14 = var2 + var8 + GameCanvas.method_6(var11) * 96 / 100;
          this.method_274(121, var13, var14, 0, 0);
          if ((super.field_32 & 7) == 4) {
-            this.method_199(1, var13 + class_1.method_58(48) - 24, var14 + class_1.method_58(48) - 24, 0, 0, 0, 0);
+            this.method_199(1, var13 + GameCanvas.method_58(48) - 24, var14 + GameCanvas.method_58(48) - 24, 0, 0, 0, 0);
             return;
          }
       } else {
@@ -1336,7 +1337,7 @@ public final class class_2 extends class_1 {
                this.method_276(2, var2, var3, var5, var7);
                this.method_274(120, var2, var3, var5, 8);
                if (var8 != 0) {
-                  this.method_199(1, var2 + class_1.method_58(32) - 16, var3 + class_1.method_58(32) - 16 - 8, 0, 0, 0, 0);
+                  this.method_199(1, var2 + GameCanvas.method_58(32) - 16, var3 + GameCanvas.method_58(32) - 16 - 8, 0, 0, 0, 0);
                   return;
                }
                break;
@@ -1369,20 +1370,20 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: a (int, int, int, int) boolean
    private static boolean method_284(int var0, int var1, int var2, int var3) {
-      return (var2 == -1 || 0 <= var0 - class_1.field_225[0] + var2 && class_1.field_18 >= var0 - class_1.field_225[0] - var2) && (var3 == -1 || 0 <= var1 - class_1.field_225[1] + var3 && 240 >= var1 - class_1.field_225[1] - var3);
+      return (var2 == -1 || 0 <= var0 - GameCanvas.field_225[0] + var2 && GameCanvas.field_18 >= var0 - GameCanvas.field_225[0] - var2) && (var3 == -1 || 0 <= var1 - GameCanvas.field_225[1] + var3 && 240 >= var1 - GameCanvas.field_225[1] - var3);
    }
 
    // $FF: renamed from: ah () void
    private void method_285() {
       super.field_199[6] = super.field_199[2];
       super.field_199[7] = super.field_199[3];
-      if (class_1.method_140(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 8, 8) > 0) {
+      if (GameCanvas.method_140(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 8, 8) > 0) {
          if (super.field_199[5] == 0 && super.field_199[0] != -1) {
             super.field_199[5] = 1;
             super.field_199[10] = super.field_33;
             ++super.field_106;
          }
-      } else if (super.field_199[12] != 0 && class_1.method_140(super.field_199[2], super.field_199[12], super.field_199[6], super.field_199[12], 8, 8) >= 0 && super.field_199[5] == 0 && super.field_199[0] != -1) {
+      } else if (super.field_199[12] != 0 && GameCanvas.method_140(super.field_199[2], super.field_199[12], super.field_199[6], super.field_199[12], 8, 8) >= 0 && super.field_199[5] == 0 && super.field_199[0] != -1) {
          super.field_199[5] = 1;
          super.field_199[10] = super.field_33;
          ++super.field_106;
@@ -1397,8 +1398,8 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: ai () void
    private void method_286() {
-      int var1 = class_1.method_5(super.field_32 * 3) * 87;
-      int var2 = class_1.method_5(super.field_199[6] * 3) * 87;
+      int var1 = GameCanvas.method_5(super.field_32 * 3) * 87;
+      int var2 = GameCanvas.method_5(super.field_199[6] * 3) * 87;
       super.field_199[6] = super.field_32;
       int var4 = super.field_199[4] + 1;
       if (super.field_199[4] == 5) {
@@ -1427,17 +1428,17 @@ public final class class_2 extends class_1 {
          var3 -= 8;
       }
 
-      int var8 = class_1.method_136(super.field_199[2] + class_1.method_5(180 + var1 / 100) * var3 / 100, super.field_199[3] + class_1.method_6(180 + var1 / 100) * var3 / 100, super.field_199[2] + class_1.method_5(180 + var2 / 100) * var3 / 100, super.field_199[3] + class_1.method_6(180 + var2 / 100) * var3 / 100, var5, var6);
+      int var8 = GameCanvas.method_136(super.field_199[2] + GameCanvas.method_5(180 + var1 / 100) * var3 / 100, super.field_199[3] + GameCanvas.method_6(180 + var1 / 100) * var3 / 100, super.field_199[2] + GameCanvas.method_5(180 + var2 / 100) * var3 / 100, super.field_199[3] + GameCanvas.method_6(180 + var2 / 100) * var3 / 100, var5, var6);
       if (super.field_221 != 3 && super.field_221 != 5) {
          if (var8 != 0) {
-            var8 = class_1.method_136(super.field_199[2] + class_1.method_5(180 + var1 / 100) * var3 / 100, super.field_199[3] + class_1.method_6(180 + var1 / 100) * var3 / 100 + 5, super.field_199[2] + class_1.method_5(180 + var2 / 100) * var3 / 100, super.field_199[3] + class_1.method_6(180 + var2 / 100) * var3 / 100 + 5, var5, var6);
+            var8 = GameCanvas.method_136(super.field_199[2] + GameCanvas.method_5(180 + var1 / 100) * var3 / 100, super.field_199[3] + GameCanvas.method_6(180 + var1 / 100) * var3 / 100 + 5, super.field_199[2] + GameCanvas.method_5(180 + var2 / 100) * var3 / 100, super.field_199[3] + GameCanvas.method_6(180 + var2 / 100) * var3 / 100 + 5, var5, var6);
          }
 
          if (var8 == 0) {
-            class_1.field_116[1] = super.field_199[3] + class_1.method_6(180 + var1 / 100) * var3 / 100 - var6 << 8;
-            int[] var10000 = class_1.field_116;
-            var10000[0] += (class_1.method_5(180 + var1 / 100) * var3 - class_1.method_5(180 + var2 / 100) * var3 << 8) / 100;
-            this.method_138(super.field_199[2] + class_1.method_5(180 + var1 / 100) * var3 / 100, var5);
+            GameCanvas.field_116[1] = super.field_199[3] + GameCanvas.method_6(180 + var1 / 100) * var3 / 100 - var6 << 8;
+            int[] var10000 = GameCanvas.field_116;
+            var10000[0] += (GameCanvas.method_5(180 + var1 / 100) * var3 - GameCanvas.method_5(180 + var2 / 100) * var3 << 8) / 100;
+            this.method_138(super.field_199[2] + GameCanvas.method_5(180 + var1 / 100) * var3 / 100, var5);
             this.method_107(super.field_199[22]);
          }
       }
@@ -1461,12 +1462,12 @@ public final class class_2 extends class_1 {
       int var3 = 99;
 
       for(int var2 = 0; var2 < 12; ++var2) {
-         if ((var1 = class_1.method_137(class_1.method_102(), class_1.method_103() - 12, class_1.field_95[0], class_1.field_95[1] - 12, 4, 12, super.field_199[2] - 96 + (var2 << 4), super.field_199[3] + super.field_199[10], super.field_199[6] - 96 + (var2 << 4), super.field_199[7] + super.field_199[10], 8, 8)) >= 0 && var1 != 3) {
+         if ((var1 = GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - 12, GameCanvas.field_95[0], GameCanvas.field_95[1] - 12, 4, 12, super.field_199[2] - 96 + (var2 << 4), super.field_199[3] + super.field_199[10], super.field_199[6] - 96 + (var2 << 4), super.field_199[7] + super.field_199[10], 8, 8)) >= 0 && var1 != 3) {
             var7 = true;
-            class_1.field_116[1] = super.field_199[3] - 8 << 8;
-            if (Math.abs(class_1.method_102() - (super.field_199[2] - 8)) < 999) {
+            GameCanvas.field_116[1] = super.field_199[3] - 8 << 8;
+            if (Math.abs(GameCanvas.method_102() - (super.field_199[2] - 8)) < 999) {
                var3 = var2;
-               Math.abs(class_1.method_102() - super.field_199[2]);
+               Math.abs(GameCanvas.method_102() - super.field_199[2]);
             }
             break;
          }
@@ -1474,7 +1475,7 @@ public final class class_2 extends class_1 {
 
       int[] var10000;
       if (var3 != 99) {
-         class_1.field_116[1] = super.field_199[3] - 8 + super.field_199[10] << 8;
+         GameCanvas.field_116[1] = super.field_199[3] - 8 + super.field_199[10] << 8;
          this.method_138(super.field_199[2], 96);
          this.method_107(super.field_199[22]);
          super.field_199[5] = var3;
@@ -1517,7 +1518,7 @@ public final class class_2 extends class_1 {
       boolean var4 = false;
 
       for(int var1 = 0; var1 < 12; ++var1) {
-         if ((super.field_32 / 10 + (12 - var1)) % 7 == 2 && class_1.method_136(super.field_199[2] - 96 + (var1 << 4), super.field_199[3], super.field_199[2] - 96 + (var1 << 4), super.field_199[3], 8, 12) >= 0) {
+         if ((super.field_32 / 10 + (12 - var1)) % 7 == 2 && GameCanvas.method_136(super.field_199[2] - 96 + (var1 << 4), super.field_199[3], super.field_199[2] - 96 + (var1 << 4), super.field_199[3], 8, 12) >= 0) {
             this.method_104();
             return;
          }
@@ -1544,13 +1545,13 @@ public final class class_2 extends class_1 {
       int var15;
       if (super.field_199[5] == 0) {
          if (var9 == 0) {
-            var15 = class_1.field_145.length;
+            var15 = GameCanvas.field_145.length;
          } else {
-            var15 = -class_1.field_145.length;
+            var15 = -GameCanvas.field_145.length;
          }
 
-         if ((var5 = class_1.method_137(class_1.method_102(), class_1.method_103() - 12, class_1.field_95[0], class_1.field_95[1] - 12, 2, 12, super.field_199[2] - var15, super.field_199[3] - class_1.field_145[0] + 8, super.field_199[2] - var15, super.field_199[3] - class_1.field_145[0] + 8, 8, 8)) >= 0) {
-            class_1.field_116[1] = super.field_199[3] - class_1.field_145[0] + 8 - 8 << 8;
+         if ((var5 = GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - 12, GameCanvas.field_95[0], GameCanvas.field_95[1] - 12, 2, 12, super.field_199[2] - var15, super.field_199[3] - GameCanvas.field_145[0] + 8, super.field_199[2] - var15, super.field_199[3] - GameCanvas.field_145[0] + 8, 8, 8)) >= 0) {
+            GameCanvas.field_116[1] = super.field_199[3] - GameCanvas.field_145[0] + 8 - 8 << 8;
          }
       }
 
@@ -1579,8 +1580,8 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_199[5] != 2) {
-         var10 = class_1.field_145.length;
-         if (class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 128, 128) >= 0) {
+         var10 = GameCanvas.field_145.length;
+         if (GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 128, 128) >= 0) {
             for(int var12 = 0; var12 < var10; ++var12) {
                if (var9 == 0) {
                   var15 = var12;
@@ -1589,13 +1590,13 @@ public final class class_2 extends class_1 {
                }
 
                if (var9 == 0 && var3 <= var12 || var9 != 0 && var10 - var3 >= var12) {
-                  if (class_1.method_137(class_1.method_102(), class_1.method_103() - 12, class_1.field_95[0], class_1.field_95[1] - 12, 2, 12, super.field_199[2] - var10 + (var12 << 1), super.field_199[3] - class_1.field_145[var15], super.field_199[2] - var10 + (var12 << 1), super.field_199[3] - class_1.field_145[var15], 1, 1) == 0 && var7 > Math.abs(class_1.method_102() - (super.field_199[2] - var10 + (var12 << 1)))) {
-                     var7 = Math.abs(class_1.method_102() - (super.field_199[2] - var10 + (var12 << 1)));
+                  if (GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - 12, GameCanvas.field_95[0], GameCanvas.field_95[1] - 12, 2, 12, super.field_199[2] - var10 + (var12 << 1), super.field_199[3] - GameCanvas.field_145[var15], super.field_199[2] - var10 + (var12 << 1), super.field_199[3] - GameCanvas.field_145[var15], 1, 1) == 0 && var7 > Math.abs(GameCanvas.method_102() - (super.field_199[2] - var10 + (var12 << 1)))) {
+                     var7 = Math.abs(GameCanvas.method_102() - (super.field_199[2] - var10 + (var12 << 1)));
                      var6 = var15;
                   }
 
-                  if (var6 != -99 && 8 > Math.abs(class_1.method_102() - (super.field_199[2] - var10 + (var12 << 1))) && class_1.method_103() - (super.field_199[3] - class_1.field_145[var15]) > 0 && class_1.method_103() - (super.field_199[3] - class_1.field_145[var15]) <= 64 && var7 > Math.abs(class_1.method_102() - (super.field_199[2] - var10 + (var12 << 1)))) {
-                     var7 = Math.abs(class_1.method_102() - (super.field_199[2] - var10 + (var12 << 1)));
+                  if (var6 != -99 && 8 > Math.abs(GameCanvas.method_102() - (super.field_199[2] - var10 + (var12 << 1))) && GameCanvas.method_103() - (super.field_199[3] - GameCanvas.field_145[var15]) > 0 && GameCanvas.method_103() - (super.field_199[3] - GameCanvas.field_145[var15]) <= 64 && var7 > Math.abs(GameCanvas.method_102() - (super.field_199[2] - var10 + (var12 << 1)))) {
+                     var7 = Math.abs(GameCanvas.method_102() - (super.field_199[2] - var10 + (var12 << 1)));
                      var6 = var15;
                      break;
                   }
@@ -1606,7 +1607,7 @@ public final class class_2 extends class_1 {
          var5 = -1;
          if (var7 != 999) {
             super.field_199[17] = var6;
-            class_1.field_116[1] = super.field_199[3] - class_1.field_145[var6] - 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - GameCanvas.field_145[var6] - 1 << 8;
             if (super.field_199[5] == 0) {
                super.field_199[10] = super.field_33 / 2;
             }
@@ -1676,10 +1677,10 @@ public final class class_2 extends class_1 {
             super.field_199[3] = super.field_199[9] + var16;
          } else if (super.field_199[4] != 7) {
             if (super.field_199[4] == 1) {
-               var16 = class_1.method_5(super.field_199[5]) * var17 / 100 - var17;
+               var16 = GameCanvas.method_5(super.field_199[5]) * var17 / 100 - var17;
                super.field_199[3] = super.field_199[9] + 8 + var16;
             } else {
-               var16 = class_1.method_5(super.field_199[5]) * var17 / 100 - var17;
+               var16 = GameCanvas.method_5(super.field_199[5]) * var17 / 100 - var17;
                super.field_199[3] = super.field_199[9] + var16;
             }
          }
@@ -1699,40 +1700,40 @@ public final class class_2 extends class_1 {
       super.field_199[13] = 0;
       int var7 = 999;
       int var14;
-      if ((var14 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[17], super.field_199[18], super.field_146[var13], class_1.field_165[var13][0])) >= 0) {
+      if ((var14 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[17], super.field_199[18], super.field_146[var13], GameCanvas.field_165[var13][0])) >= 0) {
          if (var14 == 1) {
-            class_1.field_116[0] = super.field_199[2] - super.field_146[var13] - 12 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] - super.field_146[var13] - 12 << 8;
+            GameCanvas.field_116[10] = 0;
             var3 = -99;
-            if (super.field_30[4]) {
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var14 == 2) {
-            class_1.field_116[0] = super.field_199[2] + super.field_146[var13] + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] + super.field_146[var13] + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
             var3 = -99;
-            if (super.field_30[3]) {
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          }
       }
 
-      int var8 = class_1.field_165[var13].length;
-      int var9 = class_1.field_165[var13][0];
+      int var8 = GameCanvas.field_165[var13].length;
+      int var9 = GameCanvas.field_165[var13][0];
       if (var13 == 2) {
          var9 = 96;
       }
 
       int var4;
-      if (class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[17], super.field_199[18], var8, var9) >= 0) {
+      if (GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[17], super.field_199[18], var8, var9) >= 0) {
          for(var4 = 0; var4 < var8; ++var4) {
-            if (class_1.method_137(class_1.method_102(), class_1.method_103() - 12, class_1.field_95[0], class_1.field_95[1] - 12, 2, 13, super.field_199[2] - var8 + (var4 << 1), super.field_199[3] - class_1.field_165[var13][var4], super.field_199[17] - var8 + (var4 << 1), super.field_199[18] - class_1.field_165[var13][var4], 1, 1) == 0 && var7 > Math.abs(class_1.method_102() - (super.field_199[2] - var8 + (var4 << 1)))) {
-               var7 = Math.abs(class_1.method_102() - (super.field_199[2] - var8 + (var4 << 1)));
+            if (GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - 12, GameCanvas.field_95[0], GameCanvas.field_95[1] - 12, 2, 13, super.field_199[2] - var8 + (var4 << 1), super.field_199[3] - GameCanvas.field_165[var13][var4], super.field_199[17] - var8 + (var4 << 1), super.field_199[18] - GameCanvas.field_165[var13][var4], 1, 1) == 0 && var7 > Math.abs(GameCanvas.method_102() - (super.field_199[2] - var8 + (var4 << 1)))) {
+               var7 = Math.abs(GameCanvas.method_102() - (super.field_199[2] - var8 + (var4 << 1)));
                var3 = var4;
             }
 
-            if (var3 != -99 && 8 >= Math.abs(class_1.method_102() - (super.field_199[2] - var8 + (var4 << 1))) && class_1.method_103() - (super.field_199[3] - class_1.field_165[var13][var4]) >= -1 && class_1.method_103() - (super.field_199[3] - class_1.field_165[var13][var4]) <= 64 && var7 > Math.abs(class_1.method_102() - (super.field_199[2] - var8 + (var4 << 1)))) {
-               var7 = Math.abs(class_1.method_102() - (super.field_199[2] - var8 + (var4 << 1)));
+            if (var3 != -99 && 8 >= Math.abs(GameCanvas.method_102() - (super.field_199[2] - var8 + (var4 << 1))) && GameCanvas.method_103() - (super.field_199[3] - GameCanvas.field_165[var13][var4]) >= -1 && GameCanvas.method_103() - (super.field_199[3] - GameCanvas.field_165[var13][var4]) <= 64 && var7 > Math.abs(GameCanvas.method_102() - (super.field_199[2] - var8 + (var4 << 1)))) {
+               var7 = Math.abs(GameCanvas.method_102() - (super.field_199[2] - var8 + (var4 << 1)));
                var3 = var4;
                break;
             }
@@ -1741,8 +1742,8 @@ public final class class_2 extends class_1 {
 
       byte var15 = -1;
       if (var7 != 999) {
-         class_1.field_116[1] = super.field_199[3] - class_1.field_165[var13][var3] + 4 << 8;
-         this.method_138(super.field_199[2], class_1.field_165[var13].length);
+         GameCanvas.field_116[1] = super.field_199[3] - GameCanvas.field_165[var13][var3] + 4 << 8;
+         this.method_138(super.field_199[2], GameCanvas.field_165[var13].length);
          this.method_107(super.field_199[22]);
          var15 = 0;
          if (var13 == 2) {
@@ -1775,7 +1776,7 @@ public final class class_2 extends class_1 {
                   var19 = var18 = var4 << 3;
                }
 
-               if (class_1.method_136(super.field_199[2] + (var18 << 1) - 56, super.field_199[3] - class_1.field_165[var13][var18], super.field_199[17] + (var19 << 1) - 56, super.field_199[18] - class_1.field_165[var13][var19], 6, 6) >= 0) {
+               if (GameCanvas.method_136(super.field_199[2] + (var18 << 1) - 56, super.field_199[3] - GameCanvas.field_165[var13][var18], super.field_199[17] + (var19 << 1) - 56, super.field_199[18] - GameCanvas.field_165[var13][var19], 6, 6) >= 0) {
                   this.method_104();
                   return;
                }
@@ -1853,29 +1854,29 @@ public final class class_2 extends class_1 {
       }
 
       int var6;
-      if ((var6 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[7], var2, 12)) >= 0) {
+      if ((var6 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[7], var2, 12)) >= 0) {
          if (var6 == 0) {
-            class_1.field_116[1] = super.field_199[3] - 12 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - 12 << 8;
             this.method_138(super.field_199[2], var2);
             this.method_107(super.field_199[22]);
             if (super.field_199[3] - 24 < super.field_199[9]) {
                this.method_139();
             }
          } else if (var6 == 1) {
-            class_1.field_116[0] = super.field_199[2] - var2 - 12 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - var2 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var6 == 2) {
-            class_1.field_116[0] = super.field_199[2] + var2 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + var2 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          } else if (var6 == 3) {
             this.method_139();
-            class_1.field_116[1] = super.field_199[3] + 12 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + 12 + 12 + 12 + 1 << 8;
          }
       }
 
@@ -1883,7 +1884,7 @@ public final class class_2 extends class_1 {
          super.field_203 = false;
       }
 
-      if (super.field_199[4] != 35 && class_1.method_136(super.field_199[2], super.field_199[3] + 32, super.field_199[2], super.field_199[7] + 32, 40, 14) >= 0) {
+      if (super.field_199[4] != 35 && GameCanvas.method_136(super.field_199[2], super.field_199[3] + 32, super.field_199[2], super.field_199[7] + 32, 40, 14) >= 0) {
          this.method_104();
       }
 
@@ -1971,7 +1972,7 @@ public final class class_2 extends class_1 {
 
       boolean var4 = false;
       int var5;
-      if ((var5 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[15], super.field_199[7], var1, var2)) >= 0) {
+      if ((var5 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[15], super.field_199[7], var1, var2)) >= 0) {
          if (super.field_199[4] != 82 && super.field_199[4] != 18 && super.field_199[4] != 16) {
             if (var5 == 0 && super.field_199[19] == 0 || var5 == 3 && super.field_199[19] != 0) {
                this.method_104();
@@ -1983,36 +1984,36 @@ public final class class_2 extends class_1 {
          }
 
          if (var5 == 0) {
-            class_1.field_116[1] = super.field_199[3] - var2 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - var2 << 8;
             this.method_138(super.field_199[2], var1);
             this.method_107(super.field_199[22]);
-            if (this.method_60(class_1.method_102(), class_1.method_103() - 32)) {
-               if (class_1.field_116[12] == 0) {
-                  class_1.field_116[0] = super.field_199[2] - var1 - 12 << 8;
+            if (this.method_60(GameCanvas.method_102(), GameCanvas.method_103() - 32)) {
+               if (GameCanvas.field_116[12] == 0) {
+                  GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 << 8;
                } else {
-                  class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+                  GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
                }
             }
          } else if (var5 == 1) {
-            class_1.field_116[0] = super.field_199[2] - var1 - 12 << 8;
-            class_1.field_116[10] = 0;
-            if (!var4 && super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (!var4 && super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var5 == 2) {
-            class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (var4 && super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (var4 && super.pressedKeys[3]) {
                this.method_72();
             }
          } else if (var5 == 3) {
-            class_1.field_116[1] = super.field_199[3] + var2 + 12 + 12 + 1 << 8;
-            if (class_1.field_116[5] < 0) {
-               class_1.field_116[5] = 0;
+            GameCanvas.field_116[1] = super.field_199[3] + var2 + 12 + 12 + 1 << 8;
+            if (GameCanvas.field_116[5] < 0) {
+               GameCanvas.field_116[5] = 0;
             }
 
             if (super.field_221 == 0) {
-               int[] var10000 = class_1.field_116;
+               int[] var10000 = GameCanvas.field_116;
                var10000[1] += 4096;
             }
          }
@@ -2052,21 +2053,21 @@ public final class class_2 extends class_1 {
 
       int var7;
       for(var7 = 0; var7 < 4; ++var7) {
-         if (super.field_199[8] == class_1.field_147[var7] && super.field_199[9] == class_1.field_148[var7]) {
+         if (super.field_199[8] == GameCanvas.field_147[var7] && super.field_199[9] == GameCanvas.field_148[var7]) {
             var5 = var7;
             break;
          }
       }
 
-      if (super.field_199[5] == 0 && var5 != -1 && super.field_199[10] == 0 && Math.abs(super.field_199[2] - class_1.field_149[var5]) <= 16 && Math.abs(super.field_199[3] - class_1.field_150[var5]) <= 16) {
+      if (super.field_199[5] == 0 && var5 != -1 && super.field_199[10] == 0 && Math.abs(super.field_199[2] - GameCanvas.field_149[var5]) <= 16 && Math.abs(super.field_199[3] - GameCanvas.field_150[var5]) <= 16) {
          super.field_199[10] = 1;
       }
 
-      if (super.field_199[17] == 0 && super.field_199[10] > 0 && super.field_199[3] < class_1.field_150[var5]) {
+      if (super.field_199[17] == 0 && super.field_199[10] > 0 && super.field_199[3] < GameCanvas.field_150[var5]) {
          var10000 = super.field_199;
          var10000[3] += 2;
-         if (super.field_199[3] > class_1.field_150[var5]) {
-            super.field_199[3] = class_1.field_150[var5];
+         if (super.field_199[3] > GameCanvas.field_150[var5]) {
+            super.field_199[3] = GameCanvas.field_150[var5];
          }
       }
 
@@ -2076,21 +2077,21 @@ public final class class_2 extends class_1 {
             var10002 = super.field_199[10]++;
          } else if (super.field_199[10] == 15) {
             var10000 = super.field_199;
-            var10000[2] += class_1.field_151[var5];
+            var10000[2] += GameCanvas.field_151[var5];
          } else if (super.field_199[10] >= 16) {
             var10002 = super.field_199[10]++;
             if (super.field_199[10] >= 46 && super.field_199[10] - 48 <= 96 && super.field_199[10] % 2 == 0) {
                var10002 = super.field_199[3]++;
             }
          }
-      } else if (class_1.field_151[var5] < 0) {
+      } else if (GameCanvas.field_151[var5] < 0) {
          if (super.field_199[18] < super.field_199[2]) {
             var10000 = super.field_199;
-            var10000[2] += class_1.field_151[var5];
+            var10000[2] += GameCanvas.field_151[var5];
          }
       } else if (super.field_199[18] > super.field_199[2]) {
          var10000 = super.field_199;
-         var10000[2] += class_1.field_151[var5];
+         var10000[2] += GameCanvas.field_151[var5];
       }
 
       super.field_199[17] = 0;
@@ -2143,33 +2144,33 @@ public final class class_2 extends class_1 {
 
       var10 -= super.field_199[2];
       int var11;
-      if ((var11 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[15], super.field_199[16], var1, 16)) >= 0) {
+      if ((var11 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[15], super.field_199[16], var1, 16)) >= 0) {
          if (var11 == 0) {
             boolean var13 = false;
-            if ((var7 = class_1.method_136(super.field_199[2], super.field_199[3] - 16, super.field_199[15], super.field_199[16] - 16, var1, 2)) == 1) {
-               if ((super.field_30[4] && super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0) && super.field_199[10] == 0) {
+            if ((var7 = GameCanvas.method_136(super.field_199[2], super.field_199[3] - 16, super.field_199[15], super.field_199[16] - 16, var1, 2)) == 1) {
+               if ((super.pressedKeys[4] && super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0) && super.field_199[10] == 0) {
                   var10002 = super.field_199[2]++;
                   if (this.method_62(super.field_199[2] + var1, super.field_199[3] - 16)) {
                      var10002 = super.field_199[2]--;
                   }
                }
-            } else if (var7 == 2 && (super.field_30[3] && super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0) && super.field_199[10] == 0) {
+            } else if (var7 == 2 && (super.pressedKeys[3] && super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0) && super.field_199[10] == 0) {
                var10002 = super.field_199[2]--;
                if (this.method_62(super.field_199[2] - var1, super.field_199[3] - 16)) {
                   var10002 = super.field_199[2]++;
                }
             }
 
-            class_1.field_116[1] = super.field_199[3] - 16 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - 16 << 8;
             this.method_138(super.field_199[2], var1);
             this.method_107(super.field_199[22]);
             var6 = true;
-            var10000 = class_1.field_116;
+            var10000 = GameCanvas.field_116;
             var10000[0] -= var10 << 8;
          }
 
          if (var11 == 1) {
-            if (super.field_30[4] && (super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0)) {
+            if (super.pressedKeys[4] && (super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0)) {
                if (super.field_199[10] == 0) {
                   var10002 = super.field_199[2]++;
                   super.field_199[7] = 1;
@@ -2185,12 +2186,12 @@ public final class class_2 extends class_1 {
                this.method_72();
             }
 
-            class_1.field_116[0] = super.field_199[2] - var1 - 12 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
          }
 
          if (var11 == 2) {
-            if (super.field_30[3] && (super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0)) {
+            if (super.pressedKeys[3] && (super.field_199[5] == 0 || super.field_199[4] == 129 || super.field_199[4] == 0)) {
                if (super.field_199[10] == 0) {
                   var10002 = super.field_199[2]--;
                   super.field_199[7] = -1;
@@ -2202,12 +2203,12 @@ public final class class_2 extends class_1 {
                this.method_72();
             }
 
-            class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
          }
 
          if (var11 == 3) {
-            class_1.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
             this.method_139();
          }
       }
@@ -2233,12 +2234,12 @@ public final class class_2 extends class_1 {
       int[] var10000;
       if (super.field_199[4] != 2 && super.field_199[4] != 10) {
          if (super.field_199[4] == 1) {
-            super.field_199[3] = super.field_199[9] + (class_1.method_5(super.field_199[5]) << 3) / 100 - 8;
+            super.field_199[3] = super.field_199[9] + (GameCanvas.method_5(super.field_199[5]) << 3) / 100 - 8;
             var10000 = super.field_199;
             var10000[5] += 6;
          }
       } else if (super.field_199[5] == 2) {
-         super.field_199[3] = super.field_199[11] + class_1.method_5(super.field_33) * 6 / 100 + 6;
+         super.field_199[3] = super.field_199[11] + GameCanvas.method_5(super.field_33) * 6 / 100 + 6;
       } else if (super.field_199[5] == 1) {
          int var10002 = super.field_199[10]++;
          var10000 = super.field_199;
@@ -2254,43 +2255,43 @@ public final class class_2 extends class_1 {
             var10000[3] -= (super.field_199[3] + 16) % 16;
             super.field_199[11] = super.field_199[3];
          }
-      } else if (super.field_199[3] < class_1.method_103() && super.field_199[2] - 100 < class_1.method_102()) {
+      } else if (super.field_199[3] < GameCanvas.method_103() && super.field_199[2] - 100 < GameCanvas.method_102()) {
          super.field_199[10] = 1;
          super.field_199[5] = 1;
       }
 
       int var3;
-      if ((var3 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 16, 16)) >= 0) {
+      if ((var3 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 16, 16)) >= 0) {
          if (var3 == 0) {
-            class_1.field_116[1] = super.field_199[3] - 16 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - 16 << 8;
             this.method_138(super.field_199[2], 16);
             this.method_107(super.field_199[22]);
          } else if (var3 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 16 - 12 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - 16 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var3 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          } else if (var3 == 3) {
-            class_1.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
             this.method_139();
          } else if (var3 == 4 && super.field_205 != super.field_199[20]) {
-            if (class_1.method_102() < super.field_199[2]) {
-               class_1.field_116[0] = super.field_199[2] - 16 - 12 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[4]) {
+            if (GameCanvas.method_102() < super.field_199[2]) {
+               GameCanvas.field_116[0] = super.field_199[2] - 16 - 12 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[4]) {
                   this.method_72();
                }
             } else {
-               class_1.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[3]) {
+               GameCanvas.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[3]) {
                   this.method_72();
                }
             }
@@ -2377,7 +2378,7 @@ public final class class_2 extends class_1 {
          }
       } else if (super.field_199[4] == 65) {
          var6 = super.field_199[2];
-         super.field_199[2] = super.field_199[8] + class_1.method_5(super.field_33) * 48 / 100 - 32 - 48;
+         super.field_199[2] = super.field_199[8] + GameCanvas.method_5(super.field_33) * 48 / 100 - 32 - 48;
          super.field_199[3] = super.field_199[9] + 8;
          var3 = 32;
          var1 = 47;
@@ -2420,25 +2421,25 @@ public final class class_2 extends class_1 {
       }
 
       int var8 = -1;
-      if ((super.field_199[4] != 7 && super.field_199[4] != 4 || super.field_199[5] != 0) && (var8 = class_1.method_136(super.field_199[2] + var3, super.field_199[3] + 0, super.field_199[6] + var3, super.field_199[7] + 0, var1, var2)) >= 0 && var8 == 0) {
-         class_1.field_116[1] = super.field_199[3] - var2 + 0 << 8;
+      if ((super.field_199[4] != 7 && super.field_199[4] != 4 || super.field_199[5] != 0) && (var8 = GameCanvas.method_136(super.field_199[2] + var3, super.field_199[3] + 0, super.field_199[6] + var3, super.field_199[7] + 0, var1, var2)) >= 0 && var8 == 0) {
+         GameCanvas.field_116[1] = super.field_199[3] - var2 + 0 << 8;
          if (super.field_199[4] == 2 || super.field_199[4] == 1 || super.field_199[4] == 65) {
             if (super.field_199[10] == 0) {
                super.field_199[10] = 1;
                super.field_199[11] = super.field_33;
             }
 
-            var10000 = class_1.field_116;
+            var10000 = GameCanvas.field_116;
             var10000[0] -= var6 << 8;
          }
 
          if (super.field_199[4] == 57) {
-            if (super.field_199[2] + var3 - var1 <= class_1.method_102() && class_1.method_102() <= super.field_199[2] + var3 + var1 && super.field_199[10] == 0) {
+            if (super.field_199[2] + var3 - var1 <= GameCanvas.method_102() && GameCanvas.method_102() <= super.field_199[2] + var3 + var1 && super.field_199[10] == 0) {
                super.field_199[10] = 1;
                super.field_199[11] = super.field_33;
             }
 
-            var10000 = class_1.field_116;
+            var10000 = GameCanvas.field_116;
             var10000[0] -= var6 << 8;
          }
 
@@ -2447,7 +2448,7 @@ public final class class_2 extends class_1 {
                super.field_199[10] = 1;
             }
 
-            var10000 = class_1.field_116;
+            var10000 = GameCanvas.field_116;
             var10000[0] -= var6 << 8;
          }
 
@@ -2471,7 +2472,7 @@ public final class class_2 extends class_1 {
    private void method_296() {
       int var1 = super.field_199[2];
       if (super.field_199[5] == 0) {
-         if (super.field_199[2] + 160 < class_1.method_102() && Math.abs(super.field_199[3] - class_1.method_103() + 12) < 43) {
+         if (super.field_199[2] + 160 < GameCanvas.method_102() && Math.abs(super.field_199[3] - GameCanvas.method_103() + 12) < 43) {
             int var10002 = super.field_199[5]++;
          }
       } else {
@@ -2484,15 +2485,15 @@ public final class class_2 extends class_1 {
          super.field_199[2] = super.field_199[5] + super.field_199[8];
       }
 
-      if (super.field_199[2] + 96 > class_1.method_102() && Math.abs(super.field_199[3] - class_1.method_103() + 12) < 43) {
+      if (super.field_199[2] + 96 > GameCanvas.method_102() && Math.abs(super.field_199[3] - GameCanvas.method_103() + 12) < 43) {
          this.method_104();
-         if (super.field_199[5] > 0 && class_1.method_102() + 300 < super.field_199[2]) {
-            super.field_199[2] = class_1.method_102() + 300;
+         if (super.field_199[5] > 0 && GameCanvas.method_102() + 300 < super.field_199[2]) {
+            super.field_199[2] = GameCanvas.method_102() + 300;
          }
       }
 
       int var4;
-      if ((var4 = class_1.method_136(super.field_199[2] - 96, super.field_199[3], var1 - 96, super.field_199[3], 120, 32)) >= 0) {
+      if ((var4 = GameCanvas.method_136(super.field_199[2] - 96, super.field_199[3], var1 - 96, super.field_199[3], 120, 32)) >= 0) {
          if (var4 == 0) {
             return;
          }
@@ -2502,14 +2503,14 @@ public final class class_2 extends class_1 {
          }
 
          if (var4 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 120 - 96 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] + 120 - 96 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
             return;
          }
 
          if (var4 == 3) {
-            class_1.field_116[1] = super.field_199[3] + 32 + 12 + 12 + 1 << 8;
-            class_1.field_116[5] = 0;
+            GameCanvas.field_116[1] = super.field_199[3] + 32 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[5] = 0;
             this.method_139();
          }
       }
@@ -2525,12 +2526,12 @@ public final class class_2 extends class_1 {
 
       super.field_199[2] = super.field_199[8];
       super.field_199[3] = super.field_199[9] - 356 + (super.field_199[5] << 3);
-      if (Math.abs(class_1.method_102() - super.field_199[2]) < 44) {
+      if (Math.abs(GameCanvas.method_102() - super.field_199[2]) < 44) {
          if (super.field_199[3] < super.field_199[9]) {
-            if (super.field_199[3] - 240 < class_1.method_103() && super.field_199[3] > class_1.method_103() - 12) {
+            if (super.field_199[3] - 240 < GameCanvas.method_103() && super.field_199[3] > GameCanvas.method_103() - 12) {
                this.method_104();
             }
-         } else if (super.field_199[3] - 240 < class_1.method_103() && super.field_199[9] > class_1.method_103() - 12) {
+         } else if (super.field_199[3] - 240 < GameCanvas.method_103() && super.field_199[9] > GameCanvas.method_103() - 12) {
             this.method_104();
          }
       }
@@ -2555,23 +2556,23 @@ public final class class_2 extends class_1 {
 
       super.field_204[super.field_199[4]] = false;
       int var3;
-      if ((var3 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 14, var2)) >= 0) {
+      if ((var3 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 14, var2)) >= 0) {
          if (var3 == 0) {
-            class_1.field_116[1] = super.field_199[3] - var2 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - var2 << 8;
             super.field_204[super.field_199[4]] = true;
             super.field_152[super.field_199[4]] = true;
             this.method_138(super.field_199[2], 14);
             this.method_107(super.field_199[22]);
          } else if (var3 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 14 - 12 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - 14 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var3 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 14 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + 14 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          }
@@ -2666,9 +2667,9 @@ public final class class_2 extends class_1 {
          var11 = super.field_199[18] >> 8;
          super.field_199[3] = super.field_199[9] + var11;
       } else if (super.field_199[4] != 7) {
-         var11 = class_1.method_5(var5) * var7 / 100;
+         var11 = GameCanvas.method_5(var5) * var7 / 100;
          super.field_199[3] = super.field_199[9] + var11;
-         int var10 = class_1.method_5(var5) * var6 / 100;
+         int var10 = GameCanvas.method_5(var5) * var6 / 100;
          super.field_199[2] = super.field_199[8] + var10;
       }
 
@@ -2681,9 +2682,9 @@ public final class class_2 extends class_1 {
       boolean var9 = false;
       var8 -= super.field_199[2];
       int var12;
-      if ((var12 = class_1.method_136(super.field_199[2], super.field_199[3] + super.field_199[14] + 32, super.field_199[11], super.field_199[7] + 32, 32, 8)) >= 0 && var12 == 0) {
-         class_1.field_116[0] = class_1.method_102() - var8 << 8;
-         class_1.field_116[1] = super.field_199[3] - var2 + super.field_199[14] << 8;
+      if ((var12 = GameCanvas.method_136(super.field_199[2], super.field_199[3] + super.field_199[14] + 32, super.field_199[11], super.field_199[7] + 32, 32, 8)) >= 0 && var12 == 0) {
+         GameCanvas.field_116[0] = GameCanvas.method_102() - var8 << 8;
+         GameCanvas.field_116[1] = super.field_199[3] - var2 + super.field_199[14] << 8;
          if (super.field_199[4] == 3 && var5 == 0) {
             super.field_199[5] = 1;
          }
@@ -2697,9 +2698,9 @@ public final class class_2 extends class_1 {
          super.field_203 = false;
       }
 
-      if ((var12 = class_1.method_136(super.field_199[2], super.field_199[3] + super.field_199[14] - 4, super.field_199[11], super.field_199[7] - 4, 32, 4)) >= 0 && var12 != 3) {
-         class_1.field_116[0] = class_1.method_102() - var8 << 8;
-         class_1.field_116[1] = super.field_199[3] - var2 + super.field_199[14] << 8;
+      if ((var12 = GameCanvas.method_136(super.field_199[2], super.field_199[3] + super.field_199[14] - 4, super.field_199[11], super.field_199[7] - 4, 32, 4)) >= 0 && var12 != 3) {
+         GameCanvas.field_116[0] = GameCanvas.method_102() - var8 << 8;
+         GameCanvas.field_116[1] = super.field_199[3] - var2 + super.field_199[14] << 8;
          if (super.field_199[4] == 3 && var5 == 0) {
             super.field_199[5] = 1;
          }
@@ -2727,7 +2728,7 @@ public final class class_2 extends class_1 {
       super.field_199[7] = super.field_199[3];
 
       for(int var1 = 0; var1 < 2; ++var1) {
-         if (super.field_199[10 + var1] != 1 && (var4 = class_1.method_136(super.field_199[2] - 8 + (var1 << 4), super.field_199[3], super.field_199[6] - 8 + (var1 << 4), super.field_199[7], 8, 32)) >= 0) {
+         if (super.field_199[10 + var1] != 1 && (var4 = GameCanvas.method_136(super.field_199[2] - 8 + (var1 << 4), super.field_199[3], super.field_199[6] - 8 + (var1 << 4), super.field_199[7], 8, 32)) >= 0) {
             byte var6 = -1;
             if (var4 == 1) {
                var6 = 1;
@@ -2735,12 +2736,12 @@ public final class class_2 extends class_1 {
 
             if (var4 != 1 && var4 != 2) {
                if (var4 == 3) {
-                  class_1.field_116[1] = super.field_199[3] + 32 + 12 + 12 + 1 << 8;
+                  GameCanvas.field_116[1] = super.field_199[3] + 32 + 12 + 12 + 1 << 8;
                   this.method_139();
                }
             } else {
-               if (Math.abs(class_1.field_116[10]) >= 300 && !class_1.field_122 && class_1.field_124) {
-                  int[] var10000 = class_1.field_116;
+               if (Math.abs(GameCanvas.field_116[10]) >= 300 && !GameCanvas.field_122 && GameCanvas.field_124) {
+                  int[] var10000 = GameCanvas.field_116;
                   var10000[10] -= 10 * var6;
                   super.field_199[10 + var1] = 1;
                   int var7 = 0;
@@ -2755,21 +2756,21 @@ public final class class_2 extends class_1 {
                   this.method_200(var8, super.field_199[2] - 8 + (var1 << 4), super.field_199[3] - 16 - 16 + 32, 40 * var6 + 360, 400, var7);
                   this.method_200(var8, super.field_199[2] - 8 + (var1 << 4), super.field_199[3] - 16 - 16 + 48, 50 * var6 + 360, 400, var7);
                } else {
-                  class_1.field_116[10] = 0;
+                  GameCanvas.field_116[10] = 0;
                }
 
-               if (class_1.field_116[10] == 0) {
+               if (GameCanvas.field_116[10] == 0) {
                   if (var6 == 1) {
-                     class_1.field_116[0] = super.field_199[2] - 8 - 12 - 8 + (var1 << 4) << 8;
+                     GameCanvas.field_116[0] = super.field_199[2] - 8 - 12 - 8 + (var1 << 4) << 8;
                   } else {
-                     class_1.field_116[0] = super.field_199[2] + 8 + 12 + 1 - 8 + (var1 << 4) << 8;
+                     GameCanvas.field_116[0] = super.field_199[2] + 8 + 12 + 1 - 8 + (var1 << 4) << 8;
                   }
 
                   if (var6 == 1) {
-                     if (super.field_30[4]) {
+                     if (super.pressedKeys[4]) {
                         this.method_72();
                      }
-                  } else if (super.field_30[3]) {
+                  } else if (super.pressedKeys[3]) {
                      this.method_72();
                   }
                }
@@ -2797,21 +2798,21 @@ public final class class_2 extends class_1 {
       super.field_199[7] = super.field_199[3];
 
       for(int var1 = 0; var1 < 8; ++var1) {
-         if (super.field_199[15] != 0 && (var4 = super.field_33 - super.field_199[16] - class_1.field_154[var1]) < 0) {
+         if (super.field_199[15] != 0 && (var4 = super.field_33 - super.field_199[16] - GameCanvas.field_154[var1]) < 0) {
             var4 = 0;
          }
 
-         int var7 = class_1.field_153[var1];
+         int var7 = GameCanvas.field_153[var1];
          if (var4 != 0) {
             var5 = -1;
          } else {
-            var5 = class_1.method_137(class_1.method_102(), class_1.method_103() - 12, class_1.field_95[0], class_1.field_95[1] - 12, 12, 12, super.field_199[2] + ((var7 % 4 << 4) - 16 - 8), super.field_199[3] + (var7 >> 2 << 4), super.field_199[6] + ((var7 % 4 << 4) - 16 - 8), super.field_199[7] + (var7 >> 2 << 4), 8, 8);
+            var5 = GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - 12, GameCanvas.field_95[0], GameCanvas.field_95[1] - 12, 12, 12, super.field_199[2] + ((var7 % 4 << 4) - 16 - 8), super.field_199[3] + (var7 >> 2 << 4), super.field_199[6] + ((var7 % 4 << 4) - 16 - 8), super.field_199[7] + (var7 >> 2 << 4), 8, 8);
          }
 
          if (var5 >= 0) {
             if (var5 == 0) {
                var6 = true;
-               class_1.field_116[1] = super.field_199[3] + (var7 >> 2 << 4) + var4 * 5 - 8 << 8;
+               GameCanvas.field_116[1] = super.field_199[3] + (var7 >> 2 << 4) + var4 * 5 - 8 << 8;
                this.method_138(super.field_199[2] + ((var7 % 4 << 4) - 16 - 8), 8);
                this.method_107(super.field_199[22]);
                if (super.field_199[15] == 0) {
@@ -2820,15 +2821,15 @@ public final class class_2 extends class_1 {
 
                super.field_199[15] = 1;
             } else if (var5 == 1) {
-               class_1.field_116[0] = super.field_199[2] + ((var7 % 4 << 4) - 16 - 8) - 8 - 12 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[4]) {
+               GameCanvas.field_116[0] = super.field_199[2] + ((var7 % 4 << 4) - 16 - 8) - 8 - 12 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[4]) {
                   this.method_72();
                }
             } else if (var5 == 2) {
-               class_1.field_116[0] = super.field_199[2] + ((var7 % 4 << 4) - 16 - 8) + 8 + 12 + 1 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[3]) {
+               GameCanvas.field_116[0] = super.field_199[2] + ((var7 % 4 << 4) - 16 - 8) + 8 + 12 + 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[3]) {
                   this.method_72();
                }
             }
@@ -2848,14 +2849,14 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: az () void
    private void method_303() {
       int var3;
-      if ((var3 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 14, 14)) >= 0) {
+      if ((var3 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 14, 14)) >= 0) {
          if (var3 == 0) {
-            if (class_1.field_124) {
+            if (GameCanvas.field_124) {
                super.field_199[0] = 0;
-               class_1.field_122 = true;
-               class_1.field_118 = false;
-               class_1.field_124 = true;
-               class_1.field_116[5] = -1280;
+               GameCanvas.field_122 = true;
+               GameCanvas.field_118 = false;
+               GameCanvas.field_124 = true;
+               GameCanvas.field_116[5] = -1280;
                if (super.field_297 == 0) {
                   super.field_297 = 100;
                } else if (super.field_297 == 100) {
@@ -2872,31 +2873,31 @@ public final class class_2 extends class_1 {
                this.method_200(22, super.field_199[2] - 8, super.field_199[3] - 16, 300, 400, 1);
                this.method_200(22, super.field_199[2] - 8, super.field_199[3] - 16, 390, 400, 2);
                this.method_200(22, super.field_199[2] - 8, super.field_199[3] - 16, 420, 400, 3);
-               class_1.field_116[1] = super.field_199[3] - 14 << 8;
+               GameCanvas.field_116[1] = super.field_199[3] - 14 << 8;
             } else {
-               class_1.field_116[1] = super.field_199[3] - 14 << 8;
-               if (class_1.field_100 != 0) {
-                  class_1.field_116[0] = class_1.method_102() + class_1.method_5(class_1.field_100 + 90) * 24 / 100 << 8;
-                  class_1.field_100 = 0;
+               GameCanvas.field_116[1] = super.field_199[3] - 14 << 8;
+               if (GameCanvas.field_100 != 0) {
+                  GameCanvas.field_116[0] = GameCanvas.method_102() + GameCanvas.method_5(GameCanvas.field_100 + 90) * 24 / 100 << 8;
+                  GameCanvas.field_100 = 0;
                }
 
                this.method_138(super.field_199[2], 14);
                this.method_107(super.field_199[22]);
             }
          } else if (var3 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 14 - 12 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - 14 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var3 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 14 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + 14 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          } else if (var3 == 3) {
-            class_1.field_116[1] = super.field_199[3] + 14 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + 14 + 12 + 12 + 1 << 8;
             this.method_139();
          }
       }
@@ -2920,10 +2921,10 @@ public final class class_2 extends class_1 {
          }
       }
 
-      if (class_1.method_136(super.field_199[2], super.field_199[3] - 12, super.field_199[2], super.field_199[3] - 12, 8, 32) >= 0 && super.field_199[5] == 0) {
+      if (GameCanvas.method_136(super.field_199[2], super.field_199[3] - 12, super.field_199[2], super.field_199[3] - 12, 8, 32) >= 0 && super.field_199[5] == 0) {
          super.field_199[5] = 1;
-         super.field_112 = class_1.method_102();
-         super.field_113 = class_1.method_103();
+         super.field_112 = GameCanvas.method_102();
+         super.field_113 = GameCanvas.method_103();
          super.field_114 = super.field_108;
          super.field_115 = super.field_109;
       }
@@ -2934,21 +2935,21 @@ public final class class_2 extends class_1 {
    private void method_305() {
       if (super.field_199[4] < 16) {
          int var3;
-         if ((var3 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 8, 32)) >= 0) {
+         if ((var3 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 8, 32)) >= 0) {
             if (var3 == 1) {
-               class_1.field_116[0] = super.field_199[2] - 8 - 12 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[4]) {
+               GameCanvas.field_116[0] = super.field_199[2] - 8 - 12 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[4]) {
                   this.method_72();
                }
             } else if (var3 == 2) {
-               class_1.field_116[0] = super.field_199[2] + 8 + 12 + 1 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[3]) {
+               GameCanvas.field_116[0] = super.field_199[2] + 8 + 12 + 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[3]) {
                   this.method_72();
                }
             } else if (var3 == 3) {
-               class_1.field_116[1] = super.field_199[3] + 32 + 12 + 12 + 1 << 8;
+               GameCanvas.field_116[1] = super.field_199[3] + 32 + 12 + 12 + 1 << 8;
                this.method_139();
             }
          }
@@ -2992,7 +2993,7 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_199[4] != 0) {
-         var5 = class_1.method_140(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 16, 16);
+         var5 = GameCanvas.method_140(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 16, 16);
          if (super.field_199[5] != 0) {
             super.field_199[7] = (super.field_32 - super.field_199[13]) * 2;
             if (super.field_199[7] > 60) {
@@ -3001,33 +3002,33 @@ public final class class_2 extends class_1 {
          }
 
          if (var5 >= 0) {
-            if (class_1.field_124 && var5 != 3 || !class_1.field_122 && class_1.field_124 && var5 == 3) {
-               class_1.field_116[5] = -768;
+            if (GameCanvas.field_124 && var5 != 3 || !GameCanvas.field_122 && GameCanvas.field_124 && var5 == 3) {
+               GameCanvas.field_116[5] = -768;
                this.method_199(1, super.field_199[2], super.field_199[3], 0, 0, 0, 0);
                super.field_199[5] = super.field_199[4];
                super.field_199[13] = super.field_32;
                this.method_135(super.field_199[4]);
                super.field_199[4] = 0;
             } else if (var5 == 0) {
-               class_1.field_116[1] = super.field_199[3] - 16 << 8;
+               GameCanvas.field_116[1] = super.field_199[3] - 16 << 8;
                this.method_138(super.field_199[2], 16);
                this.method_107(super.field_199[22]);
             } else if (var5 == 1) {
-               class_1.field_116[0] = super.field_199[2] - 16 - 12 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[4]) {
+               GameCanvas.field_116[0] = super.field_199[2] - 16 - 12 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[4]) {
                   this.method_72();
                }
             } else if (var5 == 2) {
-               class_1.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[3]) {
+               GameCanvas.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[3]) {
                   this.method_72();
                }
             } else if (var5 == 3) {
-               class_1.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
-               if (class_1.field_116[5] < 0) {
-                  var10000 = class_1.field_116;
+               GameCanvas.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
+               if (GameCanvas.field_116[5] < 0) {
+                  var10000 = GameCanvas.field_116;
                   var10000[5] *= -1;
                }
 
@@ -3038,11 +3039,11 @@ public final class class_2 extends class_1 {
                }
 
                super.field_199[12] = 1;
-               if (!class_1.field_122) {
-                  if (class_1.method_102() < super.field_199[2]) {
-                     class_1.field_116[0] = class_1.method_102() - 5 << 8;
+               if (!GameCanvas.field_122) {
+                  if (GameCanvas.method_102() < super.field_199[2]) {
+                     GameCanvas.field_116[0] = GameCanvas.method_102() - 5 << 8;
                   } else {
-                     class_1.field_116[0] = class_1.method_102() + 5 << 8;
+                     GameCanvas.field_116[0] = GameCanvas.method_102() + 5 << 8;
                   }
                }
             }
@@ -3067,7 +3068,7 @@ public final class class_2 extends class_1 {
             this.method_41();
             return;
          }
-      } else if (super.field_199[5] == 0 && class_1.method_102() > super.field_199[2] - 3 && super.field_199[3] + 48 > class_1.method_103()) {
+      } else if (super.field_199[5] == 0 && GameCanvas.method_102() > super.field_199[2] - 3 && super.field_199[3] + 48 > GameCanvas.method_103()) {
          super.field_199[5] = 1;
          super.field_199[10] = 0;
          super.field_155 = true;
@@ -3080,10 +3081,10 @@ public final class class_2 extends class_1 {
       super.field_199[6] = super.field_199[2];
       super.field_199[7] = super.field_199[3];
       if (super.field_199[5] == 0) {
-         if (class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 12, 12) >= 0) {
+         if (GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 12, 12) >= 0) {
             super.field_199[5] = 1;
             super.field_199[11] = 0;
-            this.method_35(class_1.field_156[super.field_199[4]], true);
+            this.method_35(GameCanvas.field_156[super.field_199[4]], true);
             return;
          }
       } else if (super.field_199[5] == 1) {
@@ -3103,15 +3104,15 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: aG () void
    private void method_310() {
       int var3;
-      if ((var3 = class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 16, 16)) >= 0 && var3 != 0) {
+      if ((var3 = GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 16, 16)) >= 0 && var3 != 0) {
          if (var3 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 16 - 12 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] - 16 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
          } else if (var3 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
+            GameCanvas.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
          } else if (var3 == 3) {
-            class_1.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
             this.method_139();
          }
       }
@@ -3136,9 +3137,9 @@ public final class class_2 extends class_1 {
       super.field_199[6] = super.field_199[2];
       super.field_199[7] = super.field_199[3];
       int var4;
-      if ((var4 = class_1.method_136(super.field_199[2], super.field_199[3] + var3, super.field_199[6], super.field_199[7] + var3, var1, var2)) >= 0) {
+      if ((var4 = GameCanvas.method_136(super.field_199[2], super.field_199[3] + var3, super.field_199[6], super.field_199[7] + var3, var1, var2)) >= 0) {
          if (var4 == 0) {
-            class_1.field_116[1] = super.field_199[3] - var2 + var3 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - var2 + var3 << 8;
             this.method_138(super.field_199[2], var1);
             this.method_107(super.field_199[22]);
             if (super.field_199[4] == 1 && super.field_199[5] == 0) {
@@ -3151,26 +3152,26 @@ public final class class_2 extends class_1 {
             }
          } else if (!super.field_267) {
             if (var4 == 1) {
-               class_1.field_116[0] = super.field_199[2] - var1 - 12 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[4]) {
+               GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[4]) {
                   this.method_72();
                }
             } else if (var4 == 2) {
-               class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[3]) {
+               GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[3]) {
                   this.method_72();
                }
             } else if (var4 == 3) {
-               class_1.field_116[1] = super.field_199[3] + var2 + 12 + 12 + 1 + var3 << 8;
+               GameCanvas.field_116[1] = super.field_199[3] + var2 + 12 + 12 + 1 + var3 << 8;
             }
          }
       }
 
       if (super.field_199[5] == 1) {
-         if ((super.field_33 - super.field_199[10]) % 20 == 0 && class_1.field_157.length > (super.field_33 - super.field_199[10]) / 20) {
-            this.method_199(1, super.field_199[8] + class_1.field_157[(super.field_33 - super.field_199[10]) / 20], super.field_199[9] + class_1.field_158[(super.field_33 - super.field_199[10]) / 20], 0, 0, 0, 0);
+         if ((super.field_33 - super.field_199[10]) % 20 == 0 && GameCanvas.field_157.length > (super.field_33 - super.field_199[10]) / 20) {
+            this.method_199(1, super.field_199[8] + GameCanvas.field_157[(super.field_33 - super.field_199[10]) / 20], super.field_199[9] + GameCanvas.field_158[(super.field_33 - super.field_199[10]) / 20], 0, 0, 0, 0);
          }
 
          if (super.field_33 - super.field_199[10] > 100) {
@@ -3191,39 +3192,39 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: aI () void
    private void method_312() {
-      if (class_1.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 8, 8) >= 0) {
-         int var4 = Math.abs(class_1.method_102() - super.field_199[2]);
-         int var5 = Math.abs(class_1.method_103() - 12 - super.field_199[3]);
+      if (GameCanvas.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 8, 8) >= 0) {
+         int var4 = Math.abs(GameCanvas.method_102() - super.field_199[2]);
+         int var5 = Math.abs(GameCanvas.method_103() - 12 - super.field_199[3]);
          if (super.field_199[10] < 10) {
             this.method_204(super.field_199[2], super.field_199[3], 10);
             this.method_35(10, true);
             int var10002 = super.field_199[10]++;
          }
 
-         if (class_1.method_102() - super.field_199[2] > 0) {
-            class_1.field_116[3] = 1792 * var4 / (var4 + var5);
+         if (GameCanvas.method_102() - super.field_199[2] > 0) {
+            GameCanvas.field_116[3] = 1792 * var4 / (var4 + var5);
          } else {
-            class_1.field_116[3] = -1792 * var4 / (var4 + var5);
+            GameCanvas.field_116[3] = -1792 * var4 / (var4 + var5);
          }
 
-         if (class_1.method_103() - 12 - super.field_199[3] > 0) {
-            class_1.field_116[5] = 2048 * var5 / (var4 + var5);
+         if (GameCanvas.method_103() - 12 - super.field_199[3] > 0) {
+            GameCanvas.field_116[5] = 2048 * var5 / (var4 + var5);
          } else {
-            class_1.field_116[5] = -2048 * var5 / (var4 + var5);
+            GameCanvas.field_116[5] = -2048 * var5 / (var4 + var5);
          }
 
-         if (!class_1.field_122) {
-            class_1.field_116[3] = class_1.field_116[3] * 80 / 100;
-            int[] var10000 = class_1.field_116;
+         if (!GameCanvas.field_122) {
+            GameCanvas.field_116[3] = GameCanvas.field_116[3] * 80 / 100;
+            int[] var10000 = GameCanvas.field_116;
             var10000[5] -= 1024;
          }
 
-         class_1.field_116[10] = 0;
-         class_1.field_116[13] = 0;
-         class_1.field_116[14] = 0;
-         class_1.field_122 = true;
-         class_1.field_118 = false;
-         class_1.field_123 = true;
+         GameCanvas.field_116[10] = 0;
+         GameCanvas.field_116[13] = 0;
+         GameCanvas.field_116[14] = 0;
+         GameCanvas.field_122 = true;
+         GameCanvas.field_118 = false;
+         GameCanvas.field_123 = true;
          super.field_203 = false;
       }
 
@@ -3232,31 +3233,31 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: aJ () void
    private void method_313() {
       int var3;
-      if ((var3 = class_1.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 16, 16)) >= 0) {
+      if ((var3 = GameCanvas.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 16, 16)) >= 0) {
          if (var3 == 0) {
-            class_1.field_116[1] = super.field_199[3] - 16 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - 16 << 8;
             this.method_138(super.field_199[2], 16);
             this.method_107(super.field_199[22]);
          } else if (var3 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 16 - 12 << 8;
-            if (super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - 16 - 12 << 8;
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
 
-            class_1.field_116[10] = 0;
-            class_1.field_116[13] = 0;
-            class_1.field_116[14] = 0;
+            GameCanvas.field_116[10] = 0;
+            GameCanvas.field_116[13] = 0;
+            GameCanvas.field_116[14] = 0;
          } else if (var3 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + 16 + 12 + 1 << 8;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
 
-            class_1.field_116[10] = 0;
-            class_1.field_116[13] = 0;
-            class_1.field_116[14] = 0;
+            GameCanvas.field_116[10] = 0;
+            GameCanvas.field_116[13] = 0;
+            GameCanvas.field_116[14] = 0;
          } else if (var3 == 3) {
-            class_1.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + 16 + 12 + 12 + 1 << 8;
          }
       }
 
@@ -3313,14 +3314,14 @@ public final class class_2 extends class_1 {
       }
 
       byte var7 = 12;
-      if (!class_1.field_124 && !class_1.field_126) {
+      if (!GameCanvas.field_124 && !GameCanvas.field_126) {
          var7 = 20;
       }
 
-      if (class_1.method_136(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 16, 16) >= 0) {
+      if (GameCanvas.method_136(super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], 16, 16) >= 0) {
          this.method_104();
       } else {
-         if (Math.abs(super.field_199[2] - class_1.method_102()) < 28 && Math.abs(super.field_199[3] - (class_1.method_103() - var7)) < var7 + 16) {
+         if (Math.abs(super.field_199[2] - GameCanvas.method_102()) < 28 && Math.abs(super.field_199[3] - (GameCanvas.method_103() - var7)) < var7 + 16) {
             this.method_104();
          }
 
@@ -3334,7 +3335,7 @@ public final class class_2 extends class_1 {
       byte var3 = 0;
       byte var4 = 0;
       byte var5 = 12;
-      if (!class_1.field_124 && !class_1.field_126) {
+      if (!GameCanvas.field_124 && !GameCanvas.field_126) {
          var5 = 20;
       }
 
@@ -3407,7 +3408,7 @@ public final class class_2 extends class_1 {
          if (super.field_221 == 4) {
             var7 = 8;
             var8 = 8;
-            if (class_1.method_137(class_1.method_102(), class_1.method_103() - var5, class_1.field_95[0], class_1.field_95[1] - var5, 12, var5, super.field_199[2] + var9 * super.field_199[16] * 16 / 10000, super.field_199[3] + var9 * super.field_199[17] * 16 / 10000, super.field_199[2] + var9 * super.field_199[14] * 16 / 10000, super.field_199[3] + var9 * super.field_199[15] * 16 / 10000, 6, 6) >= 0) {
+            if (GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - var5, GameCanvas.field_95[0], GameCanvas.field_95[1] - var5, 12, var5, super.field_199[2] + var9 * super.field_199[16] * 16 / 10000, super.field_199[3] + var9 * super.field_199[17] * 16 / 10000, super.field_199[2] + var9 * super.field_199[14] * 16 / 10000, super.field_199[3] + var9 * super.field_199[15] * 16 / 10000, 6, 6) >= 0) {
                this.method_104();
             }
          }
@@ -3415,9 +3416,9 @@ public final class class_2 extends class_1 {
 
       int var12;
       if (super.field_221 == 4) {
-         var12 = class_1.method_137(class_1.method_102(), class_1.method_103() - var5, class_1.field_95[0], class_1.field_95[1] - var5, 12, var5, super.field_199[2] + var3 * super.field_199[16] * (var7 << 1) / 10000, super.field_199[3] + var3 * super.field_199[17] * (var7 << 1) / 10000, super.field_199[2] + var3 * super.field_199[14] * (var7 << 1) / 10000, super.field_199[3] + var3 * super.field_199[15] * (var7 << 1) / 10000, var7 - 2, var8 - 2);
+         var12 = GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - var5, GameCanvas.field_95[0], GameCanvas.field_95[1] - var5, 12, var5, super.field_199[2] + var3 * super.field_199[16] * (var7 << 1) / 10000, super.field_199[3] + var3 * super.field_199[17] * (var7 << 1) / 10000, super.field_199[2] + var3 * super.field_199[14] * (var7 << 1) / 10000, super.field_199[3] + var3 * super.field_199[15] * (var7 << 1) / 10000, var7 - 2, var8 - 2);
       } else {
-         var12 = class_1.method_137(class_1.method_102(), class_1.method_103() - var5, class_1.field_95[0], class_1.field_95[1] - var5, 12, var5, super.field_199[2] + var3 * super.field_199[16] * var7 / 10000, super.field_199[3] + var3 * super.field_199[17] * var7 / 10000, super.field_199[2] + var3 * super.field_199[14] * var7 / 10000, super.field_199[3] + var3 * super.field_199[15] * var7 / 10000, 6, 6);
+         var12 = GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - var5, GameCanvas.field_95[0], GameCanvas.field_95[1] - var5, 12, var5, super.field_199[2] + var3 * super.field_199[16] * var7 / 10000, super.field_199[3] + var3 * super.field_199[17] * var7 / 10000, super.field_199[2] + var3 * super.field_199[14] * var7 / 10000, super.field_199[3] + var3 * super.field_199[15] * var7 / 10000, 6, 6);
       }
 
       if (var12 >= 0) {
@@ -3440,11 +3441,11 @@ public final class class_2 extends class_1 {
       if (super.field_199[4] == 248 && super.field_222 == 2) {
          var9 = 64;
          var2 = 16;
-         if (Math.abs(class_1.method_102() - super.field_199[8]) <= 64 && Math.abs(class_1.method_103() + 12 - (super.field_199[9] - 32 + 8)) <= 32) {
+         if (Math.abs(GameCanvas.method_102() - super.field_199[8]) <= 64 && Math.abs(GameCanvas.method_103() + 12 - (super.field_199[9] - 32 + 8)) <= 32) {
             super.field_152[super.field_199[4] - 240] = true;
          }
 
-         if (Math.abs(class_1.method_102() - super.field_199[8]) <= 64 && Math.abs(class_1.method_103() + 12 - (super.field_199[9] + 48)) <= 32) {
+         if (Math.abs(GameCanvas.method_102() - super.field_199[8]) <= 64 && Math.abs(GameCanvas.method_103() + 12 - (super.field_199[9] + 48)) <= 32) {
             super.field_152[super.field_199[4] - 240] = false;
          }
 
@@ -3551,9 +3552,9 @@ public final class class_2 extends class_1 {
                   }
 
                   if (super.field_199[19] == 0) {
-                     super.field_199[3] = super.field_199[9] + class_1.method_5(super.field_33) * var10 / 100 - var10;
+                     super.field_199[3] = super.field_199[9] + GameCanvas.method_5(super.field_33) * var10 / 100 - var10;
                   } else {
-                     super.field_199[3] = super.field_199[9] - class_1.method_5(super.field_33) * var10 / 100 - var10;
+                     super.field_199[3] = super.field_199[9] - GameCanvas.method_5(super.field_33) * var10 / 100 - var10;
                   }
 
                   var6 = true;
@@ -3565,9 +3566,9 @@ public final class class_2 extends class_1 {
                      var10002 = super.field_199[5]++;
                      var10 = 32 * super.field_199[4];
                      if (super.field_199[19] == 0) {
-                        super.field_199[2] = super.field_199[8] + class_1.method_5(super.field_33) * var10 / 100 - var10;
+                        super.field_199[2] = super.field_199[8] + GameCanvas.method_5(super.field_33) * var10 / 100 - var10;
                      } else {
-                        super.field_199[2] = super.field_199[8] - class_1.method_5(super.field_33) * var10 / 100 - var10;
+                        super.field_199[2] = super.field_199[8] - GameCanvas.method_5(super.field_33) * var10 / 100 - var10;
                      }
                   }
 
@@ -3580,36 +3581,36 @@ public final class class_2 extends class_1 {
                   var10 = 32 * (super.field_199[4] - 88 + 1) - 16;
                   if (super.field_33 % 720 < 180) {
                      if (super.field_199[19] == 0) {
-                        super.field_199[3] = super.field_199[9] - class_1.method_5(90 + super.field_33 % 720) * var10 / 100;
+                        super.field_199[3] = super.field_199[9] - GameCanvas.method_5(90 + super.field_33 % 720) * var10 / 100;
                         super.field_199[2] = super.field_199[8] - 16 + 32 * (super.field_199[4] - 88 + 1);
                      } else {
-                        super.field_199[3] = super.field_199[9] + class_1.method_5(90 + super.field_33 % 720) * var10 / 100;
+                        super.field_199[3] = super.field_199[9] + GameCanvas.method_5(90 + super.field_33 % 720) * var10 / 100;
                         super.field_199[2] = super.field_199[8] + 16 - 32 * (super.field_199[4] - 88 + 1);
                      }
                   } else if (super.field_33 % 720 < 360) {
                      if (super.field_199[19] == 0) {
-                        super.field_199[2] = super.field_199[8] - class_1.method_5(270 - (super.field_33 % 720 - 180)) * var10 / 100;
+                        super.field_199[2] = super.field_199[8] - GameCanvas.method_5(270 - (super.field_33 % 720 - 180)) * var10 / 100;
                         super.field_199[3] = super.field_199[9] - 16 + 32 * (super.field_199[4] - 88 + 1);
                      } else {
-                        super.field_199[2] = super.field_199[8] + class_1.method_5(270 - (super.field_33 % 720 - 180)) * var10 / 100;
+                        super.field_199[2] = super.field_199[8] + GameCanvas.method_5(270 - (super.field_33 % 720 - 180)) * var10 / 100;
                         super.field_199[3] = super.field_199[9] + 16 - 32 * (super.field_199[4] - 88 + 1);
                      }
 
                      var5 = true;
                   } else if (super.field_33 % 720 < 540) {
                      if (super.field_199[19] == 0) {
-                        super.field_199[3] = super.field_199[9] + class_1.method_5(90 + (super.field_33 % 720 - 360)) * var10 / 100;
+                        super.field_199[3] = super.field_199[9] + GameCanvas.method_5(90 + (super.field_33 % 720 - 360)) * var10 / 100;
                         super.field_199[2] = super.field_199[8] + 16 - 32 * (super.field_199[4] - 88 + 1);
                      } else {
-                        super.field_199[3] = super.field_199[9] - class_1.method_5(90 + (super.field_33 % 720 - 360)) * var10 / 100;
+                        super.field_199[3] = super.field_199[9] - GameCanvas.method_5(90 + (super.field_33 % 720 - 360)) * var10 / 100;
                         super.field_199[2] = super.field_199[8] - 16 + 32 * (super.field_199[4] - 88 + 1);
                      }
                   } else if (super.field_33 % 720 < 720) {
                      if (super.field_199[19] == 0) {
-                        super.field_199[2] = super.field_199[8] + class_1.method_5(270 - (super.field_33 % 720 - 540)) * var10 / 100;
+                        super.field_199[2] = super.field_199[8] + GameCanvas.method_5(270 - (super.field_33 % 720 - 540)) * var10 / 100;
                         super.field_199[3] = super.field_199[9] + 16 - 32 * (super.field_199[4] - 88 + 1);
                      } else {
-                        super.field_199[2] = super.field_199[8] - class_1.method_5(270 - (super.field_33 % 720 - 540)) * var10 / 100;
+                        super.field_199[2] = super.field_199[8] - GameCanvas.method_5(270 - (super.field_33 % 720 - 540)) * var10 / 100;
                         super.field_199[3] = super.field_199[9] - 16 + 32 * (super.field_199[4] - 88 + 1);
                      }
 
@@ -3657,65 +3658,65 @@ public final class class_2 extends class_1 {
       }
 
       byte var7 = 12;
-      if (!class_1.field_124 && !class_1.field_126) {
+      if (!GameCanvas.field_124 && !GameCanvas.field_126) {
          var7 = 16;
       }
 
       int var8 = -1;
-      if ((super.field_199[4] != 55 || super.field_199[8] != 7992 || super.field_199[9] != 1353) && (var8 = class_1.method_137(class_1.method_102(), class_1.method_103() - var7, class_1.field_95[0], class_1.field_95[1] - var7, 12, var7, super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], var1, var2)) >= 0) {
+      if ((super.field_199[4] != 55 || super.field_199[8] != 7992 || super.field_199[9] != 1353) && (var8 = GameCanvas.method_137(GameCanvas.method_102(), GameCanvas.method_103() - var7, GameCanvas.field_95[0], GameCanvas.field_95[1] - var7, 12, var7, super.field_199[2], super.field_199[3], super.field_199[6], super.field_199[7], var1, var2)) >= 0) {
          int[] var10000;
          if (var8 == 0) {
-            class_1.field_116[1] = super.field_199[3] - var2 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - var2 << 8;
             this.method_138(super.field_199[2], var1);
             this.method_107(super.field_199[22]);
-            var10000 = class_1.field_116;
+            var10000 = GameCanvas.field_116;
             var10000[0] -= var3 << 8;
          } else if (var8 == 1) {
-            if (!class_1.field_120 || super.field_199[4] != 227) {
-               class_1.field_116[0] = super.field_199[2] - var1 - 12 << 8;
-               class_1.field_116[10] = 0;
-               if (super.field_30[4]) {
+            if (!GameCanvas.field_120 || super.field_199[4] != 227) {
+               GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 << 8;
+               GameCanvas.field_116[10] = 0;
+               if (super.pressedKeys[4]) {
                   this.method_72();
                }
             }
          } else if (var8 == 2) {
-            class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          } else if (var8 == 3) {
-            class_1.field_116[1] = super.field_199[3] + var2 + var7 + var7 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + var2 + var7 + var7 + 1 << 8;
             this.method_139();
          } else if (var8 == 4) {
             if (var5) {
-               if (super.field_199[2] > class_1.method_102()) {
-                  if (!class_1.field_120 || super.field_199[4] != 227) {
-                     class_1.field_116[0] = super.field_199[2] - var1 - 12 << 8;
-                     class_1.field_116[10] = 0;
-                     if (super.field_30[4]) {
+               if (super.field_199[2] > GameCanvas.method_102()) {
+                  if (!GameCanvas.field_120 || super.field_199[4] != 227) {
+                     GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 << 8;
+                     GameCanvas.field_116[10] = 0;
+                     if (super.pressedKeys[4]) {
                         this.method_72();
                      }
                   }
                } else {
-                  class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
-                  class_1.field_116[10] = 0;
-                  if (super.field_30[3]) {
+                  GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+                  GameCanvas.field_116[10] = 0;
+                  if (super.pressedKeys[3]) {
                      this.method_72();
                   }
                }
             }
 
             if (var6) {
-               if (super.field_199[3] > class_1.method_103() - var7) {
-                  class_1.field_116[1] = super.field_199[3] - var2 << 8;
+               if (super.field_199[3] > GameCanvas.method_103() - var7) {
+                  GameCanvas.field_116[1] = super.field_199[3] - var2 << 8;
                   this.method_138(super.field_199[2], var1);
                   this.method_107(super.field_199[22]);
-                  var10000 = class_1.field_116;
+                  var10000 = GameCanvas.field_116;
                   var10000[0] -= var3 << 8;
                   var8 = 0;
                } else {
-                  class_1.field_116[1] = super.field_199[3] + var2 + var7 + var7 + 1 + 8 << 8;
+                  GameCanvas.field_116[1] = super.field_199[3] + var2 + var7 + var7 + 1 + 8 << 8;
                   this.method_139();
                }
             }
@@ -3739,7 +3740,7 @@ public final class class_2 extends class_1 {
          super.field_199[18] = 1;
       }
 
-      if ((super.field_33 - super.field_199[10]) % (var4 * 50) == 0 && super.field_199[2] - class_1.field_225[0] >= -16 && super.field_199[2] - class_1.field_225[0] <= 256 && super.field_199[3] - class_1.field_225[1] >= -16 && super.field_199[3] - class_1.field_225[1] <= 184) {
+      if ((super.field_33 - super.field_199[10]) % (var4 * 50) == 0 && super.field_199[2] - GameCanvas.field_225[0] >= -16 && super.field_199[2] - GameCanvas.field_225[0] <= 256 && super.field_199[3] - GameCanvas.field_225[1] >= -16 && super.field_199[3] - GameCanvas.field_225[1] <= 184) {
          if (super.field_199[4] == 48 || super.field_199[4] == 66 || super.field_199[4] == 65 || super.field_199[4] == 49 || super.field_199[4] == 80 || super.field_199[4] == 64 || super.field_199[4] == 81) {
             if (super.field_199[4] == 48) {
                var2 = 96;
@@ -3841,7 +3842,7 @@ public final class class_2 extends class_1 {
             int var10002 = super.field_199[5]++;
          }
 
-         if (super.field_199[4] == 16 && super.field_199[5] / 4 > 0 && super.field_199[2] - 20 - 32 <= class_1.method_102() && super.field_199[2] - 20 - 32 + 112 >= class_1.method_102() && super.field_199[3] <= class_1.method_103() && super.field_199[9] >= class_1.method_103()) {
+         if (super.field_199[4] == 16 && super.field_199[5] / 4 > 0 && super.field_199[2] - 20 - 32 <= GameCanvas.method_102() && super.field_199[2] - 20 - 32 + 112 >= GameCanvas.method_102() && super.field_199[3] <= GameCanvas.method_103() && super.field_199[9] >= GameCanvas.method_103()) {
             this.method_104();
          }
       }
@@ -3859,11 +3860,11 @@ public final class class_2 extends class_1 {
 
       if (super.field_199[4] == 1) {
          super.field_199[5] = super.field_33;
-         var3 = (class_1.method_5(super.field_199[5]) * 16 / 100 - 16) * 2;
+         var3 = (GameCanvas.method_5(super.field_199[5]) * 16 / 100 - 16) * 2;
          var3 += 2;
       } else if (super.field_199[4] == 2) {
          super.field_199[5] = super.field_33;
-         var3 = (class_1.method_5(super.field_199[5]) * -16 / 100 + -16) * 2;
+         var3 = (GameCanvas.method_5(super.field_199[5]) * -16 / 100 + -16) * 2;
          var3 += 2;
       } else if (super.field_199[4] == 20) {
          var2 = 56;
@@ -3905,25 +3906,25 @@ public final class class_2 extends class_1 {
       }
 
       int var5;
-      if ((var5 = class_1.method_136(super.field_199[2], super.field_199[3] + var3, super.field_199[6], super.field_199[7], 32, var2)) >= 0) {
+      if ((var5 = GameCanvas.method_136(super.field_199[2], super.field_199[3] + var3, super.field_199[6], super.field_199[7], 32, var2)) >= 0) {
          if (var5 == 0) {
-            class_1.field_116[1] = super.field_199[3] + var3 - var2 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + var3 - var2 << 8;
             this.method_138(super.field_199[2], 32);
             this.method_107(super.field_199[22]);
          } else if (var5 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 32 - 12 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[4]) {
+            GameCanvas.field_116[0] = super.field_199[2] - 32 - 12 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[4]) {
                this.method_72();
             }
          } else if (var5 == 2) {
-            class_1.field_116[0] = super.field_199[2] + 32 + 12 + 1 << 8;
-            class_1.field_116[10] = 0;
-            if (super.field_30[3]) {
+            GameCanvas.field_116[0] = super.field_199[2] + 32 + 12 + 1 << 8;
+            GameCanvas.field_116[10] = 0;
+            if (super.pressedKeys[3]) {
                this.method_72();
             }
          } else if (var5 == 3) {
-            class_1.field_116[1] = super.field_199[3] + var3 + var2 + 12 + 12 + 1 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] + var3 + var2 + 12 + 12 + 1 << 8;
             if (super.field_199[4] == 1 && (super.field_199[5] % 360 < 90 || super.field_199[5] % 360 > 270)) {
                this.method_139();
             } else if (super.field_199[4] == 2 && super.field_199[5] % 360 < 270 && super.field_199[5] % 360 > 90) {
@@ -3957,18 +3958,18 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_199[5] == 0) {
-         class_1.method_126(0, 0, var2, 12, 12, class_1.field_35[var1], super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(0, 0, var2, 12, 12, GameCanvas.field_35[var1], super.field_199[2], super.field_199[3]);
       } else {
-         class_1.method_126(0, 12, (super.field_33 - super.field_199[10]) / 5 % 4 * 12, 12, 12, class_1.field_35[0], super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(0, 12, (super.field_33 - super.field_199[10]) / 5 % 4 * 12, 12, 12, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
       }
 
       if (super.field_199[11] == 1) {
          if (super.field_199[5] == 0) {
-            class_1.method_126(0, 0, var2, 12, 12, class_1.field_35[var1], super.field_199[2], super.field_199[12]);
+            GameCanvas.method_126(0, 0, var2, 12, 12, GameCanvas.field_35[var1], super.field_199[2], super.field_199[12]);
             return;
          }
 
-         class_1.method_126(0, 12, (super.field_33 - super.field_199[10]) / 5 % 4 * 12, 12, 12, class_1.field_35[0], super.field_199[2], super.field_199[12]);
+         GameCanvas.method_126(0, 12, (super.field_33 - super.field_199[10]) / 5 % 4 * 12, 12, 12, GameCanvas.field_35[0], super.field_199[2], super.field_199[12]);
       }
 
    }
@@ -3976,7 +3977,7 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: aS () void
    private void method_322() {
       boolean var1 = false;
-      int var2 = class_1.method_5(super.field_32 * 3) * 87;
+      int var2 = GameCanvas.method_5(super.field_32 * 3) * 87;
       int var3 = super.field_199[4] + 1;
       if (super.field_199[4] == 5) {
          var2 = -var2;
@@ -3988,22 +3989,22 @@ public final class class_2 extends class_1 {
       for(var4 = 1; var4 < var3; ++var4) {
          if (super.field_221 != 3) {
             if (super.field_221 != 5) {
-               class_1.method_126(3, 12, 24, 12, 12, class_1.field_35[0], super.field_199[2] + var4 * class_1.method_5(180 + var2 / 100) * 16 / 100, super.field_199[3] + var4 * class_1.method_6(180 + var2 / 100) * 16 / 100);
+               GameCanvas.method_126(3, 12, 24, 12, 12, GameCanvas.field_35[0], super.field_199[2] + var4 * GameCanvas.method_5(180 + var2 / 100) * 16 / 100, super.field_199[3] + var4 * GameCanvas.method_6(180 + var2 / 100) * 16 / 100);
             } else {
-               class_1.method_126(3, 0, 96, 16, 16, class_1.field_35[0], super.field_199[2] + var4 * class_1.method_5(180 + var2 / 100) * 16 / 100, super.field_199[3] + var4 * class_1.method_6(180 + var2 / 100) * 16 / 100);
+               GameCanvas.method_126(3, 0, 96, 16, 16, GameCanvas.field_35[0], super.field_199[2] + var4 * GameCanvas.method_5(180 + var2 / 100) * 16 / 100, super.field_199[3] + var4 * GameCanvas.method_6(180 + var2 / 100) * 16 / 100);
             }
          }
       }
 
       if (super.field_221 != 3 && super.field_221 != 5) {
-         class_1.method_126(3, 12, 12, 12, 12, class_1.field_35[0], super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(3, 12, 12, 12, 12, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
       }
 
       if (super.field_221 != 3) {
          if (super.field_221 != 5) {
             var4 = var3 * 16;
             var4 -= 8;
-            class_1.method_126(3, 0, 0, 32, 12, class_1.field_35[0], super.field_199[2] + class_1.method_5(180 + var2 / 100) * var4 / 100, super.field_199[3] + class_1.method_6(180 + var2 / 100) * var4 / 100);
+            GameCanvas.method_126(3, 0, 0, 32, 12, GameCanvas.field_35[0], super.field_199[2] + GameCanvas.method_5(180 + var2 / 100) * var4 / 100, super.field_199[3] + GameCanvas.method_6(180 + var2 / 100) * var4 / 100);
          }
 
       }
@@ -4012,9 +4013,9 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: aT () void
    private void method_323() {
       boolean var1 = false;
-      if (class_1.field_29[5] != null) {
-         int var2 = class_1.field_29[5].getHeight();
-         int var3 = class_1.field_29[5].getWidth() / 3;
+      if (GameCanvas.commonImages[5] != null) {
+         int var2 = GameCanvas.commonImages[5].getHeight();
+         int var3 = GameCanvas.commonImages[5].getWidth() / 3;
 
          for(int var4 = 0; var4 < 12; ++var4) {
             int var5;
@@ -4026,7 +4027,7 @@ public final class class_2 extends class_1 {
                var5 = 0;
             }
 
-            class_1.method_126(5, var3 * 2, 0, var3, var2, class_1.field_35[0], super.field_199[2] - 96 + var4 * 16, super.field_199[3] + var5);
+            GameCanvas.method_126(5, var3 * 2, 0, var3, var2, GameCanvas.field_35[0], super.field_199[2] - 96 + var4 * 16, super.field_199[3] + var5);
          }
 
       }
@@ -4039,20 +4040,20 @@ public final class class_2 extends class_1 {
 
       for(int var5 = 0; var5 < 12; ++var5) {
          int var6 = (super.field_32 / 10 + (12 - var5)) % 7;
-         class_1.method_126(4, 0, var6 * 18, 12, 18, class_1.field_35[0], super.field_199[2] - 96 + var5 * 16, super.field_199[3] + var3[var6 / 4]);
+         GameCanvas.method_126(4, 0, var6 * 18, 12, 18, GameCanvas.field_35[0], super.field_199[2] - 96 + var5 * 16, super.field_199[3] + var3[var6 / 4]);
       }
 
    }
 
    // $FF: renamed from: aV () void
    private void method_325() {
-      int var1 = class_1.field_35[0];
+      int var1 = GameCanvas.field_35[0];
       int var2 = 0;
       boolean var3 = false;
       boolean var4 = false;
       byte var9 = 20;
       if (super.field_199[4] != 0) {
-         var1 = class_1.field_35[4];
+         var1 = GameCanvas.field_35[4];
          var9 = 40;
       }
 
@@ -4075,7 +4076,7 @@ public final class class_2 extends class_1 {
             var13 = var11 / 6 * 16;
          }
 
-         class_1.method_126(6, var11 / 6 * 12, 72 - (var11 % 6 + 1) * 12, 12, 12, var1, super.field_199[2] + var13 - var9, super.field_199[3] + 72 - (var11 % 6 + 1) * 16 - 36 + var12 + 12);
+         GameCanvas.method_126(6, var11 / 6 * 12, 72 - (var11 % 6 + 1) * 12, 12, 12, var1, super.field_199[2] + var13 - var9, super.field_199[3] + 72 - (var11 % 6 + 1) * 16 - 36 + var12 + 12);
       }
 
    }
@@ -4094,7 +4095,7 @@ public final class class_2 extends class_1 {
 
       int var2;
       if (var4 == 2) {
-         class_1.method_127(7, 12, 0, 96, 72, class_1.field_35[0], super.field_199[2], super.field_199[3] - 16, 3);
+         GameCanvas.method_127(7, 12, 0, 96, 72, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] - 16, 3);
          if (super.field_199[16] >= 60) {
             boolean var3 = false;
 
@@ -4104,17 +4105,17 @@ public final class class_2 extends class_1 {
                   var5 = var2 << 3;
                }
 
-               class_1.method_127(101, 0, (super.field_32 + (var2 << 1)) % 4 * 24, 18, 24, class_1.field_35[0], super.field_199[2] + (var5 << 1) - 56, super.field_199[3] - class_1.field_165[var4][var5], 3);
+               GameCanvas.method_127(101, 0, (super.field_32 + (var2 << 1)) % 4 * 24, 18, 24, GameCanvas.field_35[0], super.field_199[2] + (var5 << 1) - 56, super.field_199[3] - GameCanvas.field_165[var4][var5], 3);
             }
          }
       } else {
          if (var4 == 0) {
-            class_1.method_127(7, 0, 72, 96, 60, class_1.field_35[0], super.field_199[2], super.field_199[3] - 16, 3);
+            GameCanvas.method_127(7, 0, 72, 96, 60, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] - 16, 3);
             return;
          }
 
          for(var2 = 0; var2 < 4; ++var2) {
-            class_1.method_127(7, 0, 0, 12, 72, class_1.field_35[0], super.field_199[2] + var2 * 16 - 32, super.field_199[3] - 48, 20);
+            GameCanvas.method_127(7, 0, 0, 12, 72, GameCanvas.field_35[0], super.field_199[2] + var2 * 16 - 32, super.field_199[3] - 48, 20);
          }
       }
 
@@ -4122,60 +4123,60 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: aX () void
    private void method_327() {
-      int var1 = class_1.field_35[0];
+      int var1 = GameCanvas.field_35[0];
       int var2 = (super.field_199[3] - super.field_199[9]) % 12;
 
       for(int var3 = 0; var3 <= (super.field_199[3] - super.field_199[9]) / 12; ++var3) {
          int var4 = super.field_199[9] - 18 + var3 * 12 + var2;
          if (var3 == 0) {
-            int var5 = Math.max(class_1.method_125(super.field_199[9] - 24 - class_1.field_226[1] + 4), 0);
-            class_1.field_26.setClip(0, class_1.field_23 + var5, class_1.field_21, class_1.field_22 - var5);
+            int var5 = Math.max(GameCanvas.method_125(super.field_199[9] - 24 - GameCanvas.field_226[1] + 4), 0);
+            GameCanvas.field_26.setClip(0, GameCanvas.field_23 + var5, GameCanvas.field_21, GameCanvas.field_22 - var5);
          }
 
-         class_1.method_126(94, 0, 6, 24, 12, var1, super.field_199[8], var4);
+         GameCanvas.method_126(94, 0, 6, 24, 12, var1, super.field_199[8], var4);
          if (var3 == 0) {
-            class_1.field_26.setClip(0, class_1.field_23, class_1.field_21, class_1.field_22);
+            GameCanvas.field_26.setClip(0, GameCanvas.field_23, GameCanvas.field_21, GameCanvas.field_22);
          }
       }
 
-      class_1.method_126(94, 0, 0, 24, 6, var1, super.field_199[8], super.field_199[9] - 24);
-      class_1.method_126(94, 0, 18, 24, 6, var1, super.field_199[2], super.field_199[3] - 12);
+      GameCanvas.method_126(94, 0, 0, 24, 6, var1, super.field_199[8], super.field_199[9] - 24);
+      GameCanvas.method_126(94, 0, 18, 24, 6, var1, super.field_199[2], super.field_199[3] - 12);
       if (super.field_199[4] != 128 && super.field_199[4] != 2) {
          if (super.field_199[4] == 35) {
-            class_1.method_126(95, 0, 0, 24, 18, var1, super.field_199[2], super.field_199[3]);
+            GameCanvas.method_126(95, 0, 0, 24, 18, var1, super.field_199[2], super.field_199[3]);
          } else {
             if (super.field_199[4] == 17 || super.field_199[4] == 18) {
-               class_1.method_126(8, 0, 18, 84, 24, var1, super.field_199[2], super.field_199[3] + 21);
-               class_1.method_126(8, 0, 0, 36, 18, var1, super.field_199[2] - 24, super.field_199[3]);
-               class_1.method_126(8, 48, 0, 36, 18, var1, super.field_199[2] + 24, super.field_199[3]);
+               GameCanvas.method_126(8, 0, 18, 84, 24, var1, super.field_199[2], super.field_199[3] + 21);
+               GameCanvas.method_126(8, 0, 0, 36, 18, var1, super.field_199[2] - 24, super.field_199[3]);
+               GameCanvas.method_126(8, 48, 0, 36, 18, var1, super.field_199[2] + 24, super.field_199[3]);
             }
 
          }
       } else {
-         class_1.method_126(8, 0, 0, 84, 42, var1, super.field_199[2], super.field_199[3] + 12);
+         GameCanvas.method_126(8, 0, 0, 84, 42, var1, super.field_199[2], super.field_199[3] + 12);
       }
    }
 
    // $FF: renamed from: aY () void
    private void method_328() {
-      if (class_1.field_29[9] != null) {
+      if (GameCanvas.commonImages[9] != null) {
          byte var1 = 0;
          if (super.field_199[19] == 2) {
             var1 = 2;
          }
 
          int var2;
-         int var3 = (var2 = class_1.field_29[9].getWidth()) / 5;
-         int var4 = class_1.field_29[9].getHeight();
+         int var3 = (var2 = GameCanvas.commonImages[9].getWidth()) / 5;
+         int var4 = GameCanvas.commonImages[9].getHeight();
          int var5;
          if (super.field_199[4] == 48) {
             for(var5 = 0; var5 < 3; ++var5) {
-               class_1.method_126(9, 0, 0, var3, var4, class_1.field_35[var1], super.field_199[2] - 24 + var5 * 24, super.field_199[3]);
+               GameCanvas.method_126(9, 0, 0, var3, var4, GameCanvas.field_35[var1], super.field_199[2] - 24 + var5 * 24, super.field_199[3]);
             }
          } else if (super.field_199[4] == 64) {
             if (super.field_221 != 1 || super.field_222 != 0 || super.field_199[4] != 64 || super.field_199[19] == 0) {
                for(var5 = 0; var5 < 6; ++var5) {
-                  class_1.method_126(9, var4 >> 1, 0, var3, var4, class_1.field_35[var1], super.field_199[2] - 60 + var5 * 24, super.field_199[3]);
+                  GameCanvas.method_126(9, var4 >> 1, 0, var3, var4, GameCanvas.field_35[var1], super.field_199[2] - 60 + var5 * 24, super.field_199[3]);
                }
             }
          } else {
@@ -4186,26 +4187,26 @@ public final class class_2 extends class_1 {
                   var1 = 1;
                }
 
-               class_1.method_126(9, 0, 0, var2, var4, class_1.field_35[var1], super.field_199[2], super.field_199[3]);
+               GameCanvas.method_126(9, 0, 0, var2, var4, GameCanvas.field_35[var1], super.field_199[2], super.field_199[3]);
                return;
             }
 
             if (super.field_199[4] == 82) {
                if (super.field_199[19] == 0) {
-                  class_1.method_126(9, var4 >> 1, 0, var3, var4, class_1.field_35[7], super.field_199[2] - 20, super.field_199[3] + 10);
+                  GameCanvas.method_126(9, var4 >> 1, 0, var3, var4, GameCanvas.field_35[7], super.field_199[2] - 20, super.field_199[3] + 10);
                   return;
                }
 
-               class_1.method_126(9, var4 >> 1, 0, var3, var4, class_1.field_35[1], super.field_199[2] - 4, super.field_199[3] + 10);
+               GameCanvas.method_126(9, var4 >> 1, 0, var3, var4, GameCanvas.field_35[1], super.field_199[2] - 4, super.field_199[3] + 10);
                return;
             }
 
             if (super.field_199[4] == 32) {
-               class_1.method_126(9, var4 >> 1, 0, var3, var4, class_1.field_35[var1], super.field_199[2], super.field_199[3]);
+               GameCanvas.method_126(9, var4 >> 1, 0, var3, var4, GameCanvas.field_35[var1], super.field_199[2], super.field_199[3]);
                return;
             }
 
-            class_1.method_126(9, 0, 0, var2, var4, class_1.field_35[var1], super.field_199[2], super.field_199[3]);
+            GameCanvas.method_126(9, 0, 0, var2, var4, GameCanvas.field_35[var1], super.field_199[2], super.field_199[3]);
          }
 
       }
@@ -4215,17 +4216,17 @@ public final class class_2 extends class_1 {
    private void method_329() {
       if (super.field_199[4] == 129) {
          for(int var1 = 0; var1 < 4; ++var1) {
-            class_1.method_128(54, 0, super.field_199[2] - 62 + 31 * var1, super.field_199[3] - 16, 20);
+            GameCanvas.method_128(54, 0, super.field_199[2] - 62 + 31 * var1, super.field_199[3] - 16, 20);
          }
       } else {
-         class_1.method_126(54, 0, 0, class_1.field_29[54].getWidth(), class_1.field_29[54].getHeight(), class_1.field_35[0], super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(54, 0, 0, GameCanvas.commonImages[54].getWidth(), GameCanvas.commonImages[54].getHeight(), GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
       }
 
    }
 
    // $FF: renamed from: ba () void
    private void method_330() {
-      class_1.method_126(11, 0, 0, class_1.field_29[11].getWidth(), class_1.field_29[11].getHeight(), class_1.field_35[0], super.field_199[2], super.field_199[3]);
+      GameCanvas.method_126(11, 0, 0, GameCanvas.commonImages[11].getWidth(), GameCanvas.commonImages[11].getHeight(), GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
    }
 
    // $FF: renamed from: bb () void
@@ -4234,29 +4235,29 @@ public final class class_2 extends class_1 {
          int var1;
          if (super.field_199[4] == 65) {
             for(var1 = 0; var1 < 3; ++var1) {
-               class_1.method_126(54, 0, 0, 23, 24, class_1.field_35[0], super.field_199[2] + (var1 << 5), super.field_199[3]);
+               GameCanvas.method_126(54, 0, 0, 23, 24, GameCanvas.field_35[0], super.field_199[2] + (var1 << 5), super.field_199[3]);
             }
          } else {
             if (super.field_199[4] == 57) {
                for(var1 = 1; var1 < 15; ++var1) {
-                  class_1.method_126(12, 0, 18, 6, 18, class_1.field_35[0], super.field_199[2] - 48 + (var1 << 3), super.field_199[3] - 6);
+                  GameCanvas.method_126(12, 0, 18, 6, 18, GameCanvas.field_35[0], super.field_199[2] - 48 + (var1 << 3), super.field_199[3] - 6);
                }
 
-               class_1.method_126(12, 0, 0, 6, 18, class_1.field_35[0], super.field_199[2] - 48, super.field_199[3] - 6);
-               class_1.method_126(12, 0, 0, 6, 18, class_1.field_35[4], super.field_199[2] + 42, super.field_199[3] - 6);
+               GameCanvas.method_126(12, 0, 0, 6, 18, GameCanvas.field_35[0], super.field_199[2] - 48, super.field_199[3] - 6);
+               GameCanvas.method_126(12, 0, 0, 6, 18, GameCanvas.field_35[4], super.field_199[2] + 42, super.field_199[3] - 6);
                return;
             }
 
             if (super.field_199[4] == 40) {
                for(var1 = 0; var1 < 8; ++var1) {
-                  class_1.method_126(12, 6, var1 % 2 * 18, 6, 18, class_1.field_35[0], super.field_199[2] - 24 + (var1 << 3), super.field_199[3] - 6);
+                  GameCanvas.method_126(12, 6, var1 % 2 * 18, 6, 18, GameCanvas.field_35[0], super.field_199[2] - 24 + (var1 << 3), super.field_199[3] - 6);
                }
             } else if ((super.field_199[4] == 7 || super.field_199[4] == 4) && super.field_199[5] != 0) {
-               class_1.method_126(12, 0, 0, 24, 12, class_1.field_35[4], super.field_199[2], super.field_199[3]);
+               GameCanvas.method_126(12, 0, 0, 24, 12, GameCanvas.field_35[4], super.field_199[2], super.field_199[3]);
             }
          }
       } else {
-         class_1.method_126(54, 0, 0, 23, 24, class_1.field_35[0], super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(54, 0, 0, 23, 24, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
          if (super.field_199[4] == 2) {
             this.method_32((super.field_199[2] >> 4) - 1, (super.field_199[3] >> 4) - 1, 3, 3);
             return;
@@ -4269,14 +4270,14 @@ public final class class_2 extends class_1 {
    private void method_332() {
       int var1;
       for(var1 = 0; var1 < 2; ++var1) {
-         class_1.method_126(13, 0, (super.field_32 + var1) % 3 * 24, 24, 24, class_1.field_35[0], super.field_199[2] + var1 * 32 + 48, super.field_199[3] + var1 * 32 - 16);
+         GameCanvas.method_126(13, 0, (super.field_32 + var1) % 3 * 24, 24, 24, GameCanvas.field_35[0], super.field_199[2] + var1 * 32 + 48, super.field_199[3] + var1 * 32 - 16);
       }
 
       for(int var2 = 0; var2 < 4; ++var2) {
-         var1 = super.field_199[2] - class_1.field_226[0] + (var2 >> 1) * 24 + 12;
+         var1 = super.field_199[2] - GameCanvas.field_226[0] + (var2 >> 1) * 24 + 12;
 
          for(int var3 = 0; var3 < var1 / 24 + 2; ++var3) {
-            class_1.method_126(99, 0, (super.field_32 + var2) % 3 * 12, 24, 12, class_1.field_35[0], super.field_199[2] + (var2 >> 1) * 32 + 16 - var3 * 32, super.field_199[3] + var2 * 16 - 24);
+            GameCanvas.method_126(99, 0, (super.field_32 + var2) % 3 * 12, 24, 12, GameCanvas.field_35[0], super.field_199[2] + (var2 >> 1) * 32 + 16 - var3 * 32, super.field_199[3] + var2 * 16 - 24);
          }
       }
 
@@ -4287,7 +4288,7 @@ public final class class_2 extends class_1 {
       boolean var1 = false;
       int var2;
       if ((var2 = super.field_199[5] / 4) != 0 && super.field_199[3] - 24 < super.field_199[9]) {
-         class_1.method_129(98, 0, 24 * (super.field_32 % 2), 48, 24, class_1.field_35[0], super.field_199[2] - 24, super.field_199[3] - 24);
+         GameCanvas.method_129(98, 0, 24 * (super.field_32 % 2), 48, 24, GameCanvas.field_35[0], super.field_199[2] - 24, super.field_199[3] - 24);
       }
 
       if (var2 > 6) {
@@ -4297,47 +4298,47 @@ public final class class_2 extends class_1 {
       int var3;
       for(var3 = 1; var3 < var2; ++var3) {
          if (super.field_199[3] - var3 * 24 < super.field_199[9]) {
-            class_1.method_129(14, 0, 24 * (var3 % 2), 48, 24, class_1.field_35[0], super.field_199[2] - 24, super.field_199[3] - var3 * 24 - 24);
+            GameCanvas.method_129(14, 0, 24 * (var3 % 2), 48, 24, GameCanvas.field_35[0], super.field_199[2] - 24, super.field_199[3] - var3 * 24 - 24);
          } else if (super.field_199[3] - var3 * 24 - 32 < super.field_199[9]) {
-            class_1.method_129(14, 0, 24 * (var3 % 2), 48, 18, class_1.field_35[0], super.field_199[2] - 24, super.field_199[3] - var3 * 24 - 24);
+            GameCanvas.method_129(14, 0, 24 * (var3 % 2), 48, 18, GameCanvas.field_35[0], super.field_199[2] - 24, super.field_199[3] - var3 * 24 - 24);
          }
       }
 
       if (super.field_199[5] / 4 != 0 && super.field_199[3] - var3 * 24 - 24 < super.field_199[9]) {
-         class_1.method_129(98, 0, 48 + 24 * (super.field_32 % 2), 48, 24, class_1.field_35[0], super.field_199[2] - 24, super.field_199[3] - var3 * 24 - 24);
+         GameCanvas.method_129(98, 0, 48 + 24 * (super.field_32 % 2), 48, 24, GameCanvas.field_35[0], super.field_199[2] - 24, super.field_199[3] - var3 * 24 - 24);
       }
 
-      if (super.field_199[10] > 0 && class_1.field_159.length > super.field_199[10] / 3) {
-         class_1.method_129(77, 0, 24 * class_1.field_159[super.field_199[10] / 3], 84, 24, class_1.field_35[0], super.field_199[8], super.field_199[9]);
+      if (super.field_199[10] > 0 && GameCanvas.field_159.length > super.field_199[10] / 3) {
+         GameCanvas.method_129(77, 0, 24 * GameCanvas.field_159[super.field_199[10] / 3], 84, 24, GameCanvas.field_35[0], super.field_199[8], super.field_199[9]);
       }
 
    }
 
    // $FF: renamed from: be () void
    private void method_334() {
-      int var1 = class_1.field_29[15].getWidth();
-      class_1.field_29[15].getHeight();
+      int var1 = GameCanvas.commonImages[15].getWidth();
+      GameCanvas.commonImages[15].getHeight();
       if (super.field_204[super.field_199[4]]) {
-         class_1.method_126(15, 0, 12, var1, 6, class_1.field_35[0], super.field_199[2], super.field_199[3] - 1);
+         GameCanvas.method_126(15, 0, 12, var1, 6, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] - 1);
       } else {
-         class_1.method_126(15, 0, 0, var1, 8, class_1.field_35[0], super.field_199[2], super.field_199[3] - 3);
+         GameCanvas.method_126(15, 0, 0, var1, 8, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] - 3);
       }
 
-      class_1.method_126(15, 0, 8, var1, 4, class_1.field_35[0], super.field_199[2], super.field_199[3] + 5);
+      GameCanvas.method_126(15, 0, 8, var1, 4, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] + 5);
    }
 
    // $FF: renamed from: bf () void
    private void method_335() {
       if (super.field_221 != 3) {
          if (super.field_199[4] != 16) {
-            class_1.method_126(16, 0, 0, 48, 24, 0, super.field_199[2], super.field_199[3] + super.field_199[14]);
+            GameCanvas.method_126(16, 0, 0, 48, 24, 0, super.field_199[2], super.field_199[3] + super.field_199[14]);
             return;
          }
 
-         class_1.method_126(16, 0, 24, 48, 36, 0, super.field_199[2], super.field_199[3] + 8 + super.field_199[14]);
+         GameCanvas.method_126(16, 0, 24, 48, 36, 0, super.field_199[2], super.field_199[3] + 8 + super.field_199[14]);
 
          for(int var1 = 5; var1 >= 0; --var1) {
-            class_1.method_126(16, 0, 48, 48, 12, 0, super.field_199[2], super.field_199[3] + 8 + 48 - 16 + 16 * var1 + super.field_199[14]);
+            GameCanvas.method_126(16, 0, 48, 48, 12, 0, super.field_199[2], super.field_199[3] + 8 + 48 - 16 + 16 * var1 + super.field_199[14]);
          }
       }
 
@@ -4361,7 +4362,7 @@ public final class class_2 extends class_1 {
       int var1;
       if (super.field_199[10] != 1) {
          for(var1 = 0; var1 < 4; ++var1) {
-            class_1.method_129(18, var3 * 12, 0, 12, 12, 0, super.field_199[2] - 16, super.field_199[3] - 16 - 16 + var1 * 16);
+            GameCanvas.method_129(18, var3 * 12, 0, 12, 12, 0, super.field_199[2] - 16, super.field_199[3] - 16 - 16 + var1 * 16);
          }
       }
 
@@ -4373,7 +4374,7 @@ public final class class_2 extends class_1 {
 
       if (super.field_199[11] != 1) {
          for(var1 = 0; var1 < 4; ++var1) {
-            class_1.method_129(18, var3 * 12, 0, 12, 12, 0, super.field_199[2], super.field_199[3] - 16 - 16 + var1 * 16);
+            GameCanvas.method_129(18, var3 * 12, 0, 12, 12, 0, super.field_199[2], super.field_199[3] - 16 - 16 + var1 * 16);
          }
       }
 
@@ -4384,17 +4385,17 @@ public final class class_2 extends class_1 {
       int var4 = 0;
       if (super.field_199[5] < 129) {
          for(int var1 = 0; var1 < 8; ++var1) {
-            int var3 = class_1.field_153[var1];
-            if (class_1.field_153[var1] % 4 >= 2) {
+            int var3 = GameCanvas.field_153[var1];
+            if (GameCanvas.field_153[var1] % 4 >= 2) {
                var3 -= 2;
             }
 
-            if (super.field_199[15] != 0 && (var4 = super.field_33 - super.field_199[16] - class_1.field_154[var1]) < 0) {
+            if (super.field_199[15] != 0 && (var4 = super.field_33 - super.field_199[16] - GameCanvas.field_154[var1]) < 0) {
                var4 = 0;
             }
 
-            int var5 = class_1.field_29[27].getWidth() / 4;
-            class_1.method_126(27, var3 % 4 * var5, var3 / 4 * var5, var5, var5, 0, super.field_199[2] + class_1.field_153[var1] % 4 * 16 - 16 - 8, super.field_199[3] + class_1.field_153[var1] / 4 * 16 + var4 * (var4 / 5));
+            int var5 = GameCanvas.commonImages[27].getWidth() / 4;
+            GameCanvas.method_126(27, var3 % 4 * var5, var3 / 4 * var5, var5, var5, 0, super.field_199[2] + GameCanvas.field_153[var1] % 4 * 16 - 16 - 8, super.field_199[3] + GameCanvas.field_153[var1] / 4 * 16 + var4 * (var4 / 5));
          }
       }
 
@@ -4402,19 +4403,19 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: bj () void
    private void method_339() {
-      class_1.method_126(27, 0, 0, 24, 24, class_1.field_35[0], super.field_199[2], super.field_199[3]);
+      GameCanvas.method_126(27, 0, 0, 24, 24, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
    }
 
    // $FF: renamed from: bk () void
    private void method_340() {
       if (!super.field_240 && !super.field_241) {
          if (super.field_199[5] == 0) {
-            class_1.method_126(36, 0, 12, 12, 12, class_1.field_35[4], super.field_199[2], super.field_199[3] - 32 - 4);
+            GameCanvas.method_126(36, 0, 12, 12, 12, GameCanvas.field_35[4], super.field_199[2], super.field_199[3] - 32 - 4);
          } else {
-            class_1.method_126(36, 0, 0, 12, 12, class_1.field_35[4], super.field_199[2] - class_1.method_5(90 * super.field_199[5] / 4) * 8 / 100, super.field_199[3] - 24 + class_1.method_6(90 * super.field_199[5] / 4) * 8 / 100 - 4);
+            GameCanvas.method_126(36, 0, 0, 12, 12, GameCanvas.field_35[4], super.field_199[2] - GameCanvas.method_5(90 * super.field_199[5] / 4) * 8 / 100, super.field_199[3] - 24 + GameCanvas.method_6(90 * super.field_199[5] / 4) * 8 / 100 - 4);
          }
 
-         class_1.method_126(36, 0, 24, 12, 36, class_1.field_35[4], super.field_199[2], super.field_199[3] - 4);
+         GameCanvas.method_126(36, 0, 24, 12, 36, GameCanvas.field_35[4], super.field_199[2], super.field_199[3] - 4);
       }
    }
 
@@ -4433,17 +4434,17 @@ public final class class_2 extends class_1 {
          var1 = 5;
       }
 
-      class_1.method_126(37, var1 * 10, 0, 10, 40, 0, super.field_199[2], super.field_199[3]);
+      GameCanvas.method_126(37, var1 * 10, 0, 10, 40, 0, super.field_199[2], super.field_199[3]);
    }
 
    // $FF: renamed from: bm () void
    private void method_342() {
       byte var1 = 24;
-      if (class_1.field_29[42] != null) {
-         int var3 = class_1.field_29[42].getWidth();
+      if (GameCanvas.commonImages[42] != null) {
+         int var3 = GameCanvas.commonImages[42].getWidth();
          byte var4 = 0;
          if (super.field_199[4] < 7) {
-            if (class_1.field_160[super.field_199[4]] == 8) {
+            if (GameCanvas.field_160[super.field_199[4]] == 8) {
                var1 = 16;
                var4 = 8;
             }
@@ -4458,12 +4459,12 @@ public final class class_2 extends class_1 {
                   var5 = 48;
                }
 
-               class_1.method_126(42, 6, class_1.field_160[super.field_199[5]] * var1 + 5, 12, 11, class_1.field_35[0], super.field_199[2], super.field_199[3] - var5);
+               GameCanvas.method_126(42, 6, GameCanvas.field_160[super.field_199[5]] * var1 + 5, 12, 11, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] - var5);
             }
 
-            if (class_1.field_160[super.field_199[4]] != 8) {
+            if (GameCanvas.field_160[super.field_199[4]] != 8) {
                if (super.field_32 % 2 == 0) {
-                  var5 = class_1.field_160[super.field_199[4]] * var1;
+                  var5 = GameCanvas.field_160[super.field_199[4]] * var1;
                } else {
                   var5 = (super.field_32 % 6 / 2 + 5) * var1;
                }
@@ -4472,7 +4473,7 @@ public final class class_2 extends class_1 {
                var1 = 16;
             }
 
-            class_1.method_126(42, 0, var5, var3, var1, class_1.field_35[0], super.field_199[2], super.field_199[3] + var4);
+            GameCanvas.method_126(42, 0, var5, var3, var1, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] + var4);
          }
       }
    }
@@ -4490,13 +4491,13 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_199[5] != 2) {
-         class_1.method_126(44, 0, var1 + super.field_199[10] / 3 % 4 * 36, 36, 36, 0, super.field_199[2], super.field_199[3] + 10);
+         GameCanvas.method_126(44, 0, var1 + super.field_199[10] / 3 % 4 * 36, 36, 36, 0, super.field_199[2], super.field_199[3] + 10);
       } else {
-         class_1.method_126(44, 0, 144, 36, 36, 0, super.field_199[2], super.field_199[3] + 10);
+         GameCanvas.method_126(44, 0, 144, 36, 36, 0, super.field_199[2], super.field_199[3] + 10);
       }
 
       if (super.field_199[5] == 1) {
-         class_1.method_126(0, 12, super.field_199[10] / 4 % 4 * 12, 12, 12, class_1.field_161[super.field_199[10] / 2 % 4], super.field_199[2] + class_1.field_162[super.field_199[10] / 4 % 10] - 24, super.field_199[3] + 10 + class_1.field_163[super.field_199[10] / 4 % 10] - 24);
+         GameCanvas.method_126(0, 12, super.field_199[10] / 4 % 4 * 12, 12, 12, GameCanvas.field_161[super.field_199[10] / 2 % 4], super.field_199[2] + GameCanvas.field_162[super.field_199[10] / 4 % 10] - 24, super.field_199[3] + 10 + GameCanvas.field_163[super.field_199[10] / 4 % 10] - 24);
       }
 
    }
@@ -4504,7 +4505,7 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: bp () void
    private void method_345() {
       boolean var1 = false;
-      int var2 = class_1.field_29[45].getWidth();
+      int var2 = GameCanvas.commonImages[45].getWidth();
       byte var6;
       if (super.field_199[4] != 0 && super.field_199[4] != 3) {
          if (super.field_199[4] == 1) {
@@ -4517,7 +4518,7 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_199[5] == 1) {
-         class_1.method_126(45, 0, var6, var2, 18, 0, super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(45, 0, var6, var2, 18, 0, super.field_199[2], super.field_199[3]);
       }
 
    }
@@ -4531,29 +4532,29 @@ public final class class_2 extends class_1 {
    private void method_347() {
       if (super.field_199[4] == 1) {
          if (super.field_199[5] < 2) {
-            class_1.method_126(55, super.field_32 % 2 * 18, 72, 18, 12, class_1.field_35[0], super.field_199[2], super.field_199[3]);
-            class_1.method_126(55, 0, 0, 48, 48, class_1.field_35[0], super.field_199[8], super.field_199[9] + 37);
+            GameCanvas.method_126(55, super.field_32 % 2 * 18, 72, 18, 12, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
+            GameCanvas.method_126(55, 0, 0, 48, 48, GameCanvas.field_35[0], super.field_199[8], super.field_199[9] + 37);
             return;
          }
 
-         class_1.method_126(55, 0, 48, 48, 24, class_1.field_35[0], super.field_199[8], super.field_199[9] + 12 + 37);
+         GameCanvas.method_126(55, 0, 48, 48, 24, GameCanvas.field_35[0], super.field_199[8], super.field_199[9] + 12 + 37);
       }
 
    }
 
    // $FF: renamed from: bs () void
    private void method_348() {
-      class_1.method_126(56, 0, 24, 24, 24, class_1.field_35[0], super.field_199[2], super.field_199[3]);
+      GameCanvas.method_126(56, 0, 24, 24, 24, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
    }
 
    // $FF: renamed from: bt () void
    private void method_349() {
-      class_1.method_128(58, 0, super.field_199[2], super.field_199[3], 3);
+      GameCanvas.method_128(58, 0, super.field_199[2], super.field_199[3], 3);
    }
 
    // $FF: renamed from: bu () void
    private void method_350() {
-      class_1.method_130(super.field_199[2], super.field_199[3], 60, 0, class_1.field_35[0]);
+      GameCanvas.method_130(super.field_199[2], super.field_199[3], 60, 0, GameCanvas.field_35[0]);
    }
 
    // $FF: renamed from: n (int, int, int) void
@@ -4567,23 +4568,23 @@ public final class class_2 extends class_1 {
       }
 
       if (var1 <= 90) {
-         super.field_199[var2] = class_1.field_303[90 - var1];
-         super.field_199[var3] = class_1.field_303[var1];
+         super.field_199[var2] = GameCanvas.field_303[90 - var1];
+         super.field_199[var3] = GameCanvas.field_303[var1];
       }
 
       if (var1 > 90 && var1 <= 180) {
-         super.field_199[var2] = -class_1.field_303[90 - (180 - var1)];
-         super.field_199[var3] = class_1.field_303[180 - var1];
+         super.field_199[var2] = -GameCanvas.field_303[90 - (180 - var1)];
+         super.field_199[var3] = GameCanvas.field_303[180 - var1];
       }
 
       if (var1 > 180 && var1 <= 270) {
-         super.field_199[var2] = -class_1.field_303[90 - (var1 - 180)];
-         super.field_199[var3] = -class_1.field_303[var1 - 180];
+         super.field_199[var2] = -GameCanvas.field_303[90 - (var1 - 180)];
+         super.field_199[var3] = -GameCanvas.field_303[var1 - 180];
       }
 
       if (var1 > 270 && var1 < 360) {
-         super.field_199[var2] = class_1.field_303[90 - (360 - var1)];
-         super.field_199[var3] = -class_1.field_303[360 - var1];
+         super.field_199[var2] = GameCanvas.field_303[90 - (360 - var1)];
+         super.field_199[var3] = -GameCanvas.field_303[360 - var1];
       }
 
    }
@@ -4643,18 +4644,18 @@ public final class class_2 extends class_1 {
       int var2;
       if (super.field_221 != 4) {
          for(var2 = 1; var2 < var3; ++var2) {
-            class_1.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 2, class_1.field_35[0]);
+            GameCanvas.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 2, GameCanvas.field_35[0]);
          }
 
-         class_1.method_130(super.field_199[2], super.field_199[3], 60, 4, class_1.field_35[0]);
-         class_1.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 3, class_1.field_35[0]);
+         GameCanvas.method_130(super.field_199[2], super.field_199[3], 60, 4, GameCanvas.field_35[0]);
+         GameCanvas.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 3, GameCanvas.field_35[0]);
       } else {
          for(var2 = 1; var2 < var3; ++var2) {
-            class_1.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 1, class_1.field_35[0]);
+            GameCanvas.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 1, GameCanvas.field_35[0]);
          }
 
-         class_1.method_130(super.field_199[2], super.field_199[3], 60, 1, class_1.field_35[0]);
-         class_1.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 1, class_1.field_35[0]);
+         GameCanvas.method_130(super.field_199[2], super.field_199[3], 60, 1, GameCanvas.field_35[0]);
+         GameCanvas.method_130(super.field_199[2] + var2 * super.field_199[16] * 16 / 10000, super.field_199[3] + var2 * super.field_199[17] * 16 / 10000, 60, 1, GameCanvas.field_35[0]);
       }
    }
 
@@ -4664,40 +4665,40 @@ public final class class_2 extends class_1 {
       int var2 = super.field_199[3];
       if (super.field_199[4] >= 240) {
          for(int var3 = 0; var3 < 4; ++var3) {
-            class_1.method_128(107, 0, var1 - 48 + var3 * 32, var2, 3);
+            GameCanvas.method_128(107, 0, var1 - 48 + var3 * 32, var2, 3);
          }
       } else {
          if (super.field_199[4] >= 224) {
-            class_1.method_128(107, 0, var1, var2, 3);
+            GameCanvas.method_128(107, 0, var1, var2, 3);
             return;
          }
 
          if (super.field_199[4] <= 2) {
-            class_1.method_128(17, 0, var1 - 16, var2 - 16, 20);
+            GameCanvas.method_128(17, 0, var1 - 16, var2 - 16, 20);
             return;
          }
 
          if (super.field_199[4] == 19) {
-            class_1.method_128(17, 0, var1 - 32, var2 - 32, 20);
-            class_1.method_128(17, 0, var1, var2 - 32, 20);
-            class_1.method_128(17, 0, var1 - 32, var2, 20);
-            class_1.method_128(17, 0, var1, var2, 20);
+            GameCanvas.method_128(17, 0, var1 - 32, var2 - 32, 20);
+            GameCanvas.method_128(17, 0, var1, var2 - 32, 20);
+            GameCanvas.method_128(17, 0, var1 - 32, var2, 20);
+            GameCanvas.method_128(17, 0, var1, var2, 20);
             return;
          }
 
          if (super.field_199[4] <= 91 && super.field_199[4] >= 88) {
-            class_1.method_128(21, 0, var1, var2, 3);
+            GameCanvas.method_128(21, 0, var1, var2, 3);
             return;
          }
 
          if (super.field_199[4] == 160) {
-            class_1.method_128(17, 0, var1, var2 - 16, 3);
-            class_1.method_128(17, 0, var1, var2 + 16, 3);
+            GameCanvas.method_128(17, 0, var1, var2 - 16, 3);
+            GameCanvas.method_128(17, 0, var1, var2 + 16, 3);
             return;
          }
 
          if (super.field_199[4] == 55 && (super.field_199[8] != 7992 || super.field_199[9] != 1353)) {
-            class_1.method_128(107, 0, var1, var2, 3);
+            GameCanvas.method_128(107, 0, var1, var2, 3);
          }
       }
 
@@ -4713,7 +4714,7 @@ public final class class_2 extends class_1 {
             var2 = 25;
          }
 
-         class_1.method_126(75, 0, 0, 16, 32, class_1.field_35[var1], super.field_199[2] + var2, super.field_199[3]);
+         GameCanvas.method_126(75, 0, 0, 16, 32, GameCanvas.field_35[var1], super.field_199[2] + var2, super.field_199[3]);
       }
 
    }
@@ -4728,21 +4729,21 @@ public final class class_2 extends class_1 {
             var1 = var1 % 2 + 2;
          }
 
-         int var3 = class_1.field_29[14].getWidth();
+         int var3 = GameCanvas.commonImages[14].getWidth();
 
          int var2;
          for(var2 = 0; var2 < (super.field_199[9] - super.field_199[3]) / 32; ++var2) {
-            class_1.method_129(14, 0, var3 / 2 * (var2 % 2), var3, var3 / 2, class_1.field_35[0], super.field_199[2] - 20 + 24 - 32, super.field_199[3] - 48 + var2 * 32 + 16);
+            GameCanvas.method_129(14, 0, var3 / 2 * (var2 % 2), var3, var3 / 2, GameCanvas.field_35[0], super.field_199[2] - 20 + 24 - 32, super.field_199[3] - 48 + var2 * 32 + 16);
          }
 
          int var4;
          if ((var4 = (super.field_199[9] - super.field_199[3]) % (var3 / 2)) > 0) {
-            class_1.method_129(14, 0, var3 / 2 * (var2 % 2), var3, var4, class_1.field_35[0], super.field_199[2] - 20 + 24 - 32, super.field_199[3] - 48 + var2 * 32 + 16);
+            GameCanvas.method_129(14, 0, var3 / 2 * (var2 % 2), var3, var4, GameCanvas.field_35[0], super.field_199[2] - 20 + 24 - 32, super.field_199[3] - 48 + var2 * 32 + 16);
          }
 
-         int var5 = class_1.field_29[77].getWidth();
-         class_1.method_129(77, 0, class_1.field_164[var1], var5, class_1.field_164[var1 + 1] - class_1.field_164[var1], class_1.field_35[0], super.field_199[8] - 20 - 32, super.field_199[9] - 48);
-         class_1.method_129(77, 0, class_1.field_164[var1 + 2], var5, class_1.field_164[var1 + 1 + 2] - class_1.field_164[var1 + 2], class_1.field_35[0], super.field_199[2] - 20 - 32, super.field_199[3] - 48);
+         int var5 = GameCanvas.commonImages[77].getWidth();
+         GameCanvas.method_129(77, 0, GameCanvas.field_164[var1], var5, GameCanvas.field_164[var1 + 1] - GameCanvas.field_164[var1], GameCanvas.field_35[0], super.field_199[8] - 20 - 32, super.field_199[9] - 48);
+         GameCanvas.method_129(77, 0, GameCanvas.field_164[var1 + 2], var5, GameCanvas.field_164[var1 + 1 + 2] - GameCanvas.field_164[var1 + 2], GameCanvas.field_35[0], super.field_199[2] - 20 - 32, super.field_199[3] - 48);
       }
 
    }
@@ -4752,15 +4753,15 @@ public final class class_2 extends class_1 {
       int var1 = 0;
       int var2 = 0;
       if (super.field_199[4] == 1) {
-         var1 = class_1.method_5(super.field_199[5]) * 16 / 100 - 16;
-         var2 = class_1.method_5(super.field_199[5]) * -9 / 100 + -9;
+         var1 = GameCanvas.method_5(super.field_199[5]) * 16 / 100 - 16;
+         var2 = GameCanvas.method_5(super.field_199[5]) * -9 / 100 + -9;
          var1 *= 2;
          var2 *= 2;
          var1 += 2;
          var2 += 2;
       } else if (super.field_199[4] == 2) {
-         var1 = class_1.method_5(super.field_199[5]) * -16 / 100 + -16;
-         var2 = class_1.method_5(super.field_199[5]) * 9 / 100 - 9;
+         var1 = GameCanvas.method_5(super.field_199[5]) * -16 / 100 + -16;
+         var2 = GameCanvas.method_5(super.field_199[5]) * 9 / 100 - 9;
          var1 *= 2;
          var2 *= 2;
          var1 += 2;
@@ -4768,18 +4769,18 @@ public final class class_2 extends class_1 {
       }
 
       if (super.field_199[4] != 20 && super.field_199[4] != 4) {
-         class_1.method_126(79, 0, 0, 24, 54, class_1.field_35[0], super.field_199[2] - 16, super.field_199[3] + var1 - 36);
-         class_1.method_126(79, 0, 0, 24, 54, class_1.field_35[4], super.field_199[2] + 16, super.field_199[3] + var1 - 36);
-         class_1.method_126(79, 0, 0, 24, 54, class_1.field_35[6], super.field_199[2] - 16, super.field_199[3] + var1 + 36);
-         class_1.method_126(79, 0, 0, 24, 54, class_1.field_35[2], super.field_199[2] + 16, super.field_199[3] + var1 + 36);
-         class_1.method_126(79, 0, 54, 24, 24, class_1.field_35[2], super.field_199[2], super.field_199[3] + var2 - 8 - 6);
+         GameCanvas.method_126(79, 0, 0, 24, 54, GameCanvas.field_35[0], super.field_199[2] - 16, super.field_199[3] + var1 - 36);
+         GameCanvas.method_126(79, 0, 0, 24, 54, GameCanvas.field_35[4], super.field_199[2] + 16, super.field_199[3] + var1 - 36);
+         GameCanvas.method_126(79, 0, 0, 24, 54, GameCanvas.field_35[6], super.field_199[2] - 16, super.field_199[3] + var1 + 36);
+         GameCanvas.method_126(79, 0, 0, 24, 54, GameCanvas.field_35[2], super.field_199[2] + 16, super.field_199[3] + var1 + 36);
+         GameCanvas.method_126(79, 0, 54, 24, 24, GameCanvas.field_35[2], super.field_199[2], super.field_199[3] + var2 - 8 - 6);
       } else {
-         var2 = class_1.method_5(super.field_33) * 28 / 100 - 28;
-         class_1.method_126(79, 0, 0, 24, 42, class_1.field_35[0], super.field_199[2] - 16, super.field_199[3] - 28 + 16);
-         class_1.method_126(79, 0, 0, 24, 42, class_1.field_35[4], super.field_199[2] + 16, super.field_199[3] - 28 + 16);
-         class_1.method_126(79, 0, 0, 24, 42, class_1.field_35[6], super.field_199[2] - 16, super.field_199[3] + 28 + 16);
-         class_1.method_126(79, 0, 0, 24, 42, class_1.field_35[2], super.field_199[2] + 16, super.field_199[3] + 28 + 16);
-         class_1.method_126(79, 0, 54, 24, 24, class_1.field_35[2], super.field_199[2], super.field_199[3] + var2 + 28 + 1);
+         var2 = GameCanvas.method_5(super.field_33) * 28 / 100 - 28;
+         GameCanvas.method_126(79, 0, 0, 24, 42, GameCanvas.field_35[0], super.field_199[2] - 16, super.field_199[3] - 28 + 16);
+         GameCanvas.method_126(79, 0, 0, 24, 42, GameCanvas.field_35[4], super.field_199[2] + 16, super.field_199[3] - 28 + 16);
+         GameCanvas.method_126(79, 0, 0, 24, 42, GameCanvas.field_35[6], super.field_199[2] - 16, super.field_199[3] + 28 + 16);
+         GameCanvas.method_126(79, 0, 0, 24, 42, GameCanvas.field_35[2], super.field_199[2] + 16, super.field_199[3] + 28 + 16);
+         GameCanvas.method_126(79, 0, 54, 24, 24, GameCanvas.field_35[2], super.field_199[2], super.field_199[3] + var2 + 28 + 1);
       }
    }
 
@@ -4806,7 +4807,7 @@ public final class class_2 extends class_1 {
       }
 
       int var3;
-      if ((var3 = class_1.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], var1, var2)) >= 0) {
+      if ((var3 = GameCanvas.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], var1, var2)) >= 0) {
          short var4 = 4096;
          int var5 = super.field_199[4] / 16;
          if (super.field_199[4] % 16 == 2) {
@@ -4821,55 +4822,55 @@ public final class class_2 extends class_1 {
 
          if (var3 != 0 && var3 != 4) {
             if (var3 == 1) {
-               class_1.field_116[0] = super.field_199[2] - var1 - 12 - 1 << 8;
-               class_1.field_116[10] = 0;
-               class_1.field_116[13] = 0;
-               class_1.field_116[14] = 0;
+               GameCanvas.field_116[0] = super.field_199[2] - var1 - 12 - 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               GameCanvas.field_116[13] = 0;
+               GameCanvas.field_116[14] = 0;
                if (var5 == 1 && super.field_199[19] == 1) {
                   super.field_294 = 15;
-                  class_1.field_116[10] = -var4;
-                  class_1.field_116[12] = 1;
-                  class_1.field_116[13] = 1;
-                  class_1.field_116[14] = 1;
+                  GameCanvas.field_116[10] = -var4;
+                  GameCanvas.field_116[12] = 1;
+                  GameCanvas.field_116[13] = 1;
+                  GameCanvas.field_116[14] = 1;
                   var10002 = super.field_199[5]++;
                }
             } else if (var3 == 2) {
-               class_1.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
-               class_1.field_116[10] = 0;
-               class_1.field_116[13] = 0;
-               class_1.field_116[14] = 0;
+               GameCanvas.field_116[0] = super.field_199[2] + var1 + 12 + 1 << 8;
+               GameCanvas.field_116[10] = 0;
+               GameCanvas.field_116[13] = 0;
+               GameCanvas.field_116[14] = 0;
                if (var5 == 1 && super.field_199[19] == 0) {
                   super.field_294 = 15;
-                  class_1.field_116[10] = var4;
-                  class_1.field_116[12] = 0;
-                  class_1.field_116[13] = 2;
-                  class_1.field_116[14] = 2;
+                  GameCanvas.field_116[10] = var4;
+                  GameCanvas.field_116[12] = 0;
+                  GameCanvas.field_116[13] = 2;
+                  GameCanvas.field_116[14] = 2;
                   var10002 = super.field_199[5]++;
                }
             } else if (var3 == 3) {
                if (var5 == 2) {
                   if (super.field_199[19] == 2) {
-                     class_1.field_116[5] = var4;
-                     class_1.field_122 = true;
+                     GameCanvas.field_116[5] = var4;
+                     GameCanvas.field_122 = true;
                      super.field_294 = 30;
                   }
 
                   var10002 = super.field_199[5]++;
                }
 
-               class_1.field_116[1] = super.field_199[3] + var2 + 12 + 12 + 1 << 8;
+               GameCanvas.field_116[1] = super.field_199[3] + var2 + 12 + 12 + 1 << 8;
             }
          } else {
-            class_1.field_116[1] = super.field_199[3] - var2 << 8;
+            GameCanvas.field_116[1] = super.field_199[3] - var2 << 8;
             if (var5 == 0) {
                if (super.field_199[5] == 4) {
-                  class_1.field_116[1] = super.field_199[3] - 8 << 8;
-                  class_1.field_122 = true;
-                  class_1.field_118 = false;
-                  class_1.field_117 = true;
-                  class_1.field_124 = false;
+                  GameCanvas.field_116[1] = super.field_199[3] - 8 << 8;
+                  GameCanvas.field_122 = true;
+                  GameCanvas.field_118 = false;
+                  GameCanvas.field_117 = true;
+                  GameCanvas.field_124 = false;
                   super.field_297 = 0;
-                  class_1.field_116[5] = class_1.method_6(0) * var4 / 100;
+                  GameCanvas.field_116[5] = GameCanvas.method_6(0) * var4 / 100;
                }
 
                var10002 = super.field_199[5]++;
@@ -4890,18 +4891,18 @@ public final class class_2 extends class_1 {
       int[] var1;
       int var2;
       int var3 = (var2 = (var1 = super.field_199)[19]) == 0 ? -2 : 2;
-      if (!class_1.method_184(var1)) {
+      if (!GameCanvas.method_184(var1)) {
          int var10002;
          switch (var1[14]) {
             case 1:
-               if (Math.abs(class_1.method_102() - var1[2]) < 50) {
+               if (Math.abs(GameCanvas.method_102() - var1[2]) < 50) {
                   var1[5] = 30;
                   var1[15] = 0;
                   var10002 = var1[14]++;
                }
                break;
             case 2:
-               if (class_1.method_102() > var1[2]) {
+               if (GameCanvas.method_102() > var1[2]) {
                   var1[19] = 1;
                } else {
                   var1[19] = 0;
@@ -4980,7 +4981,7 @@ public final class class_2 extends class_1 {
       int[] var1;
       int var2;
       int var3 = (var2 = (var1 = super.field_199)[19]) == 0 ? -2 : 2;
-      if (!class_1.method_184(var1)) {
+      if (!GameCanvas.method_184(var1)) {
          int var10002;
          switch (var1[14]) {
             case 1:
@@ -4998,7 +4999,7 @@ public final class class_2 extends class_1 {
                   var1[6] = 0;
                }
 
-               if (class_1.method_191(var1, 160, 100)) {
+               if (GameCanvas.method_191(var1, 160, 100)) {
                   var1[5] = 20;
                   var1[14] = 3;
                }
@@ -5058,13 +5059,13 @@ public final class class_2 extends class_1 {
    private void method_361() {
       int[] var1;
       int var3 = (var1 = super.field_199)[19] == 0 ? -1 : 1;
-      if (Math.abs(var1[2] - class_1.method_102()) <= 240 || Math.abs(var1[3] - class_1.method_103()) <= 168) {
-         if (!class_1.method_184(var1)) {
+      if (Math.abs(var1[2] - GameCanvas.method_102()) <= 240 || Math.abs(var1[3] - GameCanvas.method_103()) <= 168) {
+         if (!GameCanvas.method_184(var1)) {
             int var10002;
             switch (var1[14]) {
                case 3:
                   if (var1[5] <= 0) {
-                     class_1.method_187(var1);
+                     GameCanvas.method_187(var1);
                      var1[6] = 0;
                      var10002 = var1[14]--;
                   }
@@ -5096,9 +5097,9 @@ public final class class_2 extends class_1 {
    private void method_362() {
       int[] var1;
       int var2 = (var1 = super.field_199)[19] == 0 ? -1 : 1;
-      if (Math.abs(var1[2] - class_1.method_102()) <= 240 || Math.abs(var1[3] - class_1.method_103()) <= 168) {
+      if (Math.abs(var1[2] - GameCanvas.method_102()) <= 240 || Math.abs(var1[3] - GameCanvas.method_103()) <= 168) {
          int var10002 = var1[5]++;
-         if (class_1.method_192(var1[2], var1[3])) {
+         if (GameCanvas.method_192(var1[2], var1[3])) {
             var1[18] = 0;
          } else {
             int var3;
@@ -5204,8 +5205,8 @@ public final class class_2 extends class_1 {
    private void method_363() {
       int[] var1;
       int var2 = (var1 = super.field_199)[19] == 0 ? -1 : 1;
-      if (Math.abs(var1[2] - class_1.method_102()) <= 240 || Math.abs(var1[3] - class_1.method_103()) <= 168) {
-         if (!class_1.method_184(var1)) {
+      if (Math.abs(var1[2] - GameCanvas.method_102()) <= 240 || Math.abs(var1[3] - GameCanvas.method_103()) <= 168) {
+         if (!GameCanvas.method_184(var1)) {
             int var10002;
             switch (var1[14]) {
                case 4:
@@ -5230,7 +5231,7 @@ public final class class_2 extends class_1 {
                   var1[2] = var1[12] / 100;
                   var1[3] = var1[13] / 100;
                   if (this.method_190(var1) || var1[6] > 180) {
-                     class_1.method_187(var1);
+                     GameCanvas.method_187(var1);
                      var1[6] = 0;
                   }
 
@@ -5263,7 +5264,7 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: bH () void
    private void method_364() {
       int[] var1;
-      if (!class_1.method_184(var1 = super.field_199)) {
+      if (!GameCanvas.method_184(var1 = super.field_199)) {
          int var10002;
          switch (var1[14]) {
             default:
@@ -5276,7 +5277,7 @@ public final class class_2 extends class_1 {
                var1[11] = 400;
                var10002 = var1[14]++;
             case 2:
-               if (class_1.method_102() - 160 < var1[2]) {
+               if (GameCanvas.method_102() - 160 < var1[2]) {
                   break;
                }
 
@@ -5380,8 +5381,8 @@ public final class class_2 extends class_1 {
    private void method_365() {
       int[] var1;
       int var2 = (var1 = super.field_199)[19] == 0 ? -1 : 1;
-      if (Math.abs(var1[2] - class_1.method_102()) <= 240 || Math.abs(var1[3] - class_1.method_103()) <= 168) {
-         if (!class_1.method_184(var1)) {
+      if (Math.abs(var1[2] - GameCanvas.method_102()) <= 240 || Math.abs(var1[3] - GameCanvas.method_103()) <= 168) {
+         if (!GameCanvas.method_184(var1)) {
             switch (var1[14]) {
                case 2:
                   break;
@@ -5402,7 +5403,7 @@ public final class class_2 extends class_1 {
             var1[3] = var1[13] / 100;
             this.method_186(var1, 24);
             if (this.method_190(var1) || var1[6] > 240) {
-               class_1.method_187(var1);
+               GameCanvas.method_187(var1);
                var1[6] = 0;
             }
 
@@ -5420,7 +5421,7 @@ public final class class_2 extends class_1 {
    private void method_366() {
       int[] var1;
       int var2 = (var1 = super.field_199)[19] == 0 ? -1 : 1;
-      if (!class_1.method_184(var1)) {
+      if (!GameCanvas.method_184(var1)) {
          int var10002;
          switch (var1[14]) {
             case 2:
@@ -5432,14 +5433,14 @@ public final class class_2 extends class_1 {
                }
                break;
             case 3:
-               var1[15] = class_1.field_140[super.field_32 & 3];
+               var1[15] = GameCanvas.field_140[super.field_32 & 3];
                var1[2] += var2;
-               if (Math.abs(var1[2] - class_1.method_102()) > 80) {
+               if (Math.abs(var1[2] - GameCanvas.method_102()) > 80) {
                   var10002 = var1[14]++;
                }
                break;
             case 4:
-               var1[15] = class_1.field_140[super.field_32 & 3];
+               var1[15] = GameCanvas.field_140[super.field_32 & 3];
                var1[2] += var2;
                var1[3] -= 2;
                if (this.method_62(var1[2], var1[3] - 16)) {
@@ -5450,14 +5451,14 @@ public final class class_2 extends class_1 {
                var1[14] = 1;
             case 1:
                var1[15] = 0;
-               if (class_1.method_102() > var1[2]) {
+               if (GameCanvas.method_102() > var1[2]) {
                   var1[19] = 1;
                } else {
                   var1[19] = 0;
                }
 
-               if (var1[3] + 40 <= class_1.method_103() && var1[3] + 100 >= class_1.method_103() && Math.abs(var1[2] - class_1.method_102()) < 100) {
-                  var1[9] = class_1.method_103() - 16;
+               if (var1[3] + 40 <= GameCanvas.method_103() && var1[3] + 100 >= GameCanvas.method_103() && Math.abs(var1[2] - GameCanvas.method_102()) < 100) {
+                  var1[9] = GameCanvas.method_103() - 16;
                   var10002 = var1[14]++;
                }
          }
@@ -5469,9 +5470,9 @@ public final class class_2 extends class_1 {
    // $FF: renamed from: bK () void
    private void method_367() {
       int[] var1;
-      if (!class_1.method_184(var1 = super.field_199)) {
+      if (!GameCanvas.method_184(var1 = super.field_199)) {
          var1[15] = super.field_32 & 1;
-         var1[3] = var1[17] - Math.abs(class_1.method_6(var1[6] % 180)) * 268 / 100;
+         var1[3] = var1[17] - Math.abs(GameCanvas.method_6(var1[6] % 180)) * 268 / 100;
          this.method_195(var1);
       }
    }
@@ -5484,13 +5485,13 @@ public final class class_2 extends class_1 {
          }
 
       } else {
-         int var3 = class_1.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 8, 32);
+         int var3 = GameCanvas.method_141(super.field_199[2], super.field_199[3], super.field_199[2], super.field_199[3], 8, 32);
          if (super.field_199[5] == 1) {
             var3 = -1;
          }
 
          if (var3 >= 0 && var3 == 1) {
-            class_1.field_116[0] = super.field_199[2] - 8 - 12 << 8;
+            GameCanvas.field_116[0] = super.field_199[2] - 8 - 12 << 8;
          }
 
          if (super.field_203 && super.field_205 == super.field_199[20] && var3 != 0) {
@@ -5520,13 +5521,13 @@ public final class class_2 extends class_1 {
          var3 = 1;
       }
 
-      int var4 = class_1.field_35[0];
+      int var4 = GameCanvas.field_35[0];
       switch (var2) {
          case 1:
-            var4 = super.field_199[19] == 0 ? class_1.field_35[1] : class_1.field_35[7];
+            var4 = super.field_199[19] == 0 ? GameCanvas.field_35[1] : GameCanvas.field_35[7];
             break;
          case 2:
-            var4 = class_1.field_35[6];
+            var4 = GameCanvas.field_35[6];
       }
 
       byte var5 = 0;
@@ -5548,21 +5549,21 @@ public final class class_2 extends class_1 {
          }
       }
 
-      class_1.method_130(super.field_199[2] + var5, super.field_199[3] + var6, var1, var3, var4);
+      GameCanvas.method_130(super.field_199[2] + var5, super.field_199[3] + var6, var1, var3, var4);
    }
 
    // $FF: renamed from: bO () void
    private void method_371() {
       if (super.field_221 == 0) {
-         if (class_1.field_29[5] != null) {
-            int var1 = class_1.field_29[5].getHeight();
-            int var2 = class_1.field_29[5].getWidth() / 3 * 2;
-            int var3 = class_1.field_35[0];
+         if (GameCanvas.commonImages[5] != null) {
+            int var1 = GameCanvas.commonImages[5].getHeight();
+            int var2 = GameCanvas.commonImages[5].getWidth() / 3 * 2;
+            int var3 = GameCanvas.field_35[0];
             if (super.field_199[19] == 0) {
-               var3 = class_1.field_35[4];
+               var3 = GameCanvas.field_35[4];
             }
 
-            class_1.method_126(5, 0, 0, var2, var1, var3, super.field_199[2], super.field_199[3]);
+            GameCanvas.method_126(5, 0, 0, var2, var1, var3, super.field_199[2], super.field_199[3]);
          }
       }
    }
@@ -5572,10 +5573,10 @@ public final class class_2 extends class_1 {
       int var1 = super.field_199[19] == 0 ? -1 : 1;
       this.method_375(40);
       if (super.field_199[18] == 1) {
-         class_1.method_126(40, 0, 184, 16, 16, super.field_199[19] == 0 ? 0 : class_1.field_35[4], super.field_199[2] + var1 * 18, super.field_199[3] + 28);
+         GameCanvas.method_126(40, 0, 184, 16, 16, super.field_199[19] == 0 ? 0 : GameCanvas.field_35[4], super.field_199[2] + var1 * 18, super.field_199[3] + 28);
       } else {
          if (super.field_199[18] == 2) {
-            class_1.method_126(40, 16, 184, 16, 16, super.field_199[19] == 0 ? 0 : class_1.field_35[4], super.field_199[2] + var1 * 18, super.field_199[3] + 28);
+            GameCanvas.method_126(40, 16, 184, 16, 16, super.field_199[19] == 0 ? 0 : GameCanvas.field_35[4], super.field_199[2] + var1 * 18, super.field_199[3] + 28);
          }
 
       }
@@ -5583,7 +5584,7 @@ public final class class_2 extends class_1 {
 
    // $FF: renamed from: bQ () void
    private void method_373() {
-      class_1.method_126(61, 0, 12 * ((super.field_32 >> 1) % 6), 24, 12, class_1.field_35[0], super.field_199[2], super.field_199[3]);
+      GameCanvas.method_126(61, 0, 12 * ((super.field_32 >> 1) % 6), 24, 12, GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
    }
 
    // $FF: renamed from: bR () void
@@ -5593,40 +5594,40 @@ public final class class_2 extends class_1 {
 
          for(int var2 = 0; var2 < 3; ++var2) {
             int var3 = 15 - var2 * 3;
-            class_1.method_130(super.field_199[var3] >> 8, (super.field_199[var3 + 1] >> 8) - (var2 == 1 ? var1 : 0), 49, 2, super.field_199[var3 + 2] == 1 ? class_1.field_35[4] : class_1.field_35[0]);
+            GameCanvas.method_130(super.field_199[var3] >> 8, (super.field_199[var3 + 1] >> 8) - (var2 == 1 ? var1 : 0), 49, 2, super.field_199[var3 + 2] == 1 ? GameCanvas.field_35[4] : GameCanvas.field_35[0]);
          }
 
-         class_1.method_130(super.field_199[6] >> 8, (super.field_199[7] >> 8) - var1, 49, super.field_199[18] > 3 ? 1 : 0, super.field_199[8] == 1 ? class_1.field_35[4] : class_1.field_35[0]);
+         GameCanvas.method_130(super.field_199[6] >> 8, (super.field_199[7] >> 8) - var1, 49, super.field_199[18] > 3 ? 1 : 0, super.field_199[8] == 1 ? GameCanvas.field_35[4] : GameCanvas.field_35[0]);
       }
    }
 
    // $FF: renamed from: e (int) void
    private void method_375(int var1) {
       if (super.field_199[15] >= 0) {
-         int var2 = class_1.field_35[0];
+         int var2 = GameCanvas.field_35[0];
          switch (super.field_199[19]) {
             case 1:
-               var2 = class_1.field_35[4];
+               var2 = GameCanvas.field_35[4];
                break;
             case 2:
-               var2 = class_1.field_35[6];
+               var2 = GameCanvas.field_35[6];
                break;
             case 3:
-               var2 = class_1.field_35[2];
+               var2 = GameCanvas.field_35[2];
          }
 
-         class_1.method_130(super.field_199[2], super.field_199[3], var1, super.field_199[15], var2);
+         GameCanvas.method_130(super.field_199[2], super.field_199[3], var1, super.field_199[15], var2);
       }
    }
 
    // $FF: renamed from: bS () void
    private void method_376() {
       if (super.field_32 % 60 < 30) {
-         class_1.method_126(92, 0, 0, 32, 16, class_1.field_35[0], super.field_199[2] + 8, super.field_199[3] - 32);
-         class_1.method_126(92, 0, 0, 32, 16, class_1.field_35[6], super.field_199[2] + 8, super.field_199[3] + 32);
+         GameCanvas.method_126(92, 0, 0, 32, 16, GameCanvas.field_35[0], super.field_199[2] + 8, super.field_199[3] - 32);
+         GameCanvas.method_126(92, 0, 0, 32, 16, GameCanvas.field_35[6], super.field_199[2] + 8, super.field_199[3] + 32);
       } else {
-         class_1.method_126(92, 0, 0, 32, 16, class_1.field_35[1], super.field_199[2], super.field_199[3] - 16);
-         class_1.method_126(92, 0, 0, 32, 16, class_1.field_35[5], super.field_199[2], super.field_199[3] + 16);
+         GameCanvas.method_126(92, 0, 0, 32, 16, GameCanvas.field_35[1], super.field_199[2], super.field_199[3] - 16);
+         GameCanvas.method_126(92, 0, 0, 32, 16, GameCanvas.field_35[5], super.field_199[2], super.field_199[3] + 16);
       }
    }
 

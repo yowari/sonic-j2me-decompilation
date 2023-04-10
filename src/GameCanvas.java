@@ -12,18 +12,14 @@ import javax.microedition.media.PlayerListener;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.RecordStore;
 
-// $FF: renamed from: c
-public class class_1 extends Canvas implements Runnable, PlayerListener {
-   // $FF: renamed from: d java.lang.String[]
-   private static String[] field_9 = new String[]{"SON", "SON", "SON", "SON", "SON"};
-   // $FF: renamed from: C int[]
-   private static int[] field_10 = new int[]{10000, 8000, 6000, 4000, 2000};
-   // $FF: renamed from: D int[]
-   private static int[] field_11 = new int[]{0, 1, 2, 1, 0};
+public class GameCanvas extends Canvas implements Runnable, PlayerListener {
+   private static String[] highscoreNames = new String[]{"SON", "SON", "SON", "SON", "SON"};
+   private static int[] highscoreScores = new int[]{10000, 8000, 6000, 4000, 2000};
+   private static int[] highscoreDiffculties = new int[]{0, 1, 2, 1, 0};
    // $FF: renamed from: g boolean[]
    private boolean[] field_12 = new boolean[10];
    // $FF: renamed from: c javax.microedition.lcdui.Image[]
-   private static Image[] field_13 = new Image[5];
+   private static Image[] menuImages = new Image[5];
    // $FF: renamed from: a javax.microedition.lcdui.Font
    public static final Font field_14 = Font.getFont(0, 0, 16);
    // $FF: renamed from: a int
@@ -55,11 +51,11 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a javax.microedition.lcdui.Image[]
    public static Image[] field_28;
    // $FF: renamed from: b javax.microedition.lcdui.Image[]
-   public static Image[] field_29;
+   public static Image[] commonImages;
    // $FF: renamed from: a boolean[]
-   public boolean[] field_30 = new boolean[10];
+   public boolean[] pressedKeys = new boolean[10];
    // $FF: renamed from: a java.lang.String[]
-   public String[] field_31 = new String[2];
+   public String[] commandTexts = new String[2];
    // $FF: renamed from: j int
    public int field_32 = 1;
    // $FF: renamed from: k int
@@ -69,9 +65,9 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a int[]
    public static final int[] field_35;
    // $FF: renamed from: a d
-   public class_3 field_36;
+   public Audio audio;
    // $FF: renamed from: e java.lang.String[]
-   private static final String[] field_37;
+   private static final String[] audioTracks;
    // $FF: renamed from: a boolean
    public boolean field_38 = false;
    // $FF: renamed from: a byte[][]
@@ -123,23 +119,23 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: ba int
    private int field_62;
    // $FF: renamed from: b java.lang.String[]
-   public String[] field_63;
+   public String[] texts;
    // $FF: renamed from: f java.lang.String[]
-   private String[] field_64;
+   private String[] manualTexts;
    // $FF: renamed from: a java.lang.String
-   private String field_65;
+   private String menuHelperText;
    // $FF: renamed from: c byte
-   private byte field_66;
+   private byte viewState;
    // $FF: renamed from: d byte
    private byte field_67;
    // $FF: renamed from: a byte
    public byte field_68;
    // $FF: renamed from: e byte
-   private byte field_69;
+   private byte currentMenuItem;
    // $FF: renamed from: L boolean
    private boolean field_70;
    // $FF: renamed from: M boolean
-   private boolean field_71;
+   private boolean startupLanguageSelection;
    // $FF: renamed from: a java.util.Vector
    private Vector field_72;
    // $FF: renamed from: f byte
@@ -211,7 +207,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: v int
    public int field_106;
    // $FF: renamed from: w int
-   public int field_107;
+   public int score;
    // $FF: renamed from: x int
    public int field_108;
    // $FF: renamed from: y int
@@ -437,15 +433,15 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: bu int
    private int field_219;
    // $FF: renamed from: ai int
-   public int field_220;
+   public int appState;
    // $FF: renamed from: aj int
    public int field_221;
    // $FF: renamed from: ak int
    public int field_222;
    // $FF: renamed from: al int
-   public int field_223;
+   public int zone;
    // $FF: renamed from: am int
-   public int field_224;
+   public int act;
    // $FF: renamed from: y int[]
    public static int[] field_225;
    // $FF: renamed from: z int[]
@@ -481,7 +477,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: u boolean
    public boolean field_241;
    // $FF: renamed from: g byte
-   private byte field_242;
+   private byte level;
    // $FF: renamed from: h byte
    private byte field_243;
    // $FF: renamed from: i byte
@@ -491,9 +487,9 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: j byte
    private byte field_246;
    // $FF: renamed from: an int
-   public int field_247;
+   public int currentPauseMenuItem;
    // $FF: renamed from: l byte[]
-   private byte[] field_248;
+   private byte[] prevConfig;
    // $FF: renamed from: v boolean
    public boolean field_249;
    // $FF: renamed from: ao int
@@ -589,7 +585,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: bO int
    private int field_295;
    // $FF: renamed from: m byte[]
-   private byte[] field_296;
+   private byte[] config;
    // $FF: renamed from: aw int
    public int field_297;
    // $FF: renamed from: f boolean[]
@@ -605,29 +601,29 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: A int[]
    public static final int[] field_303;
    // $FF: renamed from: a javax.microedition.midlet.MIDlet
-   public MIDlet field_304;
+   public MIDlet midlet;
    // $FF: renamed from: az int
-   public int field_305;
+   public int resume;
    // $FF: renamed from: aA int
-   public int field_306;
+   public int frame;
    // $FF: renamed from: aB int
-   public int field_307;
+   public int renderedFrame;
    // $FF: renamed from: b long
-   public long field_308;
+   public long startTime;
    // $FF: renamed from: c long
-   public long field_309;
+   public long startFrameTime;
    // $FF: renamed from: d long
-   public long field_310;
+   public long gameElapsedTime;
    // $FF: renamed from: e long
-   public long field_311;
+   public long appElapsedTime;
    // $FF: renamed from: aC int
-   public int field_312;
+   public int minFrameTime;
    // $FF: renamed from: I boolean
-   public boolean field_313;
+   public boolean rendering;
    // $FF: renamed from: B int[]
-   public int[] field_314;
+   public int[] lastFrameLags;
    // $FF: renamed from: aD int
-   public int field_315;
+   public int nextFrameLagIndex;
    // $FF: renamed from: aE int
    public static int field_316;
    // $FF: renamed from: aF int
@@ -635,7 +631,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: c java.lang.String[]
    public String[] field_318;
    // $FF: renamed from: a java.io.InputStream
-   public static InputStream field_319;
+   public static InputStream lastOpenedStream;
    // $FF: renamed from: l int[][]
    private static final int[][] field_320;
    // $FF: renamed from: J boolean
@@ -645,11 +641,11 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: bP int
    private int field_323;
    // $FF: renamed from: a char[]
-   private static final char[] field_324;
+   private static final char[] CHARS;
    // $FF: renamed from: bQ int
-   private int field_325;
+   private int nameInputIndex;
    // $FF: renamed from: L int[]
-   private int[] field_326;
+   private int[] nameInput;
    // $FF: renamed from: K boolean
    public boolean field_327;
 
@@ -930,13 +926,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    }
 
    public final void hideNotify() {
-      this.method_22();
+      this.pauseApp();
    }
 
    public final void showNotify() {
    }
 
-   public class_1(MIDlet var1, int var2) {
+   public GameCanvas(MIDlet midlet, int resume) {
       short[][] var10000 = new short[][]{{0, 0, 64, 96}, {64, 0, 64, 96}, {128, 0, 64, 96}};
       this.field_40 = 0;
       this.field_43 = new int[]{4456493, this.getWidth() - 68 - 12 << 16 | 45, 3473476, this.getWidth() - 53 - 12 << 16 | 68, 4456543, this.getWidth() - 68 - 12 << 16 | 95};
@@ -946,9 +942,9 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.field_52 = 0;
       this.field_58 = field_18 >> 1;
       this.field_59 = field_22 * 3 >> 2;
-      this.field_63 = new String[88];
-      this.field_64 = new String[357];
-      this.field_71 = false;
+      this.texts = new String[88];
+      this.manualTexts = new String[357];
+      this.startupLanguageSelection = false;
       this.field_77 = 10;
       this.field_78 = new int[this.field_77][15];
       this.field_82 = 0;
@@ -985,8 +981,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.field_212 = 0;
       this.field_221 = -1;
       this.field_222 = 0;
-      this.field_223 = 0;
-      this.field_224 = 0;
+      this.zone = 0;
+      this.act = 0;
       this.field_227 = new int[2];
       this.field_228 = new int[2];
       this.field_229 = new int[2];
@@ -997,8 +993,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.field_240 = false;
       this.field_241 = false;
       this.field_243 = 9;
-      this.field_247 = 0;
-      this.field_248 = new byte[4];
+      this.currentPauseMenuItem = 0;
+      this.prevConfig = new byte[4];
       this.field_254 = false;
       this.field_258 = 0;
       this.field_259 = 0;
@@ -1021,34 +1017,34 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.field_289 = false;
       this.field_290 = false;
       this.field_294 = 0;
-      this.field_296 = new byte[4];
+      this.config = new byte[4];
       this.field_297 = 0;
       this.field_298 = new boolean[]{false, false, false, false, false};
       this.field_299 = false;
       this.field_300 = 0;
       this.field_301 = 0;
       this.field_302 = false;
-      this.field_305 = 0;
-      this.field_306 = 0;
-      this.field_307 = 0;
-      this.field_312 = Integer.MIN_VALUE;
-      this.field_314 = new int[6];
-      this.field_315 = 0;
+      this.resume = 0;
+      this.frame = 0;
+      this.renderedFrame = 0;
+      this.minFrameTime = Integer.MIN_VALUE;
+      this.lastFrameLags = new int[6];
+      this.nextFrameLagIndex = 0;
       int[] var3 = new int[]{0, 12, 24, 12};
       this.field_318 = new String[]{"", ""};
       this.field_321 = false;
       this.field_322 = false;
-      this.field_325 = 0;
-      this.field_326 = new int[3];
+      this.nameInputIndex = 0;
+      this.nameInput = new int[3];
       this.field_327 = false;
-      this.field_304 = var1;
-      this.field_305 = var2;
+      this.midlet = midlet;
+      this.resume = resume;
       this.setFullScreenMode(true);
       this.sizeChanged(this.getWidth(), this.getHeight());
    }
 
    public final void keyPressed(int var1) {
-      if (!this.field_299 && this.field_220 == 1) {
+      if (!this.field_299 && this.appState == 1) {
          if (var1 == "230691".charAt(this.field_300)) {
             ++this.field_300;
          } else {
@@ -1060,46 +1056,46 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          }
       }
 
-      if (!field_129 || this.field_220 != 2) {
+      if (!field_129 || this.appState != 2) {
          switch (this.method_263(var1)) {
             case 1:
-               this.field_30[3] = true;
-               this.field_30[2] = true;
+               this.pressedKeys[3] = true;
+               this.pressedKeys[2] = true;
                return;
             case 2:
             case 14:
-               this.field_30[2] = true;
+               this.pressedKeys[2] = true;
                return;
             case 3:
-               this.field_30[4] = true;
-               this.field_30[2] = true;
+               this.pressedKeys[4] = true;
+               this.pressedKeys[2] = true;
                return;
             case 4:
             case 16:
-               this.field_30[3] = true;
+               this.pressedKeys[3] = true;
                return;
             case 5:
             case 18:
-               this.field_30[0] = true;
+               this.pressedKeys[0] = true;
                return;
             case 6:
             case 17:
-               this.field_30[4] = true;
+               this.pressedKeys[4] = true;
                return;
             case 7:
-               this.field_30[3] = true;
-               this.field_30[1] = true;
+               this.pressedKeys[3] = true;
+               this.pressedKeys[1] = true;
                break;
             case 8:
             case 15:
-               this.field_30[1] = true;
+               this.pressedKeys[1] = true;
                return;
             case 9:
-               this.field_30[4] = true;
-               this.field_30[1] = true;
+               this.pressedKeys[4] = true;
+               this.pressedKeys[1] = true;
                return;
             case 10:
-               this.field_30[9] = true;
+               this.pressedKeys[9] = true;
                if (this.field_299 && this.field_298[4]) {
                   this.field_302 = !this.field_302;
                   return;
@@ -1108,10 +1104,10 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             default:
                break;
             case 12:
-               this.field_30[5] = true;
+               this.pressedKeys[5] = true;
                return;
             case 13:
-               this.field_30[6] = true;
+               this.pressedKeys[6] = true;
                return;
          }
 
@@ -1121,86 +1117,84 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    public final void keyReleased(int var1) {
       switch (this.method_263(var1)) {
          case 1:
-            this.field_30[3] = false;
-            this.field_30[2] = false;
+            this.pressedKeys[3] = false;
+            this.pressedKeys[2] = false;
             return;
          case 2:
          case 14:
-            this.field_30[2] = false;
+            this.pressedKeys[2] = false;
             return;
          case 3:
-            this.field_30[4] = false;
-            this.field_30[2] = false;
+            this.pressedKeys[4] = false;
+            this.pressedKeys[2] = false;
             return;
          case 4:
          case 16:
-            this.field_30[3] = false;
+            this.pressedKeys[3] = false;
             return;
          case 5:
          case 18:
-            this.field_30[0] = false;
+            this.pressedKeys[0] = false;
             return;
          case 6:
          case 17:
-            this.field_30[4] = false;
+            this.pressedKeys[4] = false;
             return;
          case 7:
-            this.field_30[3] = false;
-            this.field_30[1] = false;
+            this.pressedKeys[3] = false;
+            this.pressedKeys[1] = false;
          case 11:
          default:
             return;
          case 8:
          case 15:
-            this.field_30[1] = false;
+            this.pressedKeys[1] = false;
             return;
          case 9:
-            this.field_30[4] = false;
-            this.field_30[1] = false;
+            this.pressedKeys[4] = false;
+            this.pressedKeys[1] = false;
             return;
          case 10:
-            this.field_30[9] = false;
+            this.pressedKeys[9] = false;
             return;
          case 12:
-            this.field_30[5] = false;
+            this.pressedKeys[5] = false;
             return;
          case 13:
-            this.field_30[6] = false;
+            this.pressedKeys[6] = false;
       }
    }
 
-   public final void playerUpdate(Player var1, String var2, Object var3) {
-      if (var2 == "endOfMedia") {
-         switch (this.field_36.field_332) {
+   public final void playerUpdate(Player player, String event, Object eventDatas) {
+      if (event == "endOfMedia") {
+         switch (this.audio.currentTrack) {
             case 7:
-               this.field_36.method_382();
+               this.audio.replayInterruptedTrack();
          }
       }
 
    }
 
-   // $FF: renamed from: e () void
-   public final void method_11() {
-      for(int var1 = 0; var1 < this.field_30.length; ++var1) {
-         this.field_30[var1] = false;
+   public final void resetPressedKeys() {
+      for(int key = 0; key < this.pressedKeys.length; ++key) {
+         this.pressedKeys[key] = false;
       }
 
    }
 
-   // $FF: renamed from: f () void
-   public final void method_12() throws Exception {
-      this.method_15();
-      this.method_162();
-      this.method_17();
-      this.method_19();
+   public final void init() throws Exception {
+      this.loadConfig();
+      this.loadTranslation();
+      this.loadGameProgress();
+      this.loadHighscore();
       this.field_201 = true;
-      this.method_161(true);
-      this.field_220 = 1;
+      this.loadMenu(true);
+      this.appState = 1;
       this.field_249 = true;
       this.field_250 = 10;
-      this.field_36 = new class_3(this);
-      this.field_36.field_330 = field_37;
-      this.field_36.method_379(this.field_296[1]);
+      this.audio = new Audio(this);
+      this.audio.audioTracks = audioTracks;
+      this.audio.setOptions(this.config[1]);
       this.field_196 = 0;
    }
 
@@ -1212,249 +1206,247 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: g () void
    public final void method_13() {
-      this.field_312 = Integer.MIN_VALUE;
-      this.field_306 = (int)((System.currentTimeMillis() - this.field_308) / 16L);
+      this.minFrameTime = Integer.MIN_VALUE;
+      this.frame = (int)((System.currentTimeMillis() - this.startTime) / 16L);
    }
 
-   // $FF: renamed from: h () void
-   public final void method_14() {
-      method_181(this.field_296, "config");
+   public final void saveConfig() {
+      writeRecordStore(this.config, "config");
    }
 
-   // $FF: renamed from: aa () void
-   private void method_15() {
-      this.field_296 = method_182("config");
-      if (this.field_296 == null) {
-         this.field_71 = true;
-         this.field_296 = new byte[4];
-         this.field_296[0] = 1;
-         this.field_296[1] = 1;
-         this.field_296[2] = 0;
-         this.method_14();
+   private void loadConfig() {
+      this.config = readRecordStore("config");
+      if (this.config == null) {
+         this.startupLanguageSelection = true;
+         this.config = new byte[4];
+         this.config[0] = 1;
+         this.config[1] = 1;
+         this.config[2] = 0;
+         this.saveConfig();
       }
 
    }
 
-   // $FF: renamed from: ab () void
-   private void method_16() {
-      byte[] var1;
-      (var1 = new byte[10])[0] = this.field_242;
-      var1[1] = this.field_243;
-      var1[2] = this.field_244;
+   private void saveGameProgress() {
+      byte[] saveData;
+      (saveData = new byte[10])[0] = this.level;
+      saveData[1] = this.field_243;
+      saveData[2] = this.field_244;
 
-      for(int var2 = 0; var2 < 4; ++var2) {
-         var1[3 + var2] = (byte)(this.field_245 >> (var2 << 3 & 255));
+      for(int i = 0; i < 4; ++i) {
+         saveData[3 + i] = (byte)(this.field_245 >> (i << 3 & 255));
       }
 
-      var1[7] = (byte)this.field_40;
-      method_181(var1, "savedGame");
+      saveData[7] = (byte)this.field_40;
+      writeRecordStore(saveData, "savedGame");
    }
 
-   // $FF: renamed from: ac () void
-   private void method_17() {
+   private void loadGameProgress() {
       try {
-         byte[] var1 = method_182("savedGame");
-         this.field_242 = var1[0];
-         this.field_243 = var1[1];
-         this.field_244 = var1[2];
+         byte[] saveData = readRecordStore("savedGame");
+         this.level = saveData[0];
+         this.field_243 = saveData[1];
+         this.field_244 = saveData[2];
          int var2 = 0;
 
-         for(int var3 = 0; var3 < 4; ++var3) {
-            var2 |= (var1[3 + var3] & 255) << (var3 << 3);
+         for(int i = 0; i < 4; ++i) {
+            var2 |= (saveData[3 + i] & 255) << (i << 3);
          }
 
          this.field_245 = var2;
-         this.field_301 = this.field_40 = var1[7];
-      } catch (Exception var4) {
-         this.method_16();
+         this.field_301 = this.field_40 = saveData[7];
+      } catch (Exception error) {
+         this.saveGameProgress();
       }
    }
 
-   // $FF: renamed from: ad () void
-   private void method_18() {
-      byte[] var1 = new byte[55];
+   private void saveHighscore() {
+      byte[] highscoreData = new byte[55];
 
-      for(int var2 = 0; var2 < 5; ++var2) {
-         var1[0 + var2 * 11] = (byte)field_11[var2];
+      for(int highscoreIndex = 0; highscoreIndex < 5; ++highscoreIndex) {
+         highscoreData[0 + highscoreIndex * 11] = (byte)highscoreDiffculties[highscoreIndex];
 
-         int var3;
-         for(var3 = 0; var3 < 3; ++var3) {
-            for(int var4 = 0; var4 < 2; ++var4) {
-               var1[1 + var3 * 2 + var4 + var2 * 11] = (byte)(field_9[var2].charAt(var3) >> var4 * 8 % 256);
+         int index;
+         for(index = 0; index < 3; ++index) {
+            for(int i = 0; i < 2; ++i) {
+               highscoreData[1 + index * 2 + i + highscoreIndex * 11] = (byte)(highscoreNames[highscoreIndex].charAt(index) >> i * 8 % 256);
             }
          }
 
-         for(var3 = 0; var3 < 4; ++var3) {
-            var1[7 + var3 + var2 * 11] = (byte)(field_10[var2] >> var3 * 8 % 256);
+         for(index = 0; index < 4; ++index) {
+            highscoreData[7 + index + highscoreIndex * 11] = (byte)(highscoreScores[highscoreIndex] >> index * 8 % 256);
          }
       }
 
-      method_181(var1, "highscore");
+      writeRecordStore(highscoreData, "highscore");
    }
 
-   // $FF: renamed from: ae () void
-   private void method_19() {
+   private void loadHighscore() {
       try {
-         byte[] var1 = method_182("highscore");
+         byte[] highscoreData = readRecordStore("highscore");
 
-         for(int var2 = 0; var2 < 5; ++var2) {
-            field_11[var2] = var1[0 + var2 * 11];
-            char[] var3 = new char[3];
+         for(int scoreIndex = 0; scoreIndex < 5; ++scoreIndex) {
+            highscoreDiffculties[scoreIndex] = highscoreData[0 + scoreIndex * 11];
+            char[] name = new char[3];
 
-            int var4;
-            int var5;
-            for(var4 = 0; var4 < 3; ++var4) {
-               var5 = 0;
+            int index;
+            int character;
+            for(index = 0; index < 3; ++index) {
+               character = 0;
 
-               for(int var6 = 0; var6 < 2; ++var6) {
-                  var5 = (char)(var5 | var1[1 + var4 * 2 + var6 + var2 * 11] << var6 * 8);
+               for(int i = 0; i < 2; ++i) {
+                  character = (char)(character | highscoreData[1 + index * 2 + i + scoreIndex * 11] << i * 8);
                }
 
-               var3[var4] = (char)var5;
+               name[index] = (char)character;
             }
 
-            field_9[var2] = new String(var3);
-            var4 = 0;
+            highscoreNames[scoreIndex] = new String(name);
+            index = 0;
 
-            for(var5 = 0; var5 < 4; ++var5) {
-               var4 |= (var1[7 + var5 + var2 * 11] & 255) << var5 * 8;
+            for(character = 0; character < 4; ++character) {
+               index |= (highscoreData[7 + character + scoreIndex * 11] & 255) << character * 8;
             }
 
-            field_10[var2] = var4;
+            highscoreScores[scoreIndex] = index;
          }
 
-      } catch (Exception var7) {
-         this.method_18();
+      } catch (Exception error) {
+         this.saveHighscore();
       }
    }
 
    // $FF: renamed from: af () void
    private void method_20() {
-      if (this.field_220 == 1) {
-         if (this.field_66 == 3 || this.field_66 == 4) {
-            if (this.field_296[1] != 0) {
-               this.field_31[0] = this.field_63[69];
+      if (this.appState == 1) {
+         if (this.viewState == 3 || this.viewState == 4) {
+            if (this.config[1] != 0) {
+               this.commandTexts[0] = this.texts[69];
             } else {
-               this.field_31[0] = this.field_63[68];
+               this.commandTexts[0] = this.texts[68];
             }
 
-            if (this.field_66 == 4) {
-               this.field_31[1] = this.field_63[59];
+            if (this.viewState == 4) {
+               this.commandTexts[1] = this.texts[59];
                return;
             }
 
-            this.field_31[1] = this.field_63[57];
+            this.commandTexts[1] = this.texts[57];
             return;
          }
 
-         if (this.field_66 == 14) {
-            this.field_31[1] = this.field_63[59];
-            this.field_31[0] = "";
+         if (this.viewState == 14) {
+            this.commandTexts[1] = this.texts[59];
+            this.commandTexts[0] = "";
             return;
          }
       } else {
-         if (this.field_220 != 6 && this.field_220 != 4 && this.field_220 != 2 && this.field_220 != 3 && this.field_220 != 9) {
-            if (this.field_296[1] != 0) {
-               this.field_31[0] = this.field_63[69];
+         if (this.appState != 6 && this.appState != 4 && this.appState != 2 && this.appState != 3 && this.appState != 9) {
+            if (this.config[1] != 0) {
+               this.commandTexts[0] = this.texts[69];
             } else {
-               this.field_31[0] = this.field_63[68];
+               this.commandTexts[0] = this.texts[68];
             }
          } else {
-            this.field_31[0] = "";
+            this.commandTexts[0] = "";
          }
 
-         if (this.field_220 == 2) {
+         if (this.appState == 2) {
             if ((this.field_111 > 0 || !field_125) && !this.field_155) {
-               this.field_31[1] = this.field_63[60];
+               this.commandTexts[1] = this.texts[60];
                return;
             }
 
-            this.field_31[1] = "";
+            this.commandTexts[1] = "";
             return;
          }
 
-         if (this.field_220 == 10) {
-            this.field_31[1] = this.field_63[61];
+         if (this.appState == 10) {
+            this.commandTexts[1] = this.texts[61];
             return;
          }
 
-         if (this.field_220 == 6) {
-            this.field_31[1] = this.field_63[66];
+         if (this.appState == 6) {
+            this.commandTexts[1] = this.texts[66];
             return;
          }
 
-         if (this.field_220 == 3) {
-            this.field_31[1] = this.field_63[59];
+         if (this.appState == 3) {
+            this.commandTexts[1] = this.texts[59];
             return;
          }
 
-         if (this.field_220 == 4) {
-            this.field_31[1] = "";
+         if (this.appState == 4) {
+            this.commandTexts[1] = "";
             return;
          }
 
-         if (this.field_220 == 9) {
-            this.field_31[1] = "OK";
+         if (this.appState == 9) {
+            this.commandTexts[1] = "OK";
          }
       }
 
    }
 
-   // $FF: renamed from: a () boolean
-   public final boolean method_21() {
+   public final boolean handleCommandAction() {
       try {
-         if (this.field_76 && this.field_31[1].equals(this.field_63[60])) {
-            this.method_22();
+         // field_76 ????? and Command == PAUSE
+         if (this.field_76 && this.commandTexts[1].equals(this.texts[60])) {
+            this.pauseApp();
             return true;
          }
 
+         // field_76 ???
          this.field_76 = false;
-         byte var1 = -1;
-         if (this.field_30[5]) {
-            this.field_30[5] = false;
-            var1 = 0;
-         } else if (this.field_30[6]) {
-            if (this.field_220 == 1) {
+         byte command = -1;
+         if (this.pressedKeys[5]) {
+            this.pressedKeys[5] = false;
+            command = 0;
+         } else if (this.pressedKeys[6]) {
+            if (this.appState == 1) {
                return false;
             }
 
-            this.field_30[6] = false;
-            var1 = 1;
+            this.pressedKeys[6] = false;
+            command = 1;
          }
 
-         if (var1 != -1) {
-            if (this.field_31[var1].equals(this.field_63[59])) {
-               if (this.field_220 == 3) {
-                  this.field_220 = 1;
+         if (command != -1) {
+            // back
+            if (this.commandTexts[command].equals(this.texts[59])) {
+               if (this.appState == 3) {
+                  this.appState = 1;
                   this.field_249 = true;
                   this.field_250 = 10;
-                  this.method_161(false);
-                  this.field_66 = 4;
-                  this.field_69 = 1;
-                  this.method_156(11 + this.field_69);
-                  this.method_164(2);
+                  this.loadMenu(false);
+                  this.viewState = 4;
+                  this.currentMenuItem = 1;
+                  this.setMenuHelperText(11 + this.currentMenuItem);
+                  this.updateMenuCommandsText(2);
                } else {
-                  this.field_220 = 1;
+                  this.appState = 1;
                   this.field_249 = true;
                   this.field_250 = 10;
-                  this.method_161(false);
+                  this.loadMenu(false);
                }
 
                return true;
             }
 
-            if (this.field_31[var1].equals(this.field_63[60])) {
-               this.field_220 = 10;
+            // pause
+            if (this.commandTexts[command].equals(this.texts[60])) {
+               this.appState = 10;
                this.field_249 = true;
                this.field_250 = 10;
-               this.field_247 = 0;
-               this.field_36.method_381();
+               this.currentPauseMenuItem = 0;
+               this.audio.interruptTrack();
                return true;
             }
 
-            if (this.field_31[var1].equals(this.field_63[61])) {
-               this.method_14();
-               this.field_220 = 2;
+            // resume
+            if (this.commandTexts[command].equals(this.texts[61])) {
+               this.saveConfig();
+               this.appState = 2;
                this.field_201 = true;
                this.field_249 = true;
                this.field_250 = 10;
@@ -1464,49 +1456,54 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                return true;
             }
 
-            if (this.field_31[var1].equals(this.field_63[66])) {
-               this.field_220 = 1;
+            // title
+            if (this.commandTexts[command].equals(this.texts[66])) {
+               this.appState = 1;
                this.field_249 = true;
                this.field_250 = 10;
-               this.method_161(false);
+               this.loadMenu(false);
                return true;
             }
 
-            if (this.field_31[var1].equals(this.field_63[68])) {
-               this.field_296[1] = this.field_248[1];
-               if (this.field_296[1] == 0) {
-                  this.field_296[1] = 1;
+            // sound
+            if (this.commandTexts[command].equals(this.texts[68])) {
+               this.config[1] = this.prevConfig[1];
+               if (this.config[1] == 0) {
+                  this.config[1] = 1;
                }
 
-               this.method_14();
-               this.field_36.method_379(1);
+               this.saveConfig();
+               this.audio.setOptions(1);
                this.field_249 = true;
                this.field_250 = 10;
                return true;
             }
 
-            if (this.field_31[var1].equals(this.field_63[69])) {
-               this.field_248[1] = this.field_296[1];
-               this.field_296[1] = 0;
-               this.method_14();
-               this.field_36.method_379(0);
+            // mute
+            if (this.commandTexts[command].equals(this.texts[69])) {
+               this.prevConfig[1] = this.config[1];
+               this.config[1] = 0;
+               this.saveConfig();
+               this.audio.setOptions(0);
                this.field_249 = true;
                this.field_250 = 10;
                return true;
             }
 
-            if (this.field_31[var1].equals(this.field_63[57])) {
-               this.field_66 = 14;
-               this.field_69 = 1;
-               this.method_164(3);
+            // quit
+            if (this.commandTexts[command].equals(this.texts[57])) {
+               this.viewState = 14;
+               this.currentMenuItem = 1;
+               this.updateMenuCommandsText(3);
                return true;
             }
 
-            if (this.field_31[var1].equals("OK")) {
-               this.method_261();
+            // ok
+            if (this.commandTexts[command].equals("OK")) {
+               this.updateHighscore();
             }
          }
-      } catch (Exception var2) {
+      } catch (Exception error) {
          this.field_76 = false;
       }
 
@@ -1514,14 +1511,14 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    }
 
    // $FF: renamed from: i () void
-   public final void method_22() {
-      if (this.field_220 == 2) {
-         this.field_220 = 10;
+   public final void pauseApp() {
+      if (this.appState == 2) {
+         this.appState = 10;
          this.field_249 = true;
          this.field_250 = 10;
-         this.field_247 = 0;
+         this.currentPauseMenuItem = 0;
          this.field_76 = false;
-         this.field_36.method_381();
+         this.audio.interruptTrack();
       } else {
          this.field_201 = true;
       }
@@ -1530,21 +1527,21 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a (boolean) void
    public final void method_23(boolean var1) {
       for(int var2 = 0; var2 < 6; ++var2) {
-         if (var1 && this.field_223 < field_216.length) {
-            ++this.field_223;
-            if (this.field_223 == 6 && this.field_224 == 3 || this.field_223 > 6) {
-               this.field_223 = 0;
-               this.field_224 = 0;
+         if (var1 && this.zone < field_216.length) {
+            ++this.zone;
+            if (this.zone == 6 && this.act == 3 || this.zone > 6) {
+               this.zone = 0;
+               this.act = 0;
             }
-         } else if (this.field_223 >= 0) {
-            --this.field_223;
-            if (this.field_223 < 0) {
-               this.field_223 = 6;
-               this.field_224 = 2;
+         } else if (this.zone >= 0) {
+            --this.zone;
+            if (this.zone < 0) {
+               this.zone = 6;
+               this.act = 2;
             }
          }
 
-         if (method_24(field_216[this.field_223][0])) {
+         if (method_24(field_216[this.zone][0])) {
             return;
          }
       }
@@ -1608,14 +1605,14 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: b (boolean) void
    public final void method_27(boolean var1) {
       int var3 = field_26.getFont().getHeight();
-      if (this.field_31[0] != null && (this.field_31[0] != this.field_318[0] || this.field_220 != 2 || var1)) {
-         this.method_36(this.field_31[0], field_18 >> 2, field_16 - var3, 17, true);
-         this.field_318[0] = this.field_31[0];
+      if (this.commandTexts[0] != null && (this.commandTexts[0] != this.field_318[0] || this.appState != 2 || var1)) {
+         this.method_36(this.commandTexts[0], field_18 >> 2, field_16 - var3, 17, true);
+         this.field_318[0] = this.commandTexts[0];
       }
 
-      if (this.field_31[1] != null && (this.field_31[1] != this.field_318[1] || this.field_220 != 2 || var1)) {
-         this.method_36(this.field_31[1], field_18 * 3 >> 2, field_16 - var3, 17, true);
-         this.field_318[1] = this.field_31[1];
+      if (this.commandTexts[1] != null && (this.commandTexts[1] != this.field_318[1] || this.appState != 2 || var1)) {
+         this.method_36(this.commandTexts[1], field_18 * 3 >> 2, field_16 - var3, 17, true);
+         this.field_318[1] = this.commandTexts[1];
       }
 
    }
@@ -1850,16 +1847,16 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: a (int, boolean) void
    public final void method_35(int var1, boolean var2) {
-      if (99950000 > this.field_107 && this.field_107 % '\uc350' > (this.field_107 + var1) % '\uc350') {
+      if (99950000 > this.score && this.score % '\uc350' > (this.score + var1) % '\uc350') {
          ++this.field_111;
          if (var2) {
-            this.field_36.method_386(7, 1);
+            this.audio.interruptTrackAndPlay(7, 1);
          }
       }
 
-      this.field_107 += var1;
-      if (this.field_107 > 99999999) {
-         this.field_107 = 99999999;
+      this.score += var1;
+      if (this.score > 99999999) {
+         this.score = 99999999;
       }
 
    }
@@ -1890,7 +1887,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: c (boolean) void
    public final void method_38(boolean var1) {
       if (!var1) {
-         if (this.field_258 == this.field_106 && this.field_259 == this.field_107) {
+         if (this.field_258 == this.field_106 && this.field_259 == this.score) {
             if (this.field_106 == 0 && (this.field_32 & 1) == 0) {
                field_255 = true;
             }
@@ -1917,7 +1914,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
       this.field_261 = this.field_111;
       this.field_258 = this.field_106;
-      this.field_259 = this.field_107;
+      this.field_259 = this.score;
       if (field_255) {
          boolean var12 = false;
          method_151(0, 0, 100, field_23);
@@ -1926,7 +1923,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             method_39(24, -30, this.field_106, 3);
          }
 
-         method_39(24, -18, this.field_107, 8);
+         method_39(24, -18, this.score, 8);
          field_255 = false;
       }
 
@@ -1981,9 +1978,9 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: p () void
    public final void method_41() {
       this.field_78 = new int[this.field_77][15];
-      this.field_36.method_380(13, 1);
-      this.field_31[0] = "";
-      this.field_31[1] = "";
+      this.audio.play(13, 1);
+      this.commandTexts[0] = "";
+      this.commandTexts[1] = "";
       this.field_80 = 0;
       this.field_263 = 30;
       this.field_262 = true;
@@ -1994,7 +1991,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.field_78[0][8] = 1 - field_81[this.field_78[0][1]][2];
       this.field_78[0][9] = 0;
       this.field_78[1][0] = 1;
-      this.field_78[1][1] = 4 + this.field_224;
+      this.field_78[1][1] = 4 + this.act;
       this.field_78[1][2] = 240;
       this.field_78[1][3] = 42;
       this.field_78[1][8] = 25 - field_81[this.field_78[0][1]][2];
@@ -2033,7 +2030,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: q () void
    public final void method_42() {
       try {
-         this.field_220 = 4;
+         this.appState = 4;
          this.field_240 = false;
          this.field_241 = false;
          this.field_155 = false;
@@ -2066,7 +2063,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          this.field_78[0][8] = 1 - field_81[this.field_78[0][1]][2];
          this.field_78[0][9] = 0;
          this.field_78[1][0] = 1;
-         this.field_78[1][1] = 4 + this.field_224;
+         this.field_78[1][1] = 4 + this.act;
          this.field_78[1][2] = 240;
          this.field_78[1][3] = 56;
          this.field_78[1][8] = 25 - field_81[this.field_78[0][1]][2];
@@ -2078,13 +2075,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          this.field_78[2][8] = -1 - field_81[this.field_78[0][1]][2];
          this.field_78[2][9] = 2;
          this.field_78[3][0] = 1;
-         this.field_78[3][1] = field_215[this.field_223];
+         this.field_78[3][1] = field_215[this.zone];
          this.field_78[3][2] = 0 - field_81[this.field_78[3][1]][2];
          this.field_78[3][3] = 40;
          this.field_78[3][8] = -field_81[this.field_78[3][1]][2];
          this.field_78[3][9] = 0;
          this.field_79 = (field_18 >> 1) + field_81[this.field_78[3][1]][2] / 2;
-         if (this.field_223 == 6) {
+         if (this.zone == 6) {
             this.field_78[4][0] = 1;
             this.field_78[4][1] = 3;
             this.field_78[4][2] = 0 - field_81[this.field_78[4][1]][2];
@@ -2211,7 +2208,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: aj () void
    private void method_46() {
-      this.method_11();
+      this.resetPressedKeys();
       this.method_45();
       if (this.field_221 == 4 && this.field_222 == 2) {
          this.method_197(150, 11424, 1394, 0, 0);
@@ -2241,7 +2238,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.method_92();
       this.method_165();
       field_116[8] = -1;
-      this.field_220 = 2;
+      this.appState = 2;
       this.field_201 = true;
       this.method_116();
       this.field_249 = true;
@@ -2250,7 +2247,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: ak () void
    private void method_47() {
-      method_133(field_29);
+      unloadImages(commonImages);
       field_27 = null;
       this.field_240 = false;
       this.field_289 = true;
@@ -2272,12 +2269,11 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: a (java.lang.String) java.io.DataInputStream
    public static DataInputStream method_48(String var0) {
-      return new DataInputStream(method_49(var0));
+      return new DataInputStream(openResourceAsStream(var0));
    }
 
-   // $FF: renamed from: a (java.lang.String) java.io.InputStream
-   public static InputStream method_49(String var0) {
-      return field_319 = (new Object()).getClass().getResourceAsStream(var0);
+   public static InputStream openResourceAsStream(String resource) {
+      return lastOpenedStream = (new Object()).getClass().getResourceAsStream(resource);
    }
 
    // $FF: renamed from: a (java.lang.String) byte[]
@@ -2285,7 +2281,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       try {
          byte[] var1 = new byte[512];
          boolean var2 = false;
-         InputStream var3 = method_49(var0);
+         InputStream var3 = openResourceAsStream(var0);
          ByteArrayOutputStream var4 = new ByteArrayOutputStream();
 
          int var6;
@@ -2301,10 +2297,9 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       }
    }
 
-   // $FF: renamed from: r () void
-   public static void method_51() {
+   public static void closeLastOpenedResource() {
       try {
-         field_319.close();
+         lastOpenedStream.close();
       } catch (Exception var1) {
       }
    }
@@ -2386,7 +2381,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                var3 = method_52(method_48("/mc_sy_map_data.bin"));
          }
 
-         method_51();
+         closeLastOpenedResource();
          this.field_218 = var3[this.field_222][0].length;
          this.field_219 = var3[this.field_222].length;
          this.field_236 = new byte[this.field_219][this.field_218];
@@ -2412,26 +2407,26 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          var1.read(this.field_234[2]);
          var1.read(this.field_234[3]);
          var1.close();
-         method_51();
+         closeLastOpenedResource();
          if (this.field_194 == null) {
             this.field_194 = method_53(method_48("/mc_obj_size_table.bin"));
-            method_51();
+            closeLastOpenedResource();
          }
 
          if (field_207 == null) {
             field_207 = method_52(method_48("/framedata.bin"));
-            method_51();
+            closeLastOpenedResource();
          }
 
          this.field_237 = new byte[512];
-         method_49("/scddirtbl.blt").read(this.field_237);
-         method_51();
+         openResourceAsStream("/scddirtbl.blt").read(this.field_237);
+         closeLastOpenedResource();
          this.field_187 = new byte[8192];
          method_48("/scdtblwk.scd").read(this.field_187);
-         method_51();
+         closeLastOpenedResource();
          this.field_233 = new byte[8192];
          method_48("/blkcol.bct").read(this.field_233);
-         method_51();
+         closeLastOpenedResource();
          System.gc();
       } catch (Exception var6) {
       }
@@ -2441,36 +2436,36 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    public static void method_56(int var0, int var1) {
       field_27 = null;
       if (var0 == 1 && var1 == 3) {
-         field_27 = method_134("/z_zone_marble.png");
+         field_27 = loadImage("/z_zone_marble.png");
       } else {
-         field_27 = method_134("/zone" + (var0 + 1) + ".png");
+         field_27 = loadImage("/zone" + (var0 + 1) + ".png");
       }
    }
 
    // $FF: renamed from: s () void
    public final void method_57() {
-      if (this.field_220 != 2 || this.field_262 || this.field_80 >= 30) {
+      if (this.appState != 2 || this.field_262 || this.field_80 >= 30) {
          int[] var10000;
          if (this.field_299 && this.field_298[4] && this.field_302) {
-            if (this.field_30[2]) {
+            if (this.pressedKeys[2]) {
                var10000 = field_116;
                var10000[1] -= 2048;
                return;
             }
 
-            if (this.field_30[1]) {
+            if (this.pressedKeys[1]) {
                var10000 = field_116;
                var10000[1] += 2048;
                return;
             }
 
-            if (this.field_30[3]) {
+            if (this.pressedKeys[3]) {
                var10000 = field_116;
                var10000[0] -= 2048;
                return;
             }
 
-            if (this.field_30[4]) {
+            if (this.pressedKeys[4]) {
                var10000 = field_116;
                var10000[0] += 2048;
                return;
@@ -2878,9 +2873,9 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       } else if (this.field_267) {
          return false;
       } else if (this.field_221 == 0 && (this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 31 || this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 32)) {
-         this.field_30[2] = false;
+         this.pressedKeys[2] = false;
          return false;
-      } else if (this.field_30[2]) {
+      } else if (this.pressedKeys[2]) {
          if (this.field_221 == 5 && this.field_222 != 2 && method_74()) {
             return false;
          } else if (this.field_203) {
@@ -2956,13 +2951,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          return true;
       } else {
          if (!field_122 && !this.field_267) {
-            if (this.field_30[1]) {
+            if (this.pressedKeys[1]) {
                if (Math.abs(field_116[10]) > this.field_90) {
                   field_124 = true;
                   return true;
                }
 
-               if (!this.field_30[3] && !this.field_30[4]) {
+               if (!this.pressedKeys[3] && !this.pressedKeys[4]) {
                   field_126 = true;
                   this.field_84 += 2;
                   if (this.field_84 > 32) {
@@ -2971,7 +2966,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
                   return false;
                }
-            } else if (this.field_30[0] && Math.abs(field_116[10]) <= this.field_90 && !this.field_30[3] && !this.field_30[4]) {
+            } else if (this.pressedKeys[0] && Math.abs(field_116[10]) <= this.field_90 && !this.pressedKeys[3] && !this.pressedKeys[4]) {
                field_127 = true;
                this.field_85 += 2;
                if (this.field_85 > 24) {
@@ -3233,7 +3228,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          }
 
          int[] var10000;
-         if ((field_100 <= 22 || field_100 >= 338) && (var1 > this.field_88 || !this.field_30[3] && !this.field_30[4] && field_116[10] != 0) && field_116[10] != 0) {
+         if ((field_100 <= 22 || field_100 >= 338) && (var1 > this.field_88 || !this.pressedKeys[3] && !this.pressedKeys[4] && field_116[10] != 0) && field_116[10] != 0) {
             if (field_116[10] < 0) {
                var10000 = field_116;
                var10000[10] += this.field_89;
@@ -3293,7 +3288,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                            field_116[10] = 0;
                            field_116[13] = 0;
                            field_116[14] = 0;
-                           if (this.field_30[4]) {
+                           if (this.pressedKeys[4]) {
                               this.method_72();
                            }
                         }
@@ -3302,7 +3297,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                            field_116[10] = 0;
                            field_116[13] = 0;
                            field_116[14] = 0;
-                           if (this.field_30[3]) {
+                           if (this.pressedKeys[3]) {
                               this.method_72();
                            }
                         }
@@ -3311,7 +3306,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                            field_116[10] = 0;
                            field_116[13] = 0;
                            field_116[14] = 0;
-                           if (this.field_30[4]) {
+                           if (this.pressedKeys[4]) {
                               this.method_72();
                            }
                         }
@@ -3320,7 +3315,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                            field_116[10] = 0;
                            field_116[13] = 0;
                            field_116[14] = 0;
-                           if (this.field_30[3]) {
+                           if (this.pressedKeys[3]) {
                               this.method_72();
                            }
                         }
@@ -3330,7 +3325,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         field_116[10] = 0;
                         field_116[13] = 0;
                         field_116[14] = 0;
-                        if (this.field_30[4]) {
+                        if (this.pressedKeys[4]) {
                            this.method_72();
                         }
                      }
@@ -3339,7 +3334,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         field_116[10] = 0;
                         field_116[13] = 0;
                         field_116[14] = 0;
-                        if (this.field_30[3]) {
+                        if (this.pressedKeys[3]) {
                            this.method_72();
                         }
                      }
@@ -3419,7 +3414,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       int[] var10000;
       if (this.field_294 > 0) {
          --this.field_294;
-      } else if (this.field_30[3]) {
+      } else if (this.pressedKeys[3]) {
          field_116[12] = 1;
          if (field_116[3] == 0) {
             var10000 = field_116;
@@ -3432,7 +3427,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                var10000[3] -= this.field_89;
             }
          }
-      } else if (this.field_30[4]) {
+      } else if (this.pressedKeys[4]) {
          field_116[12] = 0;
          if (field_116[3] == 0) {
             var10000 = field_116;
@@ -3546,7 +3541,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         field_116[10] = 0;
                         field_116[13] = 0;
                         field_116[14] = 0;
-                        if (this.field_30[4]) {
+                        if (this.pressedKeys[4]) {
                            this.method_72();
                         }
                      }
@@ -3555,7 +3550,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         field_116[10] = 0;
                         field_116[13] = 0;
                         field_116[14] = 0;
-                        if (this.field_30[3]) {
+                        if (this.pressedKeys[3]) {
                            this.method_72();
                         }
                      }
@@ -3564,7 +3559,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         field_116[10] = 0;
                         field_116[13] = 0;
                         field_116[14] = 0;
-                        if (this.field_30[4]) {
+                        if (this.pressedKeys[4]) {
                            this.method_72();
                         }
                      }
@@ -3573,7 +3568,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         field_116[10] = 0;
                         field_116[13] = 0;
                         field_116[14] = 0;
-                        if (this.field_30[3]) {
+                        if (this.pressedKeys[3]) {
                            this.method_72();
                         }
                      }
@@ -3583,7 +3578,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                      field_116[10] = 0;
                      field_116[13] = 0;
                      field_116[14] = 0;
-                     if (this.field_30[4]) {
+                     if (this.pressedKeys[4]) {
                         this.method_72();
                      }
                   }
@@ -3592,7 +3587,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                      field_116[10] = 0;
                      field_116[13] = 0;
                      field_116[14] = 0;
-                     if (this.field_30[3]) {
+                     if (this.pressedKeys[3]) {
                         this.method_72();
                      }
                   }
@@ -3677,7 +3672,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       if (this.field_294 > 0) {
          --this.field_294;
       } else if (!this.field_267) {
-         if (this.field_30[3]) {
+         if (this.pressedKeys[3]) {
             field_116[12] = 1;
             if (field_116[3] == 0) {
                var10000 = field_116;
@@ -3690,7 +3685,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                   var10000[3] -= this.field_89;
                }
             }
-         } else if (this.field_30[4]) {
+         } else if (this.pressedKeys[4]) {
             field_116[12] = 0;
             if (field_116[3] == 0) {
                var10000 = field_116;
@@ -3829,8 +3824,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          --this.field_276;
       } else {
          if (-this.field_93 <= field_116[5]) {
-            this.field_30[2] = false;
-         } else if (!this.field_30[2] && !field_117 && !field_123) {
+            this.pressedKeys[2] = false;
+         } else if (!this.pressedKeys[2] && !field_117 && !field_123) {
             field_116[5] = -this.field_93;
          }
 
@@ -3876,7 +3871,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             field_116[14] = 0;
          } else if (this.field_294 > 0) {
             --this.field_294;
-         } else if (this.field_30[3]) {
+         } else if (this.pressedKeys[3]) {
             field_116[12] = 1;
             if (field_116[13] == 0) {
                field_116[13] = 1;
@@ -3887,7 +3882,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             }
 
             this.method_88(0);
-         } else if (this.field_30[4]) {
+         } else if (this.pressedKeys[4]) {
             field_116[12] = 0;
             if (field_116[13] == 0) {
                field_116[13] = 2;
@@ -3978,7 +3973,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          }
       } else if (this.field_294 > 0) {
          --this.field_294;
-      } else if (this.field_30[3]) {
+      } else if (this.pressedKeys[3]) {
          if (field_116[13] == 0) {
             field_116[13] = 1;
          }
@@ -3989,7 +3984,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
          field_116[12] = 1;
          this.method_90(0);
-      } else if (this.field_30[4]) {
+      } else if (this.pressedKeys[4]) {
          if (field_116[13] == 0) {
             field_116[13] = 2;
          }
@@ -4736,7 +4731,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             }
 
             if (this.field_111 <= 0) {
-               this.field_36.method_380(14, -1);
+               this.audio.play(14, -1);
                this.field_110 = 240;
                this.field_249 = true;
                this.field_250 = 10;
@@ -5335,11 +5330,11 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             var7[19] = this.field_234[this.field_222][var3 + 4] & 255;
             var7[20] = this.field_235[var1] + var5;
             var7[22] = this.field_235[var1];
-            if (this.field_296[0] == 0) {
+            if (this.config[0] == 0) {
                if (var7[1] == 41 || var7[1] == 86 || var7[1] == 57 || var7[1] == 78 || var7[1] == 40 || var7[1] == 70 || var7[1] == 39 || var7[1] == 49 || var7[1] == 71) {
                   return;
                }
-            } else if (this.field_296[0] == 1 && (var7[1] == 40 || var7[1] == 70 || var7[1] == 39 || var7[1] == 49 || var7[1] == 71)) {
+            } else if (this.config[0] == 1 && (var7[1] == 40 || var7[1] == 70 || var7[1] == 39 || var7[1] == 49 || var7[1] == 71)) {
                return;
             }
 
@@ -5500,7 +5495,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: a (int, int, int, int, int, int, int, int) void
    public static void method_123(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      method_132(field_26, field_29[var0], var1, var2, var3, var4, var5, var6, var7, 3, true);
+      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var6, var7, 3, true);
    }
 
    // $FF: renamed from: h (int) int
@@ -5522,22 +5517,22 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    public static void method_126(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = method_125(var6 - field_226[0]);
       int var9 = method_125(var7 - field_226[1]);
-      method_132(field_26, field_29[var0], var1, var2, var3, var4, var5, var8, var9, 3, true);
+      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var8, var9, 3, true);
    }
 
    // $FF: renamed from: a (int, int, int, int, int, int, int, int, int) void
    public static void method_127(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = method_125(var6 - field_226[0]);
       int var10 = method_125(var7 - field_226[1]);
-      method_132(field_26, field_29[var0], var1, var2, var3, var4, var5, var9, var10, var8, true);
+      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var9, var10, var8, true);
    }
 
    // $FF: renamed from: a (int, int, int, int, int) void
    public static void method_128(int var0, int var1, int var2, int var3, int var4) {
-      if (field_29[var0] != null) {
+      if (commonImages[var0] != null) {
          int var5 = method_125(var2 - field_226[0]);
          int var6 = method_125(var3 - field_226[1]);
-         method_132(field_26, field_29[var0], 0, 0, field_29[var0].getWidth(), field_29[var0].getHeight(), var1, var5, var6, var4, true);
+         method_132(field_26, commonImages[var0], 0, 0, commonImages[var0].getWidth(), commonImages[var0].getHeight(), var1, var5, var6, var4, true);
       }
    }
 
@@ -5545,7 +5540,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    public static void method_129(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = method_125(var6 - field_226[0]);
       int var9 = method_125(var7 - field_226[1]);
-      method_132(field_26, field_29[var0], var1, var2, var3, var4, var5, var8, var9, 20, true);
+      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var8, var9, 20, true);
    }
 
    // $FF: renamed from: b (int, int, int, int, int) void
@@ -5569,7 +5564,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
             int var11 = method_125(var0 - field_226[0]);
             int var12 = method_125(var1 - field_226[1]);
-            method_132(field_26, field_29[var2], var6, var7, var8, var9, var4, var11, var12 + var10, var5, true);
+            method_132(field_26, commonImages[var2], var6, var7, var8, var9, var4, var11, var12 + var10, var5, true);
          }
       }
    }
@@ -5590,29 +5585,27 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       }
    }
 
-   // $FF: renamed from: a (javax.microedition.lcdui.Image[]) void
-   private static void method_133(Image[] var0) {
-      synchronized(var0) {
-         int var2 = 0;
+   private static void unloadImages(Image[] images) {
+      synchronized(images) {
+         int i = 0;
 
          while(true) {
-            if (var2 >= var0.length) {
+            if (i >= images.length) {
                break;
             }
 
-            var0[var2] = null;
-            ++var2;
+            images[i] = null;
+            ++i;
          }
       }
 
       System.gc();
    }
 
-   // $FF: renamed from: a (java.lang.String) javax.microedition.lcdui.Image
-   private static Image method_134(String var0) {
+   private static Image loadImage(String image) {
       try {
-         return Image.createImage(var0);
-      } catch (Exception var2) {
+         return Image.createImage(image);
+      } catch (Exception error) {
          return null;
       }
    }
@@ -5622,7 +5615,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       switch (var1) {
          case 2:
             ++this.field_111;
-            this.field_36.method_386(7, 1);
+            this.audio.interruptTrackAndPlay(7, 1);
             return;
          case 3:
             this.field_103 = 1200;
@@ -5634,7 +5627,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             return;
          case 5:
             this.field_101 = 1200;
-            this.field_36.method_380(6, -1);
+            this.audio.play(6, -1);
             return;
          case 6:
             this.field_106 += 10;
@@ -5749,7 +5742,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    private void method_142(boolean var1) {
       if (var1) {
          this.field_111 = 3;
-         this.field_107 = 0;
+         this.score = 0;
          this.field_110 = 0;
          this.method_42();
          this.field_112 = 0;
@@ -5758,18 +5751,18 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          this.field_115 = 0;
          this.field_281 = false;
       } else {
-         for(int var2 = 0; var2 < field_10.length; ++var2) {
-            if (field_10[var2] < this.field_107) {
-               this.field_220 = 9;
+         for(int var2 = 0; var2 < highscoreScores.length; ++var2) {
+            if (highscoreScores[var2] < this.score) {
+               this.appState = 9;
                this.field_249 = true;
                return;
             }
          }
 
-         this.field_220 = 1;
+         this.appState = 1;
          this.field_249 = true;
          this.field_250 = 10;
-         this.method_161(false);
+         this.loadMenu(false);
       }
    }
 
@@ -5839,16 +5832,16 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    public final void method_146() {
       this.field_249 = true;
 
-      int var1;
-      for(var1 = 0; var1 < 10; ++var1) {
-         if (this.field_12[var1]) {
-            if (this.field_30[var1]) {
-               this.field_30[var1] = false;
+      int key;
+      for(key = 0; key < 10; ++key) {
+         if (this.field_12[key]) {
+            if (this.pressedKeys[key]) {
+               this.pressedKeys[key] = false;
             } else {
-               this.field_12[var1] = false;
+               this.field_12[key] = false;
             }
          } else {
-            this.field_12[var1] = this.field_30[var1];
+            this.field_12[key] = this.pressedKeys[key];
          }
       }
 
@@ -5857,12 +5850,12 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       }
 
       this.field_68 = (byte)((this.field_68 + 1) % 24);
-      switch (this.field_66) {
+      switch (this.viewState) {
          case 0:
             ++this.field_295;
             if (this.field_295 > 150) {
                this.field_295 = 0;
-               this.field_66 = 11;
+               this.viewState = 11;
                this.field_201 = true;
             }
             break;
@@ -5870,32 +5863,32 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             ++this.field_295;
             if (this.field_295 > 150) {
                this.field_295 = 0;
-               this.method_161(false);
+               this.loadMenu(false);
             }
             break;
          case 2:
-            if (this.field_30[4]) {
-               ++this.field_296[2];
-               if (this.field_296[2] >= 5) {
-                  this.field_296[2] = 0;
+            if (this.pressedKeys[4]) {
+               ++this.config[2];
+               if (this.config[2] >= 5) {
+                  this.config[2] = 0;
                }
 
-               this.method_162();
-            } else if (this.field_30[3]) {
-               --this.field_296[2];
-               if (this.field_296[2] < 0) {
-                  this.field_296[2] = 4;
+               this.loadTranslation();
+            } else if (this.pressedKeys[3]) {
+               --this.config[2];
+               if (this.config[2] < 0) {
+                  this.config[2] = 4;
                }
 
-               this.method_162();
-            } else if (this.field_30[0]) {
-               this.method_14();
-               this.method_161(false);
-               this.method_164(0);
+               this.loadTranslation();
+            } else if (this.pressedKeys[0]) {
+               this.saveConfig();
+               this.loadMenu(false);
+               this.updateMenuCommandsText(0);
             }
             break;
          case 3:
-            if (this.field_313) {
+            if (this.rendering) {
                if (this.field_67 < 12) {
                   ++this.field_295;
                   if (this.field_295 > 10) {
@@ -5906,63 +5899,63 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                }
             }
 
-            for(var1 = 0; var1 < this.field_30.length; ++var1) {
-               if (this.field_30[var1]) {
-                  this.field_66 = 4;
-                  this.field_69 = 0;
+            for(key = 0; key < this.pressedKeys.length; ++key) {
+               if (this.pressedKeys[key]) {
+                  this.viewState = 4;
+                  this.currentMenuItem = 0;
                   this.field_67 = 6;
-                  this.method_156(11 + this.field_69);
-                  this.method_164(2);
+                  this.setMenuHelperText(11 + this.currentMenuItem);
+                  this.updateMenuCommandsText(2);
                }
             }
 
-            if (this.field_30[6]) {
-               this.field_66 = 14;
-               this.field_69 = 1;
+            if (this.pressedKeys[6]) {
+               this.viewState = 14;
+               this.currentMenuItem = 1;
             }
             break;
          case 4:
-            if (this.field_313) {
+            if (this.rendering) {
                this.field_295 = (byte)((this.field_295 + 1) % 5);
             }
 
-            if (this.field_30[4]) {
-               ++this.field_69;
-               if (this.field_69 == 6) {
-                  this.field_69 = (byte)(this.field_69 + 2);
+            if (this.pressedKeys[4]) {
+               ++this.currentMenuItem;
+               if (this.currentMenuItem == 6) {
+                  this.currentMenuItem = (byte)(this.currentMenuItem + 2);
                }
 
-               if (this.field_299 && this.field_69 == 9 || !this.field_299 && this.field_69 == 8) {
-                  this.field_69 = 0;
+               if (this.field_299 && this.currentMenuItem == 9 || !this.field_299 && this.currentMenuItem == 8) {
+                  this.currentMenuItem = 0;
                }
 
-               this.method_156(11 + this.field_69);
+               this.setMenuHelperText(11 + this.currentMenuItem);
             }
 
-            if (this.field_30[3]) {
-               --this.field_69;
-               if (this.field_69 < 0) {
+            if (this.pressedKeys[3]) {
+               --this.currentMenuItem;
+               if (this.currentMenuItem < 0) {
                   if (this.field_299) {
-                     this.field_69 = 8;
+                     this.currentMenuItem = 8;
                   } else {
-                     this.field_69 = 7;
+                     this.currentMenuItem = 7;
                   }
                }
 
-               if (this.field_69 == 7) {
-                  this.field_69 = (byte)(this.field_69 - 2);
+               if (this.currentMenuItem == 7) {
+                  this.currentMenuItem = (byte)(this.currentMenuItem - 2);
                }
 
-               this.method_156(11 + this.field_69);
-               this.method_156(11 + this.field_69);
+               this.setMenuHelperText(11 + this.currentMenuItem);
+               this.setMenuHelperText(11 + this.currentMenuItem);
             }
 
-            if (this.field_30[0]) {
-               if (this.field_69 == 0) {
-                  this.field_69 = 0;
-                  this.method_17();
-                  if (this.field_242 == 0 && this.field_243 == 9) {
-                     this.method_11();
+            if (this.pressedKeys[0]) {
+               if (this.currentMenuItem == 0) {
+                  this.currentMenuItem = 0;
+                  this.loadGameProgress();
+                  if (this.level == 0 && this.field_243 == 9) {
+                     this.resetPressedKeys();
                      this.field_201 = true;
                      this.field_111 = 3;
                      if (this.field_299) {
@@ -5971,203 +5964,203 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         this.field_40 = 0;
                      }
 
-                     this.field_107 = 0;
-                     if (this.field_305 <= 0) {
-                        this.field_242 = 0;
-                        this.field_224 = 0;
+                     this.score = 0;
+                     if (this.resume <= 0) {
+                        this.level = 0;
+                        this.act = 0;
                      }
 
-                     this.field_223 = 0;
-                     this.field_221 = field_216[this.field_223][this.field_224];
-                     this.field_222 = field_217[this.field_223][this.field_224];
+                     this.zone = 0;
+                     this.field_221 = field_216[this.zone][this.act];
+                     this.field_222 = field_217[this.zone][this.act];
                      this.field_202 = true;
                      this.method_42();
                      return;
                   }
 
-                  this.method_164(1);
-                  this.field_69 = 1;
-                  this.method_156(50 + this.field_69);
-                  this.field_66 = 9;
+                  this.updateMenuCommandsText(1);
+                  this.currentMenuItem = 1;
+                  this.setMenuHelperText(50 + this.currentMenuItem);
+                  this.viewState = 9;
                   return;
                }
 
-               if (this.field_69 == 1) {
-                  this.field_69 = 1;
-                  this.method_11();
-                  this.field_223 = 0;
-                  this.field_224 = 0;
-                  this.field_221 = field_216[this.field_223][this.field_224];
-                  this.field_222 = field_217[this.field_223][this.field_224];
+               if (this.currentMenuItem == 1) {
+                  this.currentMenuItem = 1;
+                  this.resetPressedKeys();
+                  this.zone = 0;
+                  this.act = 0;
+                  this.field_221 = field_216[this.zone][this.act];
+                  this.field_222 = field_217[this.zone][this.act];
                   this.field_201 = true;
-                  this.field_220 = 3;
+                  this.appState = 3;
                   this.field_249 = true;
                   this.field_250 = 10;
-                  method_133(field_13);
+                  unloadImages(menuImages);
                   return;
                }
 
-               if (this.field_69 == 2) {
-                  this.field_69 = 0;
+               if (this.currentMenuItem == 2) {
+                  this.currentMenuItem = 0;
                   this.field_73 = 0;
-                  this.field_66 = 10;
+                  this.viewState = 10;
                   this.field_72 = new Vector();
                   this.field_70 = true;
                   this.field_74 = false;
                   field_75 = Font.getFont(0, 0, 0);
-                  this.method_164(1);
-               } else if (this.field_69 == 3) {
-                  this.field_66 = 5;
-                  this.method_164(1);
+                  this.updateMenuCommandsText(1);
+               } else if (this.currentMenuItem == 3) {
+                  this.viewState = 5;
+                  this.updateMenuCommandsText(1);
                   this.field_73 = 0;
-               } else if (this.field_69 == 4) {
-                  this.field_69 = 0;
-                  this.field_66 = 8;
-                  this.method_156(52 + this.field_69);
-                  this.method_164(1);
+               } else if (this.currentMenuItem == 4) {
+                  this.currentMenuItem = 0;
+                  this.viewState = 8;
+                  this.setMenuHelperText(52 + this.currentMenuItem);
+                  this.updateMenuCommandsText(1);
                   this.field_70 = true;
-               } else if (this.field_69 == 5) {
-                  this.field_69 = 0;
+               } else if (this.currentMenuItem == 5) {
+                  this.currentMenuItem = 0;
                   this.field_73 = 0;
                   this.field_74 = false;
-                  this.field_66 = 12;
+                  this.viewState = 12;
                   this.field_70 = true;
-                  this.method_164(1);
-               } else if (this.field_69 == 8) {
-                  this.field_69 = 0;
-                  this.field_66 = 13;
+                  this.updateMenuCommandsText(1);
+               } else if (this.currentMenuItem == 8) {
+                  this.currentMenuItem = 0;
+                  this.viewState = 13;
                   this.field_301 = this.field_40;
                   this.field_70 = true;
-                  this.method_164(1);
+                  this.updateMenuCommandsText(1);
                }
             }
 
-            if (this.field_30[6]) {
-               this.method_164(0);
-               this.field_66 = 3;
-               this.field_36.method_380(9, 1);
+            if (this.pressedKeys[6]) {
+               this.updateMenuCommandsText(0);
+               this.viewState = 3;
+               this.audio.play(9, 1);
                return;
             }
 
             this.method_157();
             break;
          case 5:
-            if (this.field_30[6]) {
-               this.field_69 = 3;
-               this.field_66 = 4;
-               this.method_164(2);
-               this.method_156(11 + this.field_69);
-            } else if (this.field_30[9]) {
-               this.field_69 = 1;
-               this.field_66 = 6;
+            if (this.pressedKeys[6]) {
+               this.currentMenuItem = 3;
+               this.viewState = 4;
+               this.updateMenuCommandsText(2);
+               this.setMenuHelperText(11 + this.currentMenuItem);
+            } else if (this.pressedKeys[9]) {
+               this.currentMenuItem = 1;
+               this.viewState = 6;
             }
 
-            if (this.field_30[2] && this.field_73 > 0) {
+            if (this.pressedKeys[2] && this.field_73 > 0) {
                --this.field_73;
                this.field_70 = true;
             }
 
-            if (this.field_30[1] && this.field_74) {
+            if (this.pressedKeys[1] && this.field_74) {
                ++this.field_73;
                this.field_70 = true;
             }
             break;
          case 6:
-            if (this.field_30[6]) {
-               this.field_66 = 5;
-            } else if (!this.field_30[2] && !this.field_30[1]) {
-               if (this.field_30[0]) {
-                  this.field_66 = 5;
-                  if (this.field_69 == 0) {
-                     field_10 = new int[5];
-                     field_11 = new int[5];
-                     field_9 = new String[]{"   ", "   ", "   ", "   ", "   "};
-                     this.method_18();
-                     this.field_66 = 7;
+            if (this.pressedKeys[6]) {
+               this.viewState = 5;
+            } else if (!this.pressedKeys[2] && !this.pressedKeys[1]) {
+               if (this.pressedKeys[0]) {
+                  this.viewState = 5;
+                  if (this.currentMenuItem == 0) {
+                     highscoreScores = new int[5];
+                     highscoreDiffculties = new int[5];
+                     highscoreNames = new String[]{"   ", "   ", "   ", "   ", "   "};
+                     this.saveHighscore();
+                     this.viewState = 7;
                   }
                }
             } else {
-               this.field_69 = (byte)((this.field_69 + 1) % 2);
+               this.currentMenuItem = (byte)((this.currentMenuItem + 1) % 2);
             }
             break;
          case 7:
-            if (this.field_30[6] || this.field_30[0]) {
-               this.field_66 = 5;
+            if (this.pressedKeys[6] || this.pressedKeys[0]) {
+               this.viewState = 5;
             }
             break;
          case 8:
-            if (!this.field_30[6] && !this.field_30[0]) {
-               if (this.field_30[2]) {
-                  --this.field_69;
-                  if (this.field_69 < 0) {
-                     this.field_69 = 2;
+            if (!this.pressedKeys[6] && !this.pressedKeys[0]) {
+               if (this.pressedKeys[2]) {
+                  --this.currentMenuItem;
+                  if (this.currentMenuItem < 0) {
+                     this.currentMenuItem = 2;
                   }
 
-                  this.method_156(52 + this.field_69);
+                  this.setMenuHelperText(52 + this.currentMenuItem);
                   this.field_70 = true;
-               } else if (this.field_30[1]) {
-                  this.field_69 = (byte)((this.field_69 + 1) % 3);
-                  this.method_156(52 + this.field_69);
+               } else if (this.pressedKeys[1]) {
+                  this.currentMenuItem = (byte)((this.currentMenuItem + 1) % 3);
+                  this.setMenuHelperText(52 + this.currentMenuItem);
                   this.field_70 = true;
-               } else if (this.field_30[4]) {
-                  if (this.field_69 == 0) {
-                     this.field_296[0] = (byte)((this.field_296[0] + 1) % 3);
-                  } else if (this.field_69 == 1) {
-                     this.field_296[1] = (byte)((this.field_296[1] + 1) % 2);
-                     this.field_36.method_379(this.field_296[1]);
+               } else if (this.pressedKeys[4]) {
+                  if (this.currentMenuItem == 0) {
+                     this.config[0] = (byte)((this.config[0] + 1) % 3);
+                  } else if (this.currentMenuItem == 1) {
+                     this.config[1] = (byte)((this.config[1] + 1) % 2);
+                     this.audio.setOptions(this.config[1]);
                   } else {
-                     this.field_296[2] = (byte)((this.field_296[2] + 1) % 5);
-                     this.method_162();
-                     this.method_156(52 + this.field_69);
-                     this.field_31[1] = this.field_63[59];
+                     this.config[2] = (byte)((this.config[2] + 1) % 5);
+                     this.loadTranslation();
+                     this.setMenuHelperText(52 + this.currentMenuItem);
+                     this.commandTexts[1] = this.texts[59];
                   }
 
                   this.field_70 = true;
-               } else if (this.field_30[3]) {
-                  --this.field_296[this.field_69];
-                  if (this.field_296[this.field_69] < 0) {
-                     if (this.field_69 == 0) {
-                        this.field_296[0] = 2;
-                     } else if (this.field_69 == 1) {
-                        this.field_296[1] = 1;
-                        this.field_36.method_379(1);
+               } else if (this.pressedKeys[3]) {
+                  --this.config[this.currentMenuItem];
+                  if (this.config[this.currentMenuItem] < 0) {
+                     if (this.currentMenuItem == 0) {
+                        this.config[0] = 2;
+                     } else if (this.currentMenuItem == 1) {
+                        this.config[1] = 1;
+                        this.audio.setOptions(1);
                      } else {
-                        this.field_296[2] = 4;
+                        this.config[2] = 4;
                      }
-                  } else if (this.field_69 == 1) {
-                     this.field_36.method_379(0);
+                  } else if (this.currentMenuItem == 1) {
+                     this.audio.setOptions(0);
                   }
 
-                  if (this.field_69 == 2) {
-                     this.method_162();
-                     this.method_156(52 + this.field_69);
-                     this.field_31[1] = this.field_63[59];
+                  if (this.currentMenuItem == 2) {
+                     this.loadTranslation();
+                     this.setMenuHelperText(52 + this.currentMenuItem);
+                     this.commandTexts[1] = this.texts[59];
                   }
 
                   this.field_70 = true;
                }
             } else {
-               this.field_66 = 4;
-               this.method_164(2);
-               this.field_69 = 4;
-               this.method_156(11 + this.field_69);
-               this.method_14();
+               this.viewState = 4;
+               this.updateMenuCommandsText(2);
+               this.currentMenuItem = 4;
+               this.setMenuHelperText(11 + this.currentMenuItem);
+               this.saveConfig();
             }
 
             this.method_157();
             break;
          case 9:
-            if (this.field_30[6]) {
-               this.field_66 = 4;
-               this.field_69 = 0;
-               this.method_156(11 + this.field_69);
-               this.method_164(2);
-            } else if (!this.field_30[2] && !this.field_30[1]) {
-               if (this.field_30[0]) {
-                  if (this.field_69 == 0) {
-                     this.method_11();
+            if (this.pressedKeys[6]) {
+               this.viewState = 4;
+               this.currentMenuItem = 0;
+               this.setMenuHelperText(11 + this.currentMenuItem);
+               this.updateMenuCommandsText(2);
+            } else if (!this.pressedKeys[2] && !this.pressedKeys[1]) {
+               if (this.pressedKeys[0]) {
+                  if (this.currentMenuItem == 0) {
+                     this.resetPressedKeys();
                      this.field_201 = true;
-                     method_133(field_13);
+                     unloadImages(menuImages);
                      this.field_111 = 3;
                      if (this.field_299) {
                         this.field_40 = this.field_301;
@@ -6175,155 +6168,155 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                         this.field_40 = 0;
                      }
 
-                     this.field_107 = 0;
-                     this.field_242 = 0;
-                     this.field_223 = 0;
-                     this.field_224 = 0;
-                     this.field_221 = field_216[this.field_223][this.field_224];
-                     this.field_222 = field_217[this.field_223][this.field_224];
+                     this.score = 0;
+                     this.level = 0;
+                     this.zone = 0;
+                     this.act = 0;
+                     this.field_221 = field_216[this.zone][this.act];
+                     this.field_222 = field_217[this.zone][this.act];
                      this.field_202 = true;
                      this.method_42();
-                  } else if (this.field_69 == 1) {
-                     this.method_11();
+                  } else if (this.currentMenuItem == 1) {
+                     this.resetPressedKeys();
                      this.field_201 = true;
-                     method_133(field_13);
+                     unloadImages(menuImages);
                      this.field_111 = this.field_244;
-                     this.field_107 = this.field_245;
-                     this.field_223 = this.field_242 / 3;
-                     this.field_224 = this.field_242 % 3;
-                     this.field_221 = field_216[this.field_223][this.field_224];
-                     this.field_222 = field_217[this.field_223][this.field_224];
+                     this.score = this.field_245;
+                     this.zone = this.level / 3;
+                     this.act = this.level % 3;
+                     this.field_221 = field_216[this.zone][this.act];
+                     this.field_222 = field_217[this.zone][this.act];
                      this.field_202 = true;
                      this.method_42();
                   }
                }
             } else {
-               this.field_69 = (byte)((this.field_69 + 1) % 2);
-               this.method_156(50 + this.field_69);
+               this.currentMenuItem = (byte)((this.currentMenuItem + 1) % 2);
+               this.setMenuHelperText(50 + this.currentMenuItem);
             }
 
             this.method_157();
             break;
          case 10:
-            if (this.field_30[4] && this.field_69 < 25) {
-               ++this.field_69;
-               if (this.field_69 == 23 || this.field_69 == 24) {
-                  this.field_69 = 25;
+            if (this.pressedKeys[4] && this.currentMenuItem < 25) {
+               ++this.currentMenuItem;
+               if (this.currentMenuItem == 23 || this.currentMenuItem == 24) {
+                  this.currentMenuItem = 25;
                }
 
                this.field_73 = 0;
                this.field_70 = true;
             }
 
-            if (this.field_30[3] && this.field_69 > 0) {
-               --this.field_69;
-               if (this.field_69 == 23 || this.field_69 == 24) {
-                  this.field_69 = 22;
+            if (this.pressedKeys[3] && this.currentMenuItem > 0) {
+               --this.currentMenuItem;
+               if (this.currentMenuItem == 23 || this.currentMenuItem == 24) {
+                  this.currentMenuItem = 22;
                }
 
                this.field_73 = 0;
                this.field_70 = true;
             }
 
-            if (this.field_30[2] && this.field_73 > 0) {
+            if (this.pressedKeys[2] && this.field_73 > 0) {
                --this.field_73;
                this.field_70 = true;
             }
 
-            if (this.field_30[1] && this.field_74) {
+            if (this.pressedKeys[1] && this.field_74) {
                ++this.field_73;
                this.field_70 = true;
             }
 
-            if (this.field_30[6]) {
-               this.field_69 = 2;
-               this.field_66 = 4;
-               this.method_164(2);
+            if (this.pressedKeys[6]) {
+               this.currentMenuItem = 2;
+               this.viewState = 4;
+               this.updateMenuCommandsText(2);
             }
 
-            this.field_72 = method_143(this.field_64[1 + this.field_69 * 2]);
+            this.field_72 = method_143(this.manualTexts[1 + this.currentMenuItem * 2]);
             break;
          case 11:
             ++this.field_295;
             if (this.field_295 > 150) {
                this.field_295 = 0;
-               this.field_66 = 1;
+               this.viewState = 1;
                this.field_201 = true;
             }
             break;
          case 12:
-            if (this.field_30[4] && this.field_69 < 5) {
+            if (this.pressedKeys[4] && this.currentMenuItem < 5) {
                this.field_73 = 0;
-               ++this.field_69;
+               ++this.currentMenuItem;
                this.field_70 = true;
             }
 
-            if (this.field_30[3] && this.field_69 > 0) {
+            if (this.pressedKeys[3] && this.currentMenuItem > 0) {
                this.field_73 = 0;
-               --this.field_69;
+               --this.currentMenuItem;
                this.field_70 = true;
             }
 
-            if (this.field_30[2] && this.field_73 > 0) {
+            if (this.pressedKeys[2] && this.field_73 > 0) {
                --this.field_73;
                this.field_70 = true;
             }
 
-            if (this.field_30[1] && this.field_74) {
+            if (this.pressedKeys[1] && this.field_74) {
                ++this.field_73;
                this.field_70 = true;
             }
 
-            if (this.field_30[6]) {
-               this.field_69 = 5;
-               this.field_66 = 4;
-               this.method_164(2);
+            if (this.pressedKeys[6]) {
+               this.currentMenuItem = 5;
+               this.viewState = 4;
+               this.updateMenuCommandsText(2);
             }
             break;
          case 13:
-            if (!this.field_30[6] && !this.field_30[0]) {
-               if (this.field_30[2]) {
-                  --this.field_69;
-                  if (this.field_69 < 0) {
-                     this.field_69 = 5;
+            if (!this.pressedKeys[6] && !this.pressedKeys[0]) {
+               if (this.pressedKeys[2]) {
+                  --this.currentMenuItem;
+                  if (this.currentMenuItem < 0) {
+                     this.currentMenuItem = 5;
                   }
 
                   this.field_70 = true;
-               } else if (this.field_30[1]) {
-                  this.field_69 = (byte)((this.field_69 + 1) % 6);
+               } else if (this.pressedKeys[1]) {
+                  this.currentMenuItem = (byte)((this.currentMenuItem + 1) % 6);
                   this.field_70 = true;
-               } else if (this.field_30[4]) {
-                  if (this.field_69 == 0) {
+               } else if (this.pressedKeys[4]) {
+                  if (this.currentMenuItem == 0) {
                      this.field_298[0] = !this.field_298[0];
-                  } else if (this.field_69 == 1) {
+                  } else if (this.currentMenuItem == 1) {
                      this.field_298[2] = !this.field_298[2];
-                  } else if (this.field_69 == 2) {
+                  } else if (this.currentMenuItem == 2) {
                      ++this.field_301;
                      if (this.field_301 > 6) {
                         this.field_301 = 0;
                      }
-                  } else if (this.field_69 == 3) {
+                  } else if (this.currentMenuItem == 3) {
                      this.field_298[1] = !this.field_298[1];
-                  } else if (this.field_69 == 4) {
+                  } else if (this.currentMenuItem == 4) {
                      this.field_298[3] = !this.field_298[3];
                   } else {
                      this.field_298[4] = !this.field_298[4];
                   }
 
                   this.field_70 = true;
-               } else if (this.field_30[3]) {
-                  if (this.field_69 == 0) {
+               } else if (this.pressedKeys[3]) {
+                  if (this.currentMenuItem == 0) {
                      this.field_298[0] = !this.field_298[0];
-                  } else if (this.field_69 == 1) {
+                  } else if (this.currentMenuItem == 1) {
                      this.field_298[2] = !this.field_298[2];
-                  } else if (this.field_69 == 2) {
+                  } else if (this.currentMenuItem == 2) {
                      --this.field_301;
                      if (this.field_301 < 0) {
                         this.field_301 = 6;
                      }
-                  } else if (this.field_69 == 3) {
+                  } else if (this.currentMenuItem == 3) {
                      this.field_298[1] = !this.field_298[1];
-                  } else if (this.field_69 == 4) {
+                  } else if (this.currentMenuItem == 4) {
                      this.field_298[3] = !this.field_298[3];
                   } else {
                      this.field_298[4] = !this.field_298[4];
@@ -6332,34 +6325,34 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                   this.field_70 = true;
                }
             } else {
-               this.field_66 = 4;
-               this.method_164(2);
-               this.field_69 = 8;
-               this.method_156(11 + this.field_69);
+               this.viewState = 4;
+               this.updateMenuCommandsText(2);
+               this.currentMenuItem = 8;
+               this.setMenuHelperText(11 + this.currentMenuItem);
             }
             break;
          case 14:
             this.field_249 = true;
-            this.field_69 = (byte)(this.field_69 % 2);
-            if (!this.field_30[2] && !this.field_30[1]) {
-               if (this.field_30[0]) {
-                  if (this.field_69 == 0) {
-                     this.field_304.notifyDestroyed();
+            this.currentMenuItem = (byte)(this.currentMenuItem % 2);
+            if (!this.pressedKeys[2] && !this.pressedKeys[1]) {
+               if (this.pressedKeys[0]) {
+                  if (this.currentMenuItem == 0) {
+                     this.midlet.notifyDestroyed();
                   } else {
-                     this.field_66 = 3;
-                     this.field_36.method_380(9, 1);
+                     this.viewState = 3;
+                     this.audio.play(9, 1);
                   }
-               } else if (this.field_30[6]) {
-                  this.field_66 = 3;
-                  this.field_36.method_380(9, 1);
+               } else if (this.pressedKeys[6]) {
+                  this.viewState = 3;
+                  this.audio.play(9, 1);
                }
             } else {
-               this.field_69 = (byte)((this.field_69 + 1) % 2);
+               this.currentMenuItem = (byte)((this.currentMenuItem + 1) % 2);
             }
       }
 
-      this.field_30[5] = false;
-      this.field_30[6] = false;
+      this.pressedKeys[5] = false;
+      this.pressedKeys[6] = false;
    }
 
    // $FF: renamed from: E () void
@@ -6371,11 +6364,11 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       int var6;
       int var7;
       int var13;
-      switch (this.field_66) {
+      switch (this.viewState) {
          case 0:
             field_26.setColor(16777215);
             field_26.fillRect(0, 0, field_18, field_16);
-            field_26.drawImage(field_13[0], field_18 >> 1, field_20 + (field_19 >> 1), 3);
+            field_26.drawImage(menuImages[0], field_18 >> 1, field_20 + (field_19 >> 1), 3);
             if (this.field_295 < 30) {
                var6 = field_18 * this.field_295 / 30;
                field_26.fillRect(var6 - field_18 - 10, field_23, field_18, field_22);
@@ -6396,40 +6389,40 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          case 1:
             field_26.setColor(0);
             field_26.fillRect(0, 0, field_18, field_16);
-            field_26.drawImage(field_13[1], field_18 >> 1, field_20 + (field_19 >> 1), 3);
+            field_26.drawImage(menuImages[1], field_18 >> 1, field_20 + (field_19 >> 1), 3);
             return;
          case 2:
             field_26.setColor(0);
             field_26.fillRect(0, field_20, field_18, field_19);
             this.method_155();
             field_26.setColor(16777215);
-            String var19 = this.field_63[this.field_39[2][this.field_296[2]]];
+            String var19 = this.texts[this.field_39[2][this.config[2]]];
             var2 = field_14.stringWidth(var19);
             var1 = field_20 + (field_19 >> 1);
             field_26.drawString(var19, field_18 >> 1, var1, 65);
-            field_26.drawImage(field_13[1], (field_18 >> 1) + (var2 >> 1) + 5, var1, 36);
-            field_26.drawImage(field_13[2], (field_18 >> 1) - (var2 >> 1) - 5, var1, 40);
+            field_26.drawImage(menuImages[1], (field_18 >> 1) + (var2 >> 1) + 5, var1, 36);
+            field_26.drawImage(menuImages[2], (field_18 >> 1) - (var2 >> 1) - 5, var1, 40);
             return;
          case 3:
             this.method_160(true, false);
             this.method_150();
             this.method_155();
             var1 = field_23 + field_22;
-            this.method_154(this.field_63[0], field_18 >> 1, var1, 16777215, 0);
+            this.method_154(this.texts[0], field_18 >> 1, var1, 16777215, 0);
             return;
          case 4:
             this.method_160(true, false);
             this.method_150();
             this.method_155();
             var1 = field_23 + field_22;
-            if (this.field_305 > 0) {
-               this.field_63[2] = this.field_63[70];
+            if (this.resume > 0) {
+               this.texts[2] = this.texts[70];
             }
 
-            this.method_154(this.field_63[2 + this.field_69], field_18 >> 1, var1, 16777215, 16386570);
-            field_26.drawImage(field_13[1], field_18 - 5, var1 + (field_15 >> 1), 6);
-            field_26.drawImage(field_13[2], 2, var1 + (field_15 >> 1), 6);
-            this.method_158(this.field_65, true);
+            this.method_154(this.texts[2 + this.currentMenuItem], field_18 >> 1, var1, 16777215, 16386570);
+            field_26.drawImage(menuImages[1], field_18 - 5, var1 + (field_15 >> 1), 6);
+            field_26.drawImage(menuImages[2], 2, var1 + (field_15 >> 1), 6);
+            this.method_158(this.menuHelperText, true);
             return;
          case 5:
             var7 = field_15;
@@ -6441,71 +6434,71 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
             for(int var8 = this.field_73; var8 < 5; ++var8) {
                if (field_20 + 42 + var7 * (var8 - this.field_73) + field_15 < field_23 + field_22) {
-                  field_26.drawString("" + (var8 + 1) + " " + field_9[var8] + " " + field_10[var8], 6, field_20 + 42 + var7 * (var8 - this.field_73), 20);
-                  field_26.drawString(this.field_63[31 + field_11[var8]], field_18 - 6, field_20 + 42 + var7 * (var8 - this.field_73), 24);
+                  field_26.drawString("" + (var8 + 1) + " " + highscoreNames[var8] + " " + highscoreScores[var8], 6, field_20 + 42 + var7 * (var8 - this.field_73), 20);
+                  field_26.drawString(this.texts[31 + highscoreDiffculties[var8]], field_18 - 6, field_20 + 42 + var7 * (var8 - this.field_73), 24);
                } else {
                   this.field_74 = true;
                }
             }
 
             if (this.field_73 > 0) {
-               method_132(field_26, field_13[1], 0, 0, field_13[1].getWidth(), field_13[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
+               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
             }
 
             if (this.field_74) {
-               method_132(field_26, field_13[1], 0, 0, field_13[1].getWidth(), field_13[1].getHeight(), field_35[1], (field_18 >> 1) + 10, 1, 17, true);
+               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], (field_18 >> 1) + 10, 1, 17, true);
             }
 
             var1 = field_23 + field_22;
-            this.method_158(this.field_63[5], false);
-            this.method_154(this.field_63[20], field_18 >> 1, var1, 16777215, 0);
+            this.method_158(this.texts[5], false);
+            this.method_154(this.texts[20], field_18 >> 1, var1, 16777215, 0);
             return;
          case 6:
             this.method_160(true, true);
             this.method_155();
             field_26.setColor(16777215);
-            this.method_158(this.field_63[21], false);
-            this.method_148(this.field_63[24], 2, 0, this.field_69 == 0);
-            this.method_148(this.field_63[25], 2, 1, this.field_69 == 1);
+            this.method_158(this.texts[21], false);
+            this.method_148(this.texts[24], 2, 0, this.currentMenuItem == 0);
+            this.method_148(this.texts[25], 2, 1, this.currentMenuItem == 1);
             return;
          case 7:
             this.method_160(true, true);
             this.method_155();
             field_26.setColor(16777215);
-            field_26.drawString(this.field_63[26], field_18 >> 1, field_20 + (field_19 >> 1) - 25, 17);
-            field_26.drawString(this.field_63[27], field_18 >> 1, field_20 + (field_19 >> 1) + 2, 17);
+            field_26.drawString(this.texts[26], field_18 >> 1, field_20 + (field_19 >> 1) - 25, 17);
+            field_26.drawString(this.texts[27], field_18 >> 1, field_20 + (field_19 >> 1) + 2, 17);
             return;
          case 8:
             this.method_160(true, true);
             field_26.setColor(16777215);
             int[] var9 = new int[3];
-            int var10 = field_13[1].getWidth();
-            field_13[2].getWidth();
+            int var10 = menuImages[1].getWidth();
+            menuImages[2].getWidth();
             int var12 = field_17 - var10;
-            if (this.field_296[1] > 1) {
-               this.field_296[1] = 1;
+            if (this.config[1] > 1) {
+               this.config[1] = 1;
             }
 
             for(var13 = 0; var13 < this.field_39.length; ++var13) {
-               var9[var13] = field_14.stringWidth(this.field_63[this.field_39[var13][this.field_296[var13]]]);
-               field_26.drawString(this.field_63[28 + var13], 11, field_23 + 4 + var13 * 22, 20);
-               field_26.drawString(this.field_63[this.field_39[var13][this.field_296[var13]]], var12, field_23 + 4 + var13 * 22, 24);
+               var9[var13] = field_14.stringWidth(this.texts[this.field_39[var13][this.config[var13]]]);
+               field_26.drawString(this.texts[28 + var13], 11, field_23 + 4 + var13 * 22, 20);
+               field_26.drawString(this.texts[this.field_39[var13][this.config[var13]]], var12, field_23 + 4 + var13 * 22, 24);
             }
 
-            field_26.drawImage(field_13[1], var12 + var10, field_23 + this.field_69 * 22 + 4 + (field_15 >> 1), 10);
-            field_14.stringWidth(this.field_63[this.field_39[this.field_69][this.field_296[this.field_69]]]);
-            field_26.drawImage(field_13[2], var12 - var9[this.field_69], field_23 + this.field_69 * 22 + 4 + (field_15 >> 1), 10);
+            field_26.drawImage(menuImages[1], var12 + var10, field_23 + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
+            field_14.stringWidth(this.texts[this.field_39[this.currentMenuItem][this.config[this.currentMenuItem]]]);
+            field_26.drawImage(menuImages[2], var12 - var9[this.currentMenuItem], field_23 + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
             this.method_155();
             this.method_159();
-            this.method_158(this.field_63[6], false);
+            this.method_158(this.texts[6], false);
             return;
          case 9:
             this.method_160(true, true);
             this.method_155();
             field_26.setColor(16777215);
-            this.method_148(this.field_63[47], 2, 0, this.field_69 == 0);
-            this.method_148(this.field_63[48], 2, 1, this.field_69 == 1);
-            field_14.stringWidth(this.field_63[47 + this.field_69]);
+            this.method_148(this.texts[47], 2, 0, this.currentMenuItem == 0);
+            this.method_148(this.texts[48], 2, 1, this.currentMenuItem == 1);
+            field_14.stringWidth(this.texts[47 + this.currentMenuItem]);
             this.method_159();
             return;
          case 10:
@@ -6527,22 +6520,22 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             if (var5 < this.field_72.size()) {
                this.field_74 = true;
                int var17 = field_22;
-               method_132(field_26, field_13[1], 0, 0, field_13[1].getWidth(), field_13[1].getHeight(), field_35[1], field_18 >> 1, var17, 33, true);
+               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], field_18 >> 1, var17, 33, true);
             } else {
                this.field_74 = false;
             }
 
             if (this.field_73 > 0) {
-               method_132(field_26, field_13[1], 0, 0, field_13[1].getWidth(), field_13[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
+               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
             }
 
-            this.method_158(this.field_64[this.field_69 * 2], false);
+            this.method_158(this.manualTexts[this.currentMenuItem * 2], false);
             this.method_149(24);
             return;
          case 11:
             field_26.setColor(16777215);
             field_26.fillRect(0, 0, field_17, field_16);
-            field_26.drawImage(field_13[2], 0, 0, 20);
+            field_26.drawImage(menuImages[2], 0, 0, 20);
             if (this.field_295 >= 120) {
                field_26.setColor(0);
                var6 = (this.field_295 - 120) * (field_18 >> 1) / 30;
@@ -6557,33 +6550,33 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             var13 = field_15 + 2;
             this.method_160(true, true);
             this.method_155();
-            switch (this.field_296[2]) {
+            switch (this.config[2]) {
                case 0:
                case 1:
                case 2:
-                  this.field_64[55] = "Version 1.0.12";
+                  this.manualTexts[55] = "Version 1.0.12";
                   break;
                case 3:
-                  this.field_64[55] = "Versi\u00f3n 1.0.12";
+                  this.manualTexts[55] = "Versi\u00f3n 1.0.12";
                   break;
                case 4:
-                  this.field_64[55] = "Versione 1.0.12";
+                  this.manualTexts[55] = "Versione 1.0.12";
             }
 
             var1 = field_23 + 3;
             var4 = field_22 + field_23 - var13;
             var5 = this.field_73;
             int var14;
-            if ((var14 = this.field_69 * 7 + 52) + 6 >= this.field_64.length) {
-               this.field_69 = 1;
+            if ((var14 = this.currentMenuItem * 7 + 52) + 6 >= this.manualTexts.length) {
+               this.currentMenuItem = 1;
             }
 
-            if (this.field_69 >= 0) {
+            if (this.currentMenuItem >= 0) {
                field_26.setColor(16777215);
 
                while(var1 < var4 && var5 < 5) {
-                  if (this.field_64[1 + var14 + var5] != null) {
-                     field_26.drawString(this.field_64[1 + var14 + var5], field_18 >> 1, var1, 17);
+                  if (this.manualTexts[1 + var14 + var5] != null) {
+                     field_26.drawString(this.manualTexts[1 + var14 + var5], field_18 >> 1, var1, 17);
                   }
 
                   var1 += var13;
@@ -6593,50 +6586,50 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
             if (var5 < 5) {
                this.field_74 = true;
-               method_132(field_26, field_13[1], 0, 0, field_13[1].getWidth(), field_13[1].getHeight(), field_35[1], field_18 >> 1, field_22, 33, true);
+               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], field_18 >> 1, field_22, 33, true);
             } else {
                this.field_74 = false;
             }
 
             if (this.field_73 > 0) {
-               method_132(field_26, field_13[1], 0, 0, field_13[1].getWidth(), field_13[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
+               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
             }
 
-            this.method_158(this.field_64[var14], false);
+            this.method_158(this.manualTexts[var14], false);
             this.method_149(6);
             return;
          case 13:
             this.method_160(true, true);
             field_26.setColor(16777215);
-            field_26.drawString(this.field_63[81], 11, field_23 + 4 + 0, 20);
-            field_26.drawString(this.field_63[this.field_298[0] ? 34 : 35], field_18 - 10, field_23 + 4 + 0, 24);
-            field_26.drawString(this.field_63[83], 11, field_23 + 4 + 22, 20);
-            field_26.drawString(this.field_63[this.field_298[2] ? 34 : 35], field_18 - 10, field_23 + 4 + 22, 24);
-            field_26.drawString(this.field_63[84], 11, field_23 + 4 + 44, 20);
+            field_26.drawString(this.texts[81], 11, field_23 + 4 + 0, 20);
+            field_26.drawString(this.texts[this.field_298[0] ? 34 : 35], field_18 - 10, field_23 + 4 + 0, 24);
+            field_26.drawString(this.texts[83], 11, field_23 + 4 + 22, 20);
+            field_26.drawString(this.texts[this.field_298[2] ? 34 : 35], field_18 - 10, field_23 + 4 + 22, 24);
+            field_26.drawString(this.texts[84], 11, field_23 + 4 + 44, 20);
             field_26.drawString(String.valueOf(this.field_301), field_18 - 10, field_23 + 4 + 44, 24);
-            field_26.drawString(this.field_63[82], 11, field_23 + 4 + 66, 20);
-            field_26.drawString(this.field_63[this.field_298[1] ? 34 : 35], field_18 - 10, field_23 + 4 + 66, 24);
+            field_26.drawString(this.texts[82], 11, field_23 + 4 + 66, 20);
+            field_26.drawString(this.texts[this.field_298[1] ? 34 : 35], field_18 - 10, field_23 + 4 + 66, 24);
             field_26.drawString("COORDS", 11, field_23 + 4 + 88, 20);
-            field_26.drawString(this.field_63[this.field_298[3] ? 34 : 35], field_18 - 10, field_23 + 4 + 88, 24);
+            field_26.drawString(this.texts[this.field_298[3] ? 34 : 35], field_18 - 10, field_23 + 4 + 88, 24);
             field_26.drawString("CAMERA", 11, field_23 + 4 + 110, 20);
-            field_26.drawString(this.field_63[this.field_298[4] ? 34 : 35], field_18 - 10, field_23 + 4 + 110, 24);
-            field_26.drawImage(field_13[1], field_18 - 8, field_23 + this.field_69 * 22 + 8, 20);
-            var2 = field_14.stringWidth(this.field_63[35]);
-            field_26.drawImage(field_13[2], field_18 - var2 - 12, field_23 + this.field_69 * 22 + 8, 24);
+            field_26.drawString(this.texts[this.field_298[4] ? 34 : 35], field_18 - 10, field_23 + 4 + 110, 24);
+            field_26.drawImage(menuImages[1], field_18 - 8, field_23 + this.currentMenuItem * 22 + 8, 20);
+            var2 = field_14.stringWidth(this.texts[35]);
+            field_26.drawImage(menuImages[2], field_18 - var2 - 12, field_23 + this.currentMenuItem * 22 + 8, 24);
             this.method_155();
             this.method_158("CHEATS", false);
             return;
          case 14:
             this.method_160(true, true);
             this.method_155();
-            this.method_158(this.field_63[85], false);
-            this.method_148(this.field_63[24], 2, 0, this.field_69 == 0);
-            this.method_148(this.field_63[25], 2, 1, this.field_69 == 1);
+            this.method_158(this.texts[85], false);
+            this.method_148(this.texts[24], 2, 0, this.currentMenuItem == 0);
+            this.method_148(this.texts[25], 2, 1, this.currentMenuItem == 1);
             return;
          case 15:
             field_26.setColor(16777215);
             field_26.fillRect(0, 0, field_17, field_16);
-            field_26.drawImage(field_13[1], 0, 0, 20);
+            field_26.drawImage(menuImages[1], 0, 0, 20);
       }
 
    }
@@ -6652,12 +6645,12 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       int var11 = var3 * var8 + var10;
       this.method_154(var1, field_17 >> 1, var11, 16777215, 0);
       Image var12 = null;
-      if (field_13 != null) {
-         var12 = field_13[4];
+      if (menuImages != null) {
+         var12 = menuImages[4];
       }
 
       if (var12 == null) {
-         var12 = field_29[0];
+         var12 = commonImages[0];
       }
 
       if (var4) {
@@ -6681,46 +6674,46 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       field_26.setColor(410260);
       field_26.drawRect(14, var3, var6 + 1, 7);
       field_26.setColor(8506866);
-      if (this.field_69 > 22) {
-         int var8 = this.field_69 - 2;
+      if (this.currentMenuItem > 22) {
+         int var8 = this.currentMenuItem - 2;
          field_26.fillRect(15 + var8 * var6 / var1, var4, var7, 5);
       } else {
-         field_26.fillRect(15 + this.field_69 * var6 / var1, var4, var7, 5);
+         field_26.fillRect(15 + this.currentMenuItem * var6 / var1, var4, var7, 5);
       }
 
-      field_26.drawImage(field_13[1], 15 + var6 + 6, var3, 20);
-      field_26.drawImage(field_13[2], 7, var3, 20);
+      field_26.drawImage(menuImages[1], 15 + var6 + 6, var3, 20);
+      field_26.drawImage(menuImages[2], 7, var3, 20);
    }
 
    // $FF: renamed from: aw () void
    private void method_150() {
-      method_132(field_26, field_13[0], field_320[0][0], field_320[0][1], field_320[0][2], field_320[0][3], field_35[0], field_18 >> 1, (field_19 >> 1) - 0, 3, false);
+      method_132(field_26, menuImages[0], field_320[0][0], field_320[0][1], field_320[0][2], field_320[0][3], field_35[0], field_18 >> 1, (field_19 >> 1) - 0, 3, false);
       int var1 = (10 - this.field_295) * 3;
       if (this.field_67 == 0) {
-         method_132(field_26, field_13[0], field_320[1][0], field_320[1][1], field_320[1][2], field_320[1][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) + var1 - 0, 33, false);
+         method_132(field_26, menuImages[0], field_320[1][0], field_320[1][1], field_320[1][2], field_320[1][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) + var1 - 0, 33, false);
       } else if (this.field_67 == 1) {
-         method_132(field_26, field_13[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         method_132(field_26, menuImages[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
       } else if (this.field_67 == 2) {
-         method_132(field_26, field_13[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
-         method_132(field_26, field_13[0], field_320[3][0], field_320[3][1], field_320[3][2], field_320[3][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         method_132(field_26, menuImages[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         method_132(field_26, menuImages[0], field_320[3][0], field_320[3][1], field_320[3][2], field_320[3][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
       } else if (this.field_67 == 3) {
-         method_132(field_26, field_13[0], field_320[4][0], field_320[4][1], field_320[4][2], field_320[4][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         method_132(field_26, menuImages[0], field_320[4][0], field_320[4][1], field_320[4][2], field_320[4][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
       } else if (this.field_67 == 4) {
-         method_132(field_26, field_13[0], field_320[5][0], field_320[5][1], field_320[5][2], field_320[5][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         method_132(field_26, menuImages[0], field_320[5][0], field_320[5][1], field_320[5][2], field_320[5][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
       } else if (this.field_67 == 5) {
-         method_132(field_26, field_13[0], field_320[6][0], field_320[6][1], field_320[6][2], field_320[6][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 40, false);
-         method_132(field_26, field_13[0], field_320[7][0], field_320[7][1], field_320[7][2], field_320[7][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+         method_132(field_26, menuImages[0], field_320[6][0], field_320[6][1], field_320[6][2], field_320[6][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 40, false);
+         method_132(field_26, menuImages[0], field_320[7][0], field_320[7][1], field_320[7][2], field_320[7][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
       } else {
-         method_132(field_26, field_13[0], field_320[8][0], field_320[8][1], field_320[8][2], field_320[8][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 40, false);
-         method_132(field_26, field_13[0], field_320[9][0], field_320[9][1], field_320[9][2], field_320[9][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+         method_132(field_26, menuImages[0], field_320[8][0], field_320[8][1], field_320[8][2], field_320[8][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 40, false);
+         method_132(field_26, menuImages[0], field_320[9][0], field_320[9][1], field_320[9][2], field_320[9][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
          if ((this.field_295 >> 1 & 1) == 0) {
-            method_132(field_26, field_13[0], field_320[10][0], field_320[10][1], field_320[10][2], field_320[10][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+            method_132(field_26, menuImages[0], field_320[10][0], field_320[10][1], field_320[10][2], field_320[10][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
          } else {
-            method_132(field_26, field_13[0], field_320[11][0], field_320[11][1], field_320[11][2], field_320[11][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+            method_132(field_26, menuImages[0], field_320[11][0], field_320[11][1], field_320[11][2], field_320[11][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
          }
       }
 
-      method_132(field_26, field_13[0], field_320[12][0], field_320[12][1], field_320[12][2], field_320[12][3], field_35[0], field_18 >> 1, (field_19 >> 1) - 1 - 0, 17, false);
+      method_132(field_26, menuImages[0], field_320[12][0], field_320[12][1], field_320[12][2], field_320[12][3], field_35[0], field_18 >> 1, (field_19 >> 1) - 1 - 0, 17, false);
    }
 
    // $FF: renamed from: b (int, int, int, int) void
@@ -6784,14 +6777,14 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    }
 
    // $FF: renamed from: m (int) void
-   private void method_156(int var1) {
-      this.field_65 = this.field_63[var1];
+   private void setMenuHelperText(int textKey) {
+      this.menuHelperText = this.texts[textKey];
       this.field_62 = 0;
    }
 
    // $FF: renamed from: ax () void
    private void method_157() {
-      int var1 = field_14.stringWidth(this.field_65) + 218;
+      int var1 = field_14.stringWidth(this.menuHelperText) + 218;
       this.field_62 = (this.field_62 + 1) % var1;
    }
 
@@ -6812,7 +6805,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: ay () void
    private void method_159() {
       int var1 = field_23 + field_22 + 2;
-      method_153(this.field_65, field_18 - this.field_62, var1, 16777215, 0, 20);
+      method_153(this.menuHelperText, field_18 - this.field_62, var1, 16777215, 0, 20);
    }
 
    // $FF: renamed from: a (boolean, boolean) void
@@ -6830,133 +6823,130 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       ++this.field_32;
    }
 
-   // $FF: renamed from: d (boolean) void
-   public final void method_161(boolean var1) {
-      method_133(field_29);
-      this.method_164(3);
-      if (var1) {
-         field_13[0] = method_134("/t_license1.png");
-         field_13[1] = method_134("/t_license2.png");
-         field_13[2] = method_134("/ifone.png");
-         this.field_66 = 0;
+   public final void loadMenu(boolean splashscreen) {
+      unloadImages(commonImages);
+      this.updateMenuCommandsText(3);
+      if (splashscreen) {
+         menuImages[0] = loadImage("/t_license1.png");
+         menuImages[1] = loadImage("/t_license2.png");
+         menuImages[2] = loadImage("/ifone.png");
+         this.viewState = 0;
       } else {
-         method_133(field_13);
-         field_13[0] = method_134("/t_title.png");
-         field_13[1] = method_134("/t_cur1.png");
-         field_13[2] = method_134("/t_cur2.png");
-         field_13[4] = method_134("/ring.png");
-         if (this.field_71) {
-            this.field_71 = false;
-            this.field_66 = 2;
+         unloadImages(menuImages);
+         menuImages[0] = loadImage("/t_title.png");
+         menuImages[1] = loadImage("/t_cur1.png");
+         menuImages[2] = loadImage("/t_cur2.png");
+         menuImages[4] = loadImage("/ring.png");
+         if (this.startupLanguageSelection) {
+            this.startupLanguageSelection = false;
+            this.viewState = 2;
             return;
          }
 
-         method_163();
-         this.method_162();
-         this.field_66 = 3;
-         this.method_164(0);
-         this.field_36.method_380(9, 1);
+         loadOptionsImages();
+         this.loadTranslation();
+         this.viewState = 3;
+         this.updateMenuCommandsText(0);
+         this.audio.play(9, 1);
       }
 
       this.field_295 = 0;
 
-      for(int var2 = 0; var2 < 10; ++var2) {
-         this.field_12[var2] = false;
+      for(int i = 0; i < 10; ++i) {
+         this.field_12[i] = false;
       }
 
       this.field_68 = 0;
    }
 
-   // $FF: renamed from: az () void
-   private void method_162() {
-      int var1 = 0;
+   private void loadTranslation() {
+      int line = 0;
 
       try {
-         InputStream var2 = method_49("/lang_" + this.field_296[2] + ".txt");
-         ByteArrayOutputStream var3 = new ByteArrayOutputStream(300);
-         byte[] var4 = new byte[1];
+         InputStream inputStream = openResourceAsStream("/lang_" + this.config[2] + ".txt");
+         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(300);
+         byte[] data = new byte[1];
 
-         while(var2.read(var4) > 0) {
-            if (var4[0] == 13) {
-               var2.read(var4);
-               this.field_63[var1] = new String(var3.toByteArray(), "UTF-8");
-               var3.reset();
-               ++var1;
+         while(inputStream.read(data) > 0) {
+            if (data[0] == 13) {
+               inputStream.read(data);
+               this.texts[line] = new String(outputStream.toByteArray(), "UTF-8");
+               outputStream.reset();
+               ++line;
             } else {
-               var3.write(var4);
+               outputStream.write(data);
             }
          }
 
-         method_51();
-         var3.close();
-         var2 = method_49("/manual_" + this.field_296[2] + ".txt");
-         var3 = new ByteArrayOutputStream(300);
-         var1 = 0;
+         closeLastOpenedResource();
+         outputStream.close();
+         inputStream = openResourceAsStream("/manual_" + this.config[2] + ".txt");
+         outputStream = new ByteArrayOutputStream(300);
+         line = 0;
 
-         while(var2.read(var4) > 0) {
-            if (var4[0] == 13) {
-               var2.read(var4);
-               this.field_64[var1] = new String(var3.toByteArray(), "UTF-8");
-               var3.reset();
-               ++var1;
+         while(inputStream.read(data) > 0) {
+            if (data[0] == 13) {
+               inputStream.read(data);
+               this.manualTexts[line] = new String(outputStream.toByteArray(), "UTF-8");
+               outputStream.reset();
+               ++line;
             } else {
-               var3.write(var4);
+               outputStream.write(data);
             }
          }
 
-         method_51();
-         var3.close();
-      } catch (Exception var5) {
+         closeLastOpenedResource();
+         outputStream.close();
+      } catch (Exception error) {
       }
    }
 
    // $FF: renamed from: aA () void
-   private static void method_163() {
-      field_28[10] = method_134("/Systxt.png");
-      field_28[13] = method_134("/Systxt2.png");
-      field_28[11] = method_134("/windou_time.png");
-      field_28[12] = method_134("/windou_suuji.png");
-      field_28[14] = method_134("/gameover.png");
-      field_28[15] = method_134("/timeover.png");
-      field_28[1] = method_134("/windou_ring.png");
-      field_28[2] = method_134("/windou_zanki.png");
-      field_28[3] = method_134("/score.png");
-      field_28[4] = method_134("/t_cur1.png");
-      field_28[5] = method_134("/t_cur2.png");
+   private static void loadOptionsImages() {
+      field_28[10] = loadImage("/Systxt.png");
+      field_28[13] = loadImage("/Systxt2.png");
+      field_28[11] = loadImage("/windou_time.png");
+      field_28[12] = loadImage("/windou_suuji.png");
+      field_28[14] = loadImage("/gameover.png");
+      field_28[15] = loadImage("/timeover.png");
+      field_28[1] = loadImage("/windou_ring.png");
+      field_28[2] = loadImage("/windou_zanki.png");
+      field_28[3] = loadImage("/score.png");
+      field_28[4] = loadImage("/t_cur1.png");
+      field_28[5] = loadImage("/t_cur2.png");
    }
 
-   // $FF: renamed from: n (int) void
-   private void method_164(int var1) {
-      switch (var1) {
+   private void updateMenuCommandsText(int menuState) {
+      switch (menuState) {
          case 0:
-            if (this.field_296[1] == 0) {
-               this.field_31[0] = this.field_63[29];
+            if (this.config[1] == 0) {
+               this.commandTexts[0] = this.texts[29];
             } else {
-               this.field_31[0] = this.field_63[46];
+               this.commandTexts[0] = this.texts[46];
             }
 
-            this.field_31[1] = this.field_63[45];
+            this.commandTexts[1] = this.texts[45];
             return;
          case 1:
-            this.field_31[0] = "";
-            this.field_31[1] = this.field_63[44];
+            this.commandTexts[0] = "";
+            this.commandTexts[1] = this.texts[44];
             return;
          case 2:
-            if (this.field_296[1] == 0) {
-               this.field_31[0] = this.field_63[29];
+            if (this.config[1] == 0) {
+               this.commandTexts[0] = this.texts[29];
             } else {
-               this.field_31[0] = this.field_63[46];
+               this.commandTexts[0] = this.texts[46];
             }
 
-            this.field_31[1] = this.field_63[44];
+            this.commandTexts[1] = this.texts[44];
             return;
          case 3:
-            this.field_31[0] = "";
-            this.field_31[1] = "";
+            this.commandTexts[0] = "";
+            this.commandTexts[1] = "";
             return;
          case 4:
-            this.field_31[0] = "ENTER";
-            this.field_31[1] = this.field_63[44];
+            this.commandTexts[0] = "ENTER";
+            this.commandTexts[1] = this.texts[44];
          default:
       }
    }
@@ -7262,30 +7252,30 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                this.field_115 = 0;
                this.field_281 = false;
                boolean var1 = false;
-               this.field_224 = (this.field_224 + 1) % 3;
-               if (this.field_224 == 0) {
+               this.act = (this.act + 1) % 3;
+               if (this.act == 0) {
                   this.method_23(true);
                }
 
-               this.field_242 = (byte)(this.field_224 + this.field_223 * 3);
+               this.level = (byte)(this.act + this.zone * 3);
                this.field_244 = (byte)this.field_111;
-               this.field_245 = this.field_107;
-               if (this.field_246 < this.field_242) {
-                  this.field_246 = this.field_242;
+               this.field_245 = this.score;
+               if (this.field_246 < this.level) {
+                  this.field_246 = this.level;
                }
 
-               this.method_16();
-               this.field_221 = field_216[this.field_223][this.field_224];
-               this.field_222 = field_217[this.field_223][this.field_224];
+               this.saveGameProgress();
+               this.field_221 = field_216[this.zone][this.act];
+               this.field_222 = field_217[this.zone][this.act];
                this.method_176();
                if (this.field_221 == 0 && this.field_222 == 0) {
-                  this.field_220 = 8;
+                  this.appState = 8;
                   this.field_44 = 0;
                } else {
                   this.field_202 = true;
                   this.method_45();
                   if (this.field_327) {
-                     this.field_220 = 7;
+                     this.appState = 7;
                      this.field_41 = 0;
                   } else {
                      this.method_42();
@@ -7385,7 +7375,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                }
             }
 
-            if (this.field_220 == 2 && !this.field_262) {
+            if (this.appState == 2 && !this.field_262) {
                ++this.field_80;
                this.field_38 = false;
                if (this.field_80 < 20) {
@@ -7432,7 +7422,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       }
 
       if (this.field_266) {
-         int[] var7 = new int[]{this.field_107, this.field_269, this.field_268};
+         int[] var7 = new int[]{this.score, this.field_269, this.field_268};
          int var3 = field_17 * 30 / 100;
          int var4 = var1 + 10;
          int var5 = field_17 * 90 / 100;
@@ -7443,7 +7433,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.field_269 == 0 && this.field_268 == 0) {
-            this.method_154(this.field_63[0], field_18 >> 1, field_23 + field_22 - field_15 - 2, 16777215, 0);
+            this.method_154(this.texts[0], field_18 >> 1, field_23 + field_22 - field_15 - 2, 16777215, 0);
          }
       }
 
@@ -7452,8 +7442,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: aB () void
    private void method_176() {
       while(true) {
-         for(int var1 = 0; var1 < this.field_30.length; ++var1) {
-            if (this.field_30[var1]) {
+         for(int var1 = 0; var1 < this.pressedKeys.length; ++var1) {
+            if (this.pressedKeys[var1]) {
                return;
             }
          }
@@ -7506,46 +7496,46 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: L () void
    public final void method_178() {
       if (this.field_240 && this.field_221 < 5) {
-         this.field_36.method_380(11, -1);
+         this.audio.play(11, -1);
       } else {
-         this.field_36.method_380(this.method_177(), -1);
+         this.audio.play(this.method_177(), -1);
       }
    }
 
    // $FF: renamed from: aC () void
    private void method_179() {
-      field_29[151] = method_134("/sonic.png");
-      field_29[152] = method_134("/sonic_s.png");
-      field_29[2] = method_134("/sjump.png");
-      field_29[96] = method_134("/tama.png");
-      field_29[47] = method_134("/ring_large.png");
-      field_29[154] = method_134("/emeralds.png");
-      field_29[0] = method_134("/ring.png");
-      field_29[36] = method_134("/save.png");
-      field_29[42] = method_134("/item.png");
-      field_29[109] = method_134("/effect.png");
-      field_29[9] = method_134("/toge.png");
-      field_29[153] = method_134("/sjump2.png");
-      field_29[15] = method_134("/switch.png");
-      field_29[97] = method_134("/bakuhatu.png");
-      field_29[44] = method_134("/gole.png");
-      field_29[45] = method_134("/bten.png");
-      field_29[100] = method_134("/animal.png");
+      commonImages[151] = loadImage("/sonic.png");
+      commonImages[152] = loadImage("/sonic_s.png");
+      commonImages[2] = loadImage("/sjump.png");
+      commonImages[96] = loadImage("/tama.png");
+      commonImages[47] = loadImage("/ring_large.png");
+      commonImages[154] = loadImage("/emeralds.png");
+      commonImages[0] = loadImage("/ring.png");
+      commonImages[36] = loadImage("/save.png");
+      commonImages[42] = loadImage("/item.png");
+      commonImages[109] = loadImage("/effect.png");
+      commonImages[9] = loadImage("/toge.png");
+      commonImages[153] = loadImage("/sjump2.png");
+      commonImages[15] = loadImage("/switch.png");
+      commonImages[97] = loadImage("/bakuhatu.png");
+      commonImages[44] = loadImage("/gole.png");
+      commonImages[45] = loadImage("/bten.png");
+      commonImages[100] = loadImage("/animal.png");
       switch (this.field_221) {
          case 0:
-            field_29[41] = method_134("/musi.png");
-            field_29[40] = method_134("/hachi.png");
-            field_29[86] = method_134("/fish.png");
-            field_29[39] = method_134("/kamere.png");
-            field_29[57] = method_134("/kani.png");
-            field_29[3] = method_134("/buranko.png");
-            field_29[4] = method_134("/thashi.png");
-            field_29[18] = method_134("/brkabe_g.png");
-            field_29[5] = method_134("/hashi.png");
-            field_29[58] = method_134("/jyama.png");
-            field_29[6] = method_134("/break.png");
-            field_29[37] = method_134("/kageb.png");
-            field_29[16] = method_134("/shima.png");
+            commonImages[41] = loadImage("/musi.png");
+            commonImages[40] = loadImage("/hachi.png");
+            commonImages[86] = loadImage("/fish.png");
+            commonImages[39] = loadImage("/kamere.png");
+            commonImages[57] = loadImage("/kani.png");
+            commonImages[3] = loadImage("/buranko.png");
+            commonImages[4] = loadImage("/thashi.png");
+            commonImages[18] = loadImage("/brkabe_g.png");
+            commonImages[5] = loadImage("/hashi.png");
+            commonImages[58] = loadImage("/jyama.png");
+            commonImages[6] = loadImage("/break.png");
+            commonImages[37] = loadImage("/kageb.png");
+            commonImages[16] = loadImage("/shima.png");
          case 1:
          case 3:
          case 5:
@@ -7553,39 +7543,39 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          default:
             break;
          case 2:
-            field_29[40] = method_134("/hachi.png");
-            field_29[49] = method_134("/imo.png");
-            field_29[78] = method_134("/bat.png");
-            field_29[101] = method_134("/fire.png");
-            field_29[79] = method_134("/ochi.png");
-            field_29[54] = method_134("/dai.png");
-            field_29[8] = method_134("/turi.png");
-            field_29[94] = method_134("/turi2.png");
-            field_29[95] = method_134("/turi3.png");
-            field_29[13] = method_134("/yogan2.png");
-            field_29[99] = method_134("/yogan22.png");
-            field_29[11] = method_134("/fblock.png");
-            field_29[77] = method_134("/yoganc.png");
-            field_29[14] = method_134("/myogan.png");
-            field_29[98] = method_134("/myogan2.png");
-            field_29[7] = method_134("/yuka.png");
-            field_29[27] = method_134("/bryuka.png");
-            field_29[3] = method_134("/buranko_m.png");
+            commonImages[40] = loadImage("/hachi.png");
+            commonImages[49] = loadImage("/imo.png");
+            commonImages[78] = loadImage("/bat.png");
+            commonImages[101] = loadImage("/fire.png");
+            commonImages[79] = loadImage("/ochi.png");
+            commonImages[54] = loadImage("/dai.png");
+            commonImages[8] = loadImage("/turi.png");
+            commonImages[94] = loadImage("/turi2.png");
+            commonImages[95] = loadImage("/turi3.png");
+            commonImages[13] = loadImage("/yogan2.png");
+            commonImages[99] = loadImage("/yogan22.png");
+            commonImages[11] = loadImage("/fblock.png");
+            commonImages[77] = loadImage("/yoganc.png");
+            commonImages[14] = loadImage("/myogan.png");
+            commonImages[98] = loadImage("/myogan2.png");
+            commonImages[7] = loadImage("/yuka.png");
+            commonImages[27] = loadImage("/bryuka.png");
+            commonImages[3] = loadImage("/buranko_m.png");
             break;
          case 4:
-            field_29[101] = method_134("/fire.png");
-            field_29[40] = method_134("/hachi.png");
-            field_29[57] = method_134("/kani.png");
-            field_29[71] = method_134("/yado.png");
-            field_29[70] = method_134("/aruma.png");
-            field_29[60] = method_134("/tekyu.png");
-            field_29[102] = method_134("/block.png");
-            field_29[107] = method_134("/dai2_3.png");
-            field_29[83] = method_134("/dai4_.png");
-            field_29[17] = method_134("/dai2.png");
-            field_29[61] = method_134("/signal.png");
-            field_29[56] = method_134("/bobin.png");
-            field_29[16] = method_134("/shima5.png");
+            commonImages[101] = loadImage("/fire.png");
+            commonImages[40] = loadImage("/hachi.png");
+            commonImages[57] = loadImage("/kani.png");
+            commonImages[71] = loadImage("/yado.png");
+            commonImages[70] = loadImage("/aruma.png");
+            commonImages[60] = loadImage("/tekyu.png");
+            commonImages[102] = loadImage("/block.png");
+            commonImages[107] = loadImage("/dai2_3.png");
+            commonImages[83] = loadImage("/dai4_.png");
+            commonImages[17] = loadImage("/dai2.png");
+            commonImages[61] = loadImage("/signal.png");
+            commonImages[56] = loadImage("/bobin.png");
+            commonImages[16] = loadImage("/shima5.png");
       }
 
       this.field_321 = false;
@@ -7593,114 +7583,112 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: aD () void
    private void method_180() {
-      field_29[2] = null;
-      field_29[96] = null;
-      field_29[47] = null;
-      field_29[154] = null;
-      field_29[36] = null;
-      field_29[42] = null;
-      field_29[9] = null;
-      field_29[153] = null;
-      field_29[15] = null;
-      field_29[44] = null;
-      field_29[45] = null;
+      commonImages[2] = null;
+      commonImages[96] = null;
+      commonImages[47] = null;
+      commonImages[154] = null;
+      commonImages[36] = null;
+      commonImages[42] = null;
+      commonImages[9] = null;
+      commonImages[153] = null;
+      commonImages[15] = null;
+      commonImages[44] = null;
+      commonImages[45] = null;
       switch (this.field_221) {
          case 0:
-            field_29[41] = null;
-            field_29[40] = null;
-            field_29[86] = null;
-            field_29[39] = null;
-            field_29[57] = null;
-            field_29[3] = null;
-            field_29[4] = null;
-            field_29[18] = null;
-            field_29[5] = null;
-            field_29[58] = null;
-            field_29[6] = null;
-            field_29[37] = null;
+            commonImages[41] = null;
+            commonImages[40] = null;
+            commonImages[86] = null;
+            commonImages[39] = null;
+            commonImages[57] = null;
+            commonImages[3] = null;
+            commonImages[4] = null;
+            commonImages[18] = null;
+            commonImages[5] = null;
+            commonImages[58] = null;
+            commonImages[6] = null;
+            commonImages[37] = null;
          case 1:
          case 3:
          default:
             break;
          case 2:
-            field_29[40] = null;
-            field_29[49] = null;
-            field_29[78] = null;
-            field_29[79] = null;
-            field_29[54] = null;
-            field_29[8] = null;
-            field_29[94] = null;
-            field_29[95] = null;
-            field_29[13] = null;
-            field_29[99] = null;
-            field_29[11] = null;
-            field_29[77] = null;
-            field_29[14] = null;
-            field_29[98] = null;
-            field_29[7] = null;
-            field_29[27] = null;
-            field_29[3] = null;
+            commonImages[40] = null;
+            commonImages[49] = null;
+            commonImages[78] = null;
+            commonImages[79] = null;
+            commonImages[54] = null;
+            commonImages[8] = null;
+            commonImages[94] = null;
+            commonImages[95] = null;
+            commonImages[13] = null;
+            commonImages[99] = null;
+            commonImages[11] = null;
+            commonImages[77] = null;
+            commonImages[14] = null;
+            commonImages[98] = null;
+            commonImages[7] = null;
+            commonImages[27] = null;
+            commonImages[3] = null;
             break;
          case 4:
-            field_29[101] = null;
-            field_29[40] = null;
-            field_29[57] = null;
-            field_29[71] = null;
-            field_29[70] = null;
-            field_29[60] = null;
-            field_29[107] = null;
-            field_29[83] = null;
-            field_29[17] = null;
-            field_29[61] = null;
-            field_29[56] = null;
-            field_29[16] = null;
+            commonImages[101] = null;
+            commonImages[40] = null;
+            commonImages[57] = null;
+            commonImages[71] = null;
+            commonImages[70] = null;
+            commonImages[60] = null;
+            commonImages[107] = null;
+            commonImages[83] = null;
+            commonImages[17] = null;
+            commonImages[61] = null;
+            commonImages[56] = null;
+            commonImages[16] = null;
       }
 
       System.gc();
       this.field_321 = true;
    }
 
-   // $FF: renamed from: a (byte[], java.lang.String) void
-   private static void method_181(byte[] var0, String var1) {
+   private static void writeRecordStore(byte[] data, String storeName) {
       try {
-         RecordStore var2 = null;
+         RecordStore recordStore = null;
 
          try {
-            var2 = RecordStore.openRecordStore(var1, "iFone", "Sonic The Hedgehog: Part Two");
-         } catch (Exception var5) {
-            var2 = RecordStore.openRecordStore(var1, true, 1, true);
+            recordStore = RecordStore.openRecordStore(storeName, "iFone", "Sonic The Hedgehog: Part Two");
+         } catch (Exception error) {
+            recordStore = RecordStore.openRecordStore(storeName, true, 1, true);
          }
 
          try {
-            var2.setRecord(1, var0, 0, var0.length);
-         } catch (Exception var4) {
-            var2.addRecord(var0, 0, var0.length);
+            recordStore.setRecord(1, data, 0, data.length);
+         } catch (Exception error) {
+            recordStore.addRecord(data, 0, data.length);
          }
 
-         var2.closeRecordStore();
-      } catch (Exception var6) {
+         recordStore.closeRecordStore();
+      } catch (Exception error) {
       }
    }
 
-   // $FF: renamed from: b (java.lang.String) byte[]
-   private static byte[] method_182(String var0) {
-      RecordStore var1 = null;
+   private static byte[] readRecordStore(String storeName) {
+      RecordStore recordStore = null;
 
       try {
          try {
-            var1 = RecordStore.openRecordStore(var0, "iFone", "Sonic The Hedgehog: Part Two");
-         } catch (Exception var5) {
-            var1 = RecordStore.openRecordStore(var0, false);
+            recordStore = RecordStore.openRecordStore(storeName, "iFone", "Sonic The Hedgehog: Part Two");
+         } catch (Exception error) {
+            recordStore = RecordStore.openRecordStore(storeName, false);
          }
 
-         byte[] var2 = new byte[var1.getRecordSize(1)];
-         var1.getRecord(1, var2, 0);
-         var1.closeRecordStore();
-         return var2;
-      } catch (Exception var6) {
+         byte[] data = new byte[recordStore.getRecordSize(1)];
+         recordStore.getRecord(1, data, 0);
+         recordStore.closeRecordStore();
+         return data;
+      } catch (Exception error) {
          try {
-            var1.closeRecordStore();
-         } catch (Exception var4) {
+            recordStore.closeRecordStore();
+         } catch (Exception closeError) {
          }
 
          return null;
@@ -9059,7 +9047,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.field_184 = 0;
       this.field_185 = 0;
       if (this.field_221 != 3 && this.field_221 != 4) {
-         switch (this.field_296[0]) {
+         switch (this.config[0]) {
             case 1:
                this.field_186 = 6;
                break;
@@ -9070,7 +9058,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                this.field_186 = 4;
          }
       } else {
-         switch (this.field_296[0]) {
+         switch (this.config[0]) {
             case 1:
                this.field_186 = 5;
                break;
@@ -9083,7 +9071,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       }
 
       if (this.field_221 < 5) {
-         this.field_36.method_380(11, -1);
+         this.audio.play(11, -1);
       }
 
    }
@@ -9096,8 +9084,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
          this.method_180();
          switch (this.field_221) {
             case 0:
-               field_29[120] = method_134("/boss.png");
-               field_29[121] = method_134("/bossball.png");
+               commonImages[120] = loadImage("/boss.png");
+               commonImages[121] = loadImage("/bossball.png");
                var1[1] = 120;
                this.field_178 = 10752;
                this.field_179 = 808;
@@ -9106,8 +9094,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             default:
                break;
             case 2:
-               field_29[120] = method_134("/boss.png");
-               field_29[131] = method_134("/fire.png");
+               commonImages[120] = loadImage("/boss.png");
+               commonImages[131] = loadImage("/fire.png");
                var1[1] = 130;
                this.field_178 = 6304;
                this.field_179 = 608;
@@ -9116,13 +9104,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                break;
             case 4:
                this.method_7();
-               field_29[120] = method_134("/boss.png");
+               commonImages[120] = loadImage("/boss.png");
                var1[1] = 140;
                this.field_174 = 0;
                this.field_175 = 0;
          }
 
-         field_29[55] = method_134("/masin.png");
+         commonImages[55] = loadImage("/masin.png");
          var1[0] = 1;
          var1[2] = var1[16] = field_226[0] + 256 + 46;
          var1[3] = var1[17] = field_226[1] + 46;
@@ -9138,13 +9126,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: O () void
    public final void method_241() {
-      field_29[120] = null;
+      commonImages[120] = null;
       switch (this.field_221) {
          case 0:
-            field_29[121] = null;
+            commonImages[121] = null;
             return;
          case 2:
-            field_29[131] = null;
+            commonImages[131] = null;
          default:
       }
    }
@@ -9744,7 +9732,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: aI () void
    private void method_252() {
       this.field_52 = 0;
-      this.field_220 = 6;
+      this.appState = 6;
       this.field_201 = true;
    }
 
@@ -9769,10 +9757,10 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                if (this.field_57 == 0) {
                   this.method_142(false);
                   this.field_52 = 999;
-               } else if (this.field_30[0]) {
+               } else if (this.pressedKeys[0]) {
                   this.field_55 = 2;
                   this.field_56 = 0;
-                  this.method_11();
+                  this.resetPressedKeys();
                   this.field_52 = 4;
                }
                break;
@@ -9791,7 +9779,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                }
                break;
             case 5:
-               this.field_36.method_383();
+               this.audio.closePlayer();
                this.method_142(true);
                this.field_52 = 999;
             case 999:
@@ -9804,8 +9792,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                this.field_57 = 659;
                this.field_55 = -1;
                this.field_56 = -1;
-               field_29[121] = method_134("/continue.png");
-               this.field_36.method_380(15, -1);
+               commonImages[121] = loadImage("/continue.png");
+               this.audio.play(15, -1);
                this.field_52 = 2;
          }
 
@@ -9823,7 +9811,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       field_26.setColor(0);
       field_26.setClip(0, field_23, field_18, field_22);
       field_26.fillRect(0, field_23, field_18, field_22);
-      if (field_29[121] != null) {
+      if (commonImages[121] != null) {
          if (this.field_52 != 1) {
             int var5;
             int var6;
@@ -9901,7 +9889,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: V () void
    public final void method_256() {
-      int var1 = field_29[154].getWidth() / 6;
+      int var1 = commonImages[154].getWidth() / 6;
       int var2 = field_28[10].getWidth();
       this.method_155();
       field_26.setColor(16777215);
@@ -9909,13 +9897,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       method_132(field_26, field_28[10], 0, 108, var2, var1, field_35[0], field_24, 10, 17, true);
 
       for(int var4 = 0; var4 < this.field_40 - 1; ++var4) {
-         method_132(field_26, field_29[154], var4 * var1, 0, var1, var1, field_35[0], this.field_43[var4] >> 16, this.field_43[var4] & '\uffff', 0, true);
+         method_132(field_26, commonImages[154], var4 * var1, 0, var1, var1, field_35[0], this.field_43[var4] >> 16, this.field_43[var4] & '\uffff', 0, true);
       }
 
       switch (this.field_41) {
          case 2:
             if ((this.field_32 >> 1 & 1) == 0) {
-               method_132(field_26, field_29[154], (this.field_40 - 1) * var1, 0, var1, var1, field_35[0], this.field_43[this.field_40 - 1] >> 16, this.field_43[this.field_40 - 1] & '\uffff', 0, true);
+               method_132(field_26, commonImages[154], (this.field_40 - 1) * var1, 0, var1, var1, field_35[0], this.field_43[this.field_40 - 1] >> 16, this.field_43[this.field_40 - 1] & '\uffff', 0, true);
             }
          default:
       }
@@ -9969,13 +9957,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             ++this.field_49;
             if (this.field_49 > 240) {
                if (this.method_258()) {
-                  this.field_220 = 9;
+                  this.appState = 9;
                   this.field_249 = true;
                   return;
                }
 
-               this.method_161(false);
-               this.field_220 = 1;
+               this.loadMenu(false);
+               this.appState = 1;
                return;
             }
             break;
@@ -10017,37 +10005,37 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
             if (this.field_50 > 4) {
                if (this.method_258()) {
-                  this.field_220 = 9;
+                  this.appState = 9;
                   this.field_249 = true;
                   return;
                }
 
-               this.field_220 = 1;
+               this.appState = 1;
                this.field_249 = true;
                this.field_250 = 10;
-               field_29 = new Image[160];
-               this.method_161(false);
+               commonImages = new Image[160];
+               this.loadMenu(false);
             }
             break;
          default:
             this.field_44 = 0;
          case 0:
             field_27 = null;
-            method_133(field_29);
-            field_29[155] = method_134("/ED3.png");
-            field_29[154] = method_134("/emeralds.png");
+            unloadImages(commonImages);
+            commonImages[155] = loadImage("/ED3.png");
+            commonImages[154] = loadImage("/emeralds.png");
             if (this.field_40 == 6) {
-               field_29[157] = method_134("/endegg_b.png");
+               commonImages[157] = loadImage("/endegg_b.png");
                this.field_44 = 1;
                this.field_45 = 0;
                this.field_48 = 0;
             } else {
-               field_29[157] = method_134("/endegg_a.png");
+               commonImages[157] = loadImage("/endegg_a.png");
                this.field_48 = 0;
                this.field_44 = 2;
             }
 
-            field_27 = method_134("/zone1.png");
+            field_27 = loadImage("/zone1.png");
             this.field_221 = 0;
             this.method_55();
             this.method_29();
@@ -10078,8 +10066,8 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: d () boolean
    public final boolean method_258() {
-      for(int var1 = 0; var1 < field_10.length; ++var1) {
-         if (field_10[var1] < this.field_107) {
+      for(int var1 = 0; var1 < highscoreScores.length; ++var1) {
+         if (highscoreScores[var1] < this.score) {
             return true;
          }
       }
@@ -10115,26 +10103,26 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             switch (this.field_45) {
                case 0:
                   var1 = this.field_46 >> 1 & 1;
-                  field_26.drawRegion(field_29[157], var1 * 24, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
+                  field_26.drawRegion(commonImages[157], var1 * 24, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
                   break label72;
                case 1:
-                  field_26.drawRegion(field_29[157], 48, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
+                  field_26.drawRegion(commonImages[157], 48, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
                   if ((this.field_46 >> 1 & 1) == 0) {
                      for(var2 = 0; var2 < 6; ++var2) {
                         var4 = (var3 = Math.min(60, this.field_46 - 240) / 4 * 3) * method_6(var2 * 36) / 100;
                         var5 = var3 * method_5(var2 * 36) / 100;
-                        field_26.drawRegion(field_29[154], var2 * 12, 0, 12, 12, field_35[0], field_24 + var4, field_23 + field_22 - 22 - (var3 >> 1) - var5, 3);
+                        field_26.drawRegion(commonImages[154], var2 * 12, 0, 12, 12, field_35[0], field_24 + var4, field_23 + field_22 - 22 - (var3 >> 1) - var5, 3);
                      }
                   }
                   break label72;
                case 2:
                   var1 = 3 + (this.field_46 >> 5 & 1);
-                  field_26.drawRegion(field_29[157], var1 * 24, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
+                  field_26.drawRegion(commonImages[157], var1 * 24, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
 
                   for(var2 = 0; var2 < 6; ++var2) {
                      var4 = 45 * method_6(var2 * 36) / 100;
                      var5 = 45 * method_5(var2 * 36) / 100;
-                     field_26.drawRegion(field_29[154], var2 * 12, 0, 12, 12, field_35[0], field_24 + var4, field_23 + field_22 - 22 - 22 - var5, 3);
+                     field_26.drawRegion(commonImages[154], var2 * 12, 0, 12, 12, field_35[0], field_24 + var4, field_23 + field_22 - 22 - 22 - var5, 3);
                   }
                default:
                   break label72;
@@ -10144,13 +10132,13 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             this.method_34(field_26, false);
             switch (this.field_48) {
                case 0:
-                  field_26.drawRegion(field_29[155], 0, 0, 24, 30, field_35[0], field_24, field_23 + field_22 - 10, 33);
+                  field_26.drawRegion(commonImages[155], 0, 0, 24, 30, field_35[0], field_24, field_23 + field_22 - 10, 33);
                   break label72;
                case 1:
-                  field_26.drawRegion(field_29[155], 0, 30, 36, 54, field_35[0], field_24, field_23 + field_22 - 20, 33);
+                  field_26.drawRegion(commonImages[155], 0, 30, 36, 54, field_35[0], field_24, field_23 + field_22 - 20, 33);
                   break label72;
                case 2:
-                  field_26.drawRegion(field_29[155], 36, 0, 132, 100, field_35[0], field_24, field_23 + field_22 - 20, 33);
+                  field_26.drawRegion(commonImages[155], 36, 0, 132, 100, field_35[0], field_24, field_23 + field_22 - 20, 33);
                default:
                   break label72;
             }
@@ -10158,7 +10146,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             field_26.setColor(0);
             field_26.fillRect(0, field_23, field_17, field_22);
             var1 = this.field_49 / 15 % 3;
-            field_26.drawRegion(field_29[157], var1 * 48, 0, 48, 72, field_35[0], field_24, field_25, 3);
+            field_26.drawRegion(commonImages[157], var1 * 48, 0, 48, 72, field_35[0], field_24, field_25, 3);
             break;
          case 4:
             field_26.setColor(0);
@@ -10166,7 +10154,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
             label54:
             switch (this.field_51) {
                case 0:
-                  field_26.drawRegion(field_29[157], 96, 0, 96, 84, field_35[0], field_24, field_25, 3);
+                  field_26.drawRegion(commonImages[157], 96, 0, 96, 84, field_35[0], field_24, field_25, 3);
                   var4 = 0;
 
                   while(true) {
@@ -10177,17 +10165,17 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                      var5 = Math.max(Math.min(145, this.field_323 + var4 * 16), 0);
                      var2 = field_24 + 40 * method_6(var5) / 100;
                      var3 = field_25 - 15 - 40 * method_5(var5) / 100;
-                     field_26.drawRegion(field_29[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
+                     field_26.drawRegion(commonImages[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
                      ++var4;
                   }
                case 1:
                   var2 = field_24 + 40;
                   var3 = field_25 - 20;
-                  field_26.drawRegion(field_29[157], 0, 0, 96, 84, field_35[0], field_24, field_25, 3);
-                  field_26.drawRegion(field_29[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
+                  field_26.drawRegion(commonImages[157], 0, 0, 96, 84, field_35[0], field_24, field_25, 3);
+                  field_26.drawRegion(commonImages[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
                   break;
                case 2:
-                  field_26.drawRegion(field_29[157], 96, 0, 96, 84, field_35[4], field_24, field_25, 3);
+                  field_26.drawRegion(commonImages[157], 96, 0, 96, 84, field_35[4], field_24, field_25, 3);
                   var4 = 0;
 
                   while(true) {
@@ -10198,17 +10186,17 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
                      var5 = Math.min(Math.max(35, this.field_323 - var4 * 16), 180);
                      var2 = field_24 + 40 * method_6(var5) / 100;
                      var3 = field_25 - 15 - 40 * method_5(var5) / 100;
-                     field_26.drawRegion(field_29[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
+                     field_26.drawRegion(commonImages[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
                      ++var4;
                   }
                case 3:
                   var2 = field_24 - 40;
                   var3 = field_25 - 20;
-                  field_26.drawRegion(field_29[157], 0, 0, 96, 84, field_35[0], field_24, field_25, 3);
-                  field_26.drawRegion(field_29[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
+                  field_26.drawRegion(commonImages[157], 0, 0, 96, 84, field_35[0], field_24, field_25, 3);
+                  field_26.drawRegion(commonImages[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
             }
 
-            field_26.drawRegion(field_29[157], 0, 86, 190, 26, field_35[0], field_24, field_23 + field_22, 33);
+            field_26.drawRegion(commonImages[157], 0, 86, 190, 26, field_35[0], field_24, field_23 + field_22, 33);
       }
 
       if (field_21 < field_17) {
@@ -10217,73 +10205,72 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
 
    }
 
-   // $FF: renamed from: Y () void
-   public final void method_260() {
-      if (this.field_30[4]) {
-         ++this.field_325;
-         if (this.field_325 > 2) {
-            this.field_325 = 0;
+   public final void updateNameInput() {
+      if (this.pressedKeys[4]) {
+         ++this.nameInputIndex;
+         if (this.nameInputIndex > 2) {
+            this.nameInputIndex = 0;
             return;
          }
-      } else if (this.field_30[3]) {
-         --this.field_325;
-         if (this.field_325 < 0) {
-            this.field_325 = 2;
+      } else if (this.pressedKeys[3]) {
+         --this.nameInputIndex;
+         if (this.nameInputIndex < 0) {
+            this.nameInputIndex = 2;
             return;
          }
       } else {
-         int var10002;
-         if (this.field_30[2]) {
-            var10002 = this.field_326[this.field_325]--;
-            if (this.field_326[this.field_325] < 0) {
-               this.field_326[this.field_325] = field_324.length - 1;
+         int lastChar;
+         if (this.pressedKeys[2]) {
+            lastChar = this.nameInput[this.nameInputIndex]--;
+            if (this.nameInput[this.nameInputIndex] < 0) {
+               this.nameInput[this.nameInputIndex] = CHARS.length - 1;
                return;
             }
-         } else if (this.field_30[1]) {
-            var10002 = this.field_326[this.field_325]++;
-            if (this.field_326[this.field_325] >= field_324.length) {
-               this.field_326[this.field_325] = 0;
+         } else if (this.pressedKeys[1]) {
+            lastChar = this.nameInput[this.nameInputIndex]++;
+            if (this.nameInput[this.nameInputIndex] >= CHARS.length) {
+               this.nameInput[this.nameInputIndex] = 0;
                return;
             }
-         } else if (this.field_30[0]) {
-            this.method_261();
+         } else if (this.pressedKeys[0]) {
+            this.updateHighscore();
          }
       }
 
    }
 
-   // $FF: renamed from: aJ () void
-   private void method_261() {
-      int var1;
-      label26:
-      for(var1 = 0; var1 < field_10.length; ++var1) {
-         if (field_10[var1] < this.field_107) {
-            int var2 = field_10.length - 1;
+   private void updateHighscore() {
+      int i;
+      highscoreLoop:
+      for(i = 0; i < highscoreScores.length; ++i) {
+         if (highscoreScores[i] < this.score) {
+            int j = highscoreScores.length - 1;
 
             while(true) {
-               if (var2 <= var1) {
-                  break label26;
+               if (j <= i) {
+                  break highscoreLoop;
                }
 
-               field_10[var2] = field_10[var2 - 1];
-               field_11[var2] = field_11[var2 - 1];
-               --var2;
+               highscoreScores[j] = highscoreScores[j - 1];
+               highscoreDiffculties[j] = highscoreDiffculties[j - 1];
+               // highscoreName ???
+               --j;
             }
          }
       }
 
-      if (var1 < field_10.length) {
-         field_10[var1] = this.field_107;
-         field_11[var1] = this.field_296[0];
-         field_9[var1] = new String(new char[]{field_324[this.field_326[0]], field_324[this.field_326[1]], field_324[this.field_326[2]]});
-         this.method_18();
+      if (i < highscoreScores.length) {
+         highscoreScores[i] = this.score;
+         highscoreDiffculties[i] = this.config[0];
+         highscoreNames[i] = new String(new char[]{CHARS[this.nameInput[0]], CHARS[this.nameInput[1]], CHARS[this.nameInput[2]]});
+         this.saveHighscore();
       }
 
-      this.field_220 = 1;
-      this.method_161(false);
-      this.field_66 = 5;
-      this.method_164(1);
-      this.field_107 = 0;
+      this.appState = 1;
+      this.loadMenu(false);
+      this.viewState = 5;
+      this.updateMenuCommandsText(1);
+      this.score = 0;
    }
 
    // $FF: renamed from: Z () void
@@ -10291,7 +10278,7 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       this.method_155();
       field_26.setColor(0);
       field_26.fillRect(0, field_23, field_18, field_22);
-      switch (this.field_296[2]) {
+      switch (this.config[2]) {
          case 0:
             this.method_158("ENTER NAME", false);
             break;
@@ -10309,16 +10296,16 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       }
 
       field_26.setColor(16777215);
-      int var1 = field_17 / (this.field_326.length + 1);
+      int var1 = field_17 / (this.nameInput.length + 1);
 
       int var2;
-      for(var2 = 0; var2 < this.field_326.length; ++var2) {
-         field_26.drawString(String.valueOf(field_324[this.field_326[var2]]), (var2 + 1) * var1, field_25 + (field_26.getFont().getHeight() >> 1), 65);
+      for(var2 = 0; var2 < this.nameInput.length; ++var2) {
+         field_26.drawString(String.valueOf(CHARS[this.nameInput[var2]]), (var2 + 1) * var1, field_25 + (field_26.getFont().getHeight() >> 1), 65);
       }
 
       field_26.setColor(16386570);
       var2 = field_26.getFont().getHeight() * 3 >> 1;
-      field_26.drawRect((this.field_325 + 1) * var1 - (var2 >> 1), field_25 - (var2 >> 1), var2, var2);
+      field_26.drawRect((this.nameInputIndex + 1) * var1 - (var2 >> 1), field_25 - (var2 >> 1), var2, var2);
    }
 
    // $FF: renamed from: e (int) int
@@ -10387,10 +10374,10 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       field_21 = field_17;
       field_22 = field_16;
       field_28 = new Image[20];
-      field_29 = new Image[160];
+      commonImages = new Image[160];
       field_34 = new Random();
       field_35 = new int[]{0, 5, 3, 6, 2, 7, 1, 4};
-      field_37 = new String[]{"/greenhill_loop", "/labyrinth_loop", "/marble_loop", "/starlight_loop", "/springyard_loop", "/scrapbrain", "/invincible", "/1up", "/specialstage", "/maintitle", "/ending", "/bossstage", "/bossstagefinal_loop", "/stageclear", "/gameover", "/continue", "/credits", "/hurry", "/chaosemerald"};
+      audioTracks = new String[]{"/greenhill_loop", "/labyrinth_loop", "/marble_loop", "/starlight_loop", "/springyard_loop", "/scrapbrain", "/invincible", "/1up", "/specialstage", "/maintitle", "/ending", "/bossstage", "/bossstagefinal_loop", "/stageclear", "/gameover", "/continue", "/credits", "/hurry", "/chaosemerald"};
       field_60 = new short[][]{{0, 90, 0}, {36, 90, 0}, {72, 90, 0}, {72, 90, 1}, {36, 90, 1}};
       field_61 = new short[][]{{36, 0}, {0, 24}, {36, 24}, {0, 24}};
       field_81 = new int[][]{{0, 1, 83, 10}, {84, 1, 40, 10}, {0, 13, 55, 10}, {61, 13, 36, 10}, {98, 12, 6, 12}, {104, 12, 10, 12}, {116, 12, 10, 12}, {0, 25, 94, 10}, {98, 24, 17, 5}, {0, 37, 94, 10}, {96, 30, 30, 30}, {0, 49, 86, 10}, {0, 61, 78, 10}, {78, 60, 30, 30}, {0, 74, 77, 10}, {0, 85, 51, 10}, {0, 96, 112, 10}, {0, 108, 130, 10}};
@@ -10441,6 +10428,6 @@ public class class_1 extends Canvas implements Runnable, PlayerListener {
       field_303 = new int[]{0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736, 1908, 2079, 2249, 2419, 2588, 2756, 2924, 3090, 3256, 3420, 3584, 3746, 3907, 4067, 4226, 4384, 4540, 4695, 4848, 5000, 5150, 5299, 5446, 5592, 5736, 5878, 6018, 6156, 6293, 6428, 6560, 6691, 6820, 6946, 7071, 7193, 7313, 7431, 7547, 7660, 7771, 7880, 7986, 8090, 8191, 8290, 8387, 8480, 8572, 8660, 8746, 8829, 8910, 8988, 9063, 9135, 9205, 9272, 9336, 9397, 9455, 9510, 9563, 9613, 9659, 9703, 9744, 9781, 9816, 9848, 9877, 9903, 9925, 9945, 9962, 9976, 9986, 9994, 9998, 10000};
       var10000 = new int[]{0, 0, 0, 2};
       field_320 = new int[][]{{0, 0, 142, 81}, {0, 120, 36, 42}, {0, 81, 42, 37}, {80, 141, 39, 27}, {46, 81, 45, 41}, {37, 124, 41, 42}, {95, 82, 26, 42}, {122, 81, 20, 43}, {95, 82, 26, 42}, {101, 125, 19, 15}, {122, 125, 20, 43}, {122, 82, 20, 43}, {0, 168, 142, 42}};
-      field_324 = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '9', '8', '7', '6', '5', '4', '3', '2', '1', '@', '?', '!', ',', '.', ' '};
+      CHARS = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '9', '8', '7', '6', '5', '4', '3', '2', '1', '@', '?', '!', ',', '.', ' '};
    }
 }
