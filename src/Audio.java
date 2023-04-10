@@ -3,27 +3,26 @@ import javax.microedition.media.Manager;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 
-// $FF: renamed from: d
 public final class Audio {
    // $FF: renamed from: b int
-   private static int field_329 = 0;
+   private static int options = 0;
    // $FF: renamed from: a java.lang.String[]
-   public String[] field_330;
+   public String[] audioTracks;
    // $FF: renamed from: b java.lang.String[]
    private String[] field_331;
    // $FF: renamed from: a int
-   public int field_332 = -1;
+   public int currentTrack = -1;
    // $FF: renamed from: c int
-   private int field_333 = -1;
+   private int interruptedTrack = -1;
    // $FF: renamed from: a boolean
-   private boolean field_334 = true;
+   private boolean enableAudio = true;
    // $FF: renamed from: a javax.microedition.media.Player
-   private Player field_335;
+   private Player player;
    // $FF: renamed from: a javax.microedition.media.PlayerListener
-   private PlayerListener field_336;
+   private PlayerListener playerListener;
 
-   public Audio(PlayerListener var1) {
-      this.field_336 = var1;
+   public Audio(PlayerListener playerListener) {
+      this.playerListener = playerListener;
    }
 
    // $FF: renamed from: a (int) boolean
@@ -32,7 +31,7 @@ public final class Audio {
          case 0:
             return true;
          case 1:
-            if (this.field_330 != null) {
+            if (this.audioTracks != null) {
                return true;
             }
 
@@ -44,7 +43,7 @@ public final class Audio {
 
             return false;
          case 3:
-            if (this.field_331 != null && this.field_330 != null) {
+            if (this.field_331 != null && this.audioTracks != null) {
                return true;
             }
 
@@ -54,98 +53,90 @@ public final class Audio {
       }
    }
 
-   // $FF: renamed from: a (int) void
-   public final void method_379(int var1) {
-      field_329 = var1;
-      if (!this.method_378(field_329)) {
-         field_329 = 0;
+   public final void setOptions(int newOptions) {
+      options = newOptions;
+      if (!this.method_378(options)) {
+         options = 0;
       }
 
-      if (field_329 == 0) {
-         this.method_384(this.field_335);
+      if (options == 0) {
+         this.closePlayer(this.player);
       }
 
    }
 
-   // $FF: renamed from: a (int, int) void
-   public final void method_380(int var1, int var2) {
+   public final void play(int track, int loopCount) {
       try {
-         if (var1 != this.field_332 || this.field_335 != null && this.field_335.getState() != 400) {
-            if (this.field_335 != null) {
-               this.method_384(this.field_335);
+         if (track != this.currentTrack || this.player != null && this.player.getState() != 400) {
+            if (this.player != null) {
+               this.closePlayer(this.player);
             }
 
-            if ((field_329 & 1) == 1) {
-               this.field_335 = this.method_385(this.field_330[var1], "audio/midi");
-               this.field_335.setLoopCount(var2);
-               if (this.field_334) {
-                  this.field_335.start();
+            if ((options & 1) == 1) {
+               this.player = this.createPlayer(this.audioTracks[track], "audio/midi");
+               this.player.setLoopCount(loopCount);
+               if (this.enableAudio) {
+                  this.player.start();
                }
 
-               this.field_332 = var1;
+               this.currentTrack = track;
             }
          }
 
-      } catch (Exception var4) {
-         System.err.println("error starting player " + var4);
+      } catch (Exception error) {
+         System.err.println("error starting player " + error);
       }
    }
 
-   // $FF: renamed from: a () void
-   public final void method_381() {
-      this.field_333 = this.field_332;
-      this.method_384(this.field_335);
+   public final void interruptTrack() {
+      this.interruptedTrack = this.currentTrack;
+      this.closePlayer(this.player);
    }
 
-   // $FF: renamed from: b () void
-   public final void method_382() {
-      if (this.field_333 != -1) {
-         this.method_380(this.field_333, -1);
-         this.field_333 = -1;
+   public final void replayInterruptedTrack() {
+      if (this.interruptedTrack != -1) {
+         this.play(this.interruptedTrack, -1);
+         this.interruptedTrack = -1;
       }
 
    }
 
-   // $FF: renamed from: c () void
-   public final void method_383() {
-      this.method_384(this.field_335);
+   public final void closePlayer() {
+      this.closePlayer(this.player);
    }
 
-   // $FF: renamed from: a (javax.microedition.media.Player) void
-   private void method_384(Player var1) {
+   private void closePlayer(Player player) {
       try {
-         var1.stop();
-         var1.deallocate();
-         var1.close();
-         if (var1 == this.field_335) {
-            this.field_332 = -1;
+         player.stop();
+         player.deallocate();
+         player.close();
+         if (player == this.player) {
+            this.currentTrack = -1;
          }
 
-      } catch (Exception var3) {
+      } catch (Exception error) {
       }
    }
 
-   // $FF: renamed from: a (java.lang.String, java.lang.String) javax.microedition.media.Player
-   private Player method_385(String var1, String var2) {
-      Player var3 = null;
-      var1 = var1 + ".mid";
+   private Player createPlayer(String file, String format) {
+      Player player = null;
+      file = file + ".mid";
 
       try {
-         InputStream var4;
-         (var3 = Manager.createPlayer(var4 = this.getClass().getResourceAsStream(var1), var2)).addPlayerListener(this.field_336);
-         var3.realize();
-         var3.prefetch();
-         var4.close();
-      } catch (Exception var5) {
-         System.err.println("error creating player " + var5);
+         InputStream inputStream;
+         (player = Manager.createPlayer(inputStream = this.getClass().getResourceAsStream(file), format)).addPlayerListener(this.playerListener);
+         player.realize();
+         player.prefetch();
+         inputStream.close();
+      } catch (Exception error) {
+         System.err.println("error creating player " + error);
       }
 
-      return var3;
+      return player;
    }
 
-   // $FF: renamed from: b (int, int) void
-   public final void method_386(int var1, int var2) {
-      this.method_381();
-      this.method_380(var1, var2);
+   public final void interruptTrackAndPlay(int track, int loopCount) {
+      this.interruptTrack();
+      this.play(track, loopCount);
    }
 }
