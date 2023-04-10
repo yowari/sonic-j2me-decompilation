@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Created-By: iFone
+MIDlet-Name: Sonic The Hedgehog: Part One
+MIDlet-Version: 1.0.12
+MIDlet-Vendor: iFone
+MIDlet-1: Sonic The Hedgehog: Part One, /icon.png, Sonic
+MicroEdition-Profile: MIDP-2.0
+MicroEdition-Configuration: CLDC-1.1
+MIDlet-Icon: /icon.png
+MIDlet-Data-Size: 4096
+
