@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "debug",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 4711,
+            "sourcePaths": [
+                "${workspaceFolder}/src",
+            ]
+        }
+    ]
+}

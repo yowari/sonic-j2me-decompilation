@@ -1,0 +1,39 @@
+<!--
+This is only used for vscode code completion.
+This is not meant to be used for compilation or packaging
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>com.yowari.app</groupId>
+    <artifactId>sonic</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    
+    <properties>
+        <maven.compiler.source>1.3</maven.compiler.source>
+        <maven.compiler.target>1.3</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>java</groupId>
+            <artifactId>cldc</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${env.WTK_HOME}/lib/cldcapi10.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.microedition</groupId>
+            <artifactId>midp</artifactId>
+            <version>2.0</version>
+            <scope>system</scope>
+            <systemPath>${env.WTK_HOME}/lib/midpapi20.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+    </build>
+</project>
