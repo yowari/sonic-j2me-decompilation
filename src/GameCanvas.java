@@ -25,33 +25,33 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a int
    public static final int field_15;
    // $FF: renamed from: b int
-   public static int field_16;
+   public static int screenHeight;
    // $FF: renamed from: c int
-   public static int field_17;
+   public static int screenWidth;
    // $FF: renamed from: d int
-   public static int field_18;
+   public static int fullGameWidth;
    // $FF: renamed from: e int
-   public static int field_19;
+   public static int uiContentHeight;
    // $FF: renamed from: f int
-   public static int field_20;
+   public static int uiContentY;
    // $FF: renamed from: g int
-   public static int field_21;
+   public static int gameWidth;
    // $FF: renamed from: h int
-   public static int field_22;
+   public static int gameHeight;
    // $FF: renamed from: i int
-   public static int field_23;
+   public static int gameY;
    // $FF: renamed from: aG int
-   private static int field_24;
+   private static int screenGameHCenter;
    // $FF: renamed from: aH int
-   private static int field_25;
+   private static int screenGameVCenter;
    // $FF: renamed from: a javax.microedition.lcdui.Graphics
-   public static Graphics field_26;
+   public static Graphics g;
    // $FF: renamed from: a javax.microedition.lcdui.Image
    public static Image field_27;
    // $FF: renamed from: a javax.microedition.lcdui.Image[]
-   public static Image[] field_28;
+   public static Image[] uiImages;
    // $FF: renamed from: b javax.microedition.lcdui.Image[]
-   public static Image[] commonImages;
+   public static Image[] gameImages;
    // $FF: renamed from: a boolean[]
    public boolean[] pressedKeys = new boolean[10];
    // $FF: renamed from: a java.lang.String[]
@@ -109,7 +109,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: aX int
    private int field_57;
    // $FF: renamed from: aY int
-   private int field_58;
+   private int fullGameHCenter;
    // $FF: renamed from: aZ int
    private int field_59;
    // $FF: renamed from: b short[][]
@@ -303,7 +303,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: m int[]
    public static final int[] field_154;
    // $FF: renamed from: p boolean
-   public boolean field_155;
+   public boolean finishedLevel;
    // $FF: renamed from: n int[]
    public static final int[] field_156;
    // $FF: renamed from: o int[]
@@ -395,7 +395,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: k int[][]
    private int[][] field_200;
    // $FF: renamed from: q boolean
-   public boolean field_201;
+   public boolean redrawAllGameScreen;
    // $FF: renamed from: r boolean
    public boolean field_202;
    // $FF: renamed from: s boolean
@@ -421,7 +421,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: f short[][]
    private static final short[][] field_213;
    // $FF: renamed from: b int[][][]
-   private int[][][] field_214;
+   private int[][][] tilemaps;
    // $FF: renamed from: x int[]
    public static final int[] field_215;
    // $FF: renamed from: f int[][]
@@ -503,11 +503,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: y boolean
    public boolean field_254;
    // $FF: renamed from: z boolean
-   public static boolean field_255;
+   public static boolean redrawRingAndScoreCounter;
    // $FF: renamed from: A boolean
-   public static boolean field_256;
+   public static boolean redrawTimer;
    // $FF: renamed from: B boolean
-   public static boolean field_257;
+   public static boolean redrawLivesCounter;
    // $FF: renamed from: bx int
    private int field_258;
    // $FF: renamed from: by int
@@ -625,9 +625,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: aD int
    public int nextFrameLagIndex;
    // $FF: renamed from: aE int
-   public static int field_316;
+   public static int tilemapHSize;
    // $FF: renamed from: aF int
-   public static int field_317;
+   public static int tilemapVSize;
    // $FF: renamed from: c java.lang.String[]
    public String[] field_318;
    // $FF: renamed from: a java.io.InputStream
@@ -940,8 +940,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_47 = 0;
       this.field_49 = 0;
       this.field_52 = 0;
-      this.field_58 = field_18 >> 1;
-      this.field_59 = field_22 * 3 >> 2;
+      this.fullGameHCenter = fullGameWidth >> 1;
+      this.field_59 = gameHeight * 3 >> 2;
       this.texts = new String[88];
       this.manualTexts = new String[357];
       this.startupLanguageSelection = false;
@@ -966,12 +966,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_144 = 0;
       this.field_146 = new int[]{64, 32, 64};
       this.field_152 = new boolean[256];
-      this.field_155 = false;
+      this.finishedLevel = false;
       this.field_187 = new byte[8192];
       this.field_195 = new int[256][25];
       this.field_199 = new int[25];
       this.field_200 = new int[30][10];
-      this.field_201 = false;
+      this.redrawAllGameScreen = false;
       this.field_202 = false;
       this.field_204 = new boolean[256];
       this.field_208 = 0;
@@ -1187,7 +1187,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.loadTranslation();
       this.loadGameProgress();
       this.loadHighscore();
-      this.field_201 = true;
+      this.redrawAllGameScreen = true;
       this.loadMenu(true);
       this.appState = 1;
       this.field_249 = true;
@@ -1352,7 +1352,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.appState == 2) {
-            if ((this.field_111 > 0 || !field_125) && !this.field_155) {
+            if ((this.field_111 > 0 || !field_125) && !this.finishedLevel) {
                this.commandTexts[1] = this.texts[60];
                return;
             }
@@ -1447,11 +1447,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             if (this.commandTexts[command].equals(this.texts[61])) {
                this.saveConfig();
                this.appState = 2;
-               this.field_201 = true;
+               this.redrawAllGameScreen = true;
                this.field_249 = true;
                this.field_250 = 10;
                this.field_254 = true;
-               field_257 = true;
+               redrawLivesCounter = true;
                this.method_178();
                return true;
             }
@@ -1520,7 +1520,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.field_76 = false;
          this.audio.interruptTrack();
       } else {
-         this.field_201 = true;
+         this.redrawAllGameScreen = true;
       }
    }
 
@@ -1574,27 +1574,27 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    }
 
-   public final void sizeChanged(int var1, int var2) {
-      field_17 = var1;
-      field_16 = var2;
-      field_18 = field_17;
-      field_21 = field_17;
-      field_22 = field_21 * 3 >> 2;
-      field_21 = Math.min(field_21, 360);
-      field_22 = Math.min(field_22, 252);
-      field_316 = field_21 / 12 + 2;
-      field_317 = field_22 / 12 + 2;
-      this.field_291 = -field_21 * 2 * 4 / 3;
-      this.field_292 = field_21 * 2 * 4 / 3;
-      this.field_293 = field_22 * 4 * 4 / 3;
-      field_23 = field_16 - field_22 >> 1;
-      field_19 = field_22 + 72;
-      field_20 = field_16 - field_19 >> 1;
-      field_25 = field_23 + (field_22 >> 1);
-      field_24 = field_21 >> 1;
-      this.field_59 = field_22 * 3 >> 2;
-      this.field_58 = field_18 >> 1;
-      this.field_214 = new int[field_316][field_317][3];
+   public final void sizeChanged(int width, int height) {
+      screenWidth = width; // 240
+      screenHeight = height; // 320
+      fullGameWidth = screenWidth;
+      gameWidth = screenWidth;
+      gameHeight = gameWidth * 3 >> 2; // 4:3 screen ratio = 180
+      gameWidth = Math.min(gameWidth, 360); // 240
+      gameHeight = Math.min(gameHeight, 252); // 180
+      tilemapHSize = gameWidth / 12 + 2; // 240 / TILE_SIZE + LEFT AND RIGHT TILE = 22
+      tilemapVSize = gameHeight / 12 + 2; // 180 / TILE_SIZE + LEFT AND RIGHT TILE = 17
+      this.field_291 = -gameWidth * 2 * 4 / 3; // -240 * 2 * 4 / 3 = -640
+      this.field_292 = gameWidth * 2 * 4 / 3; // 240 * 2 * 4 / 3 = 640
+      this.field_293 = gameHeight * 4 * 4 / 3; // 180 * 4 * 4 / 3 = 960
+      gameY = screenHeight - gameHeight >> 1; // (320 - 180) / 2 = 40 // game canvas y position ???
+      uiContentHeight = gameHeight + 72; // 180 + 72 = 252 // timer ???
+      uiContentY = screenHeight - uiContentHeight >> 1; // (320 - 252) / 2 = 34
+      screenGameVCenter = gameY + (gameHeight >> 1); // 40 + (180 / 2) // screen vertical center of the game canvas ???
+      screenGameHCenter = gameWidth >> 1; // 240 / 2 // vertical center of the game canvas
+      this.field_59 = gameHeight * 3 >> 2; // 180 * 3 / 4 = 135
+      this.fullGameHCenter = fullGameWidth >> 1; // 240 / 2 = 120 // horizontal center of the game canvas
+      this.tilemaps = new int[tilemapHSize][tilemapVSize][3];
    }
 
    // $FF: renamed from: k () void
@@ -1604,14 +1604,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: b (boolean) void
    public final void method_27(boolean var1) {
-      int var3 = field_26.getFont().getHeight();
+      int var3 = g.getFont().getHeight();
       if (this.commandTexts[0] != null && (this.commandTexts[0] != this.field_318[0] || this.appState != 2 || var1)) {
-         this.method_36(this.commandTexts[0], field_18 >> 2, field_16 - var3, 17, true);
+         this.method_36(this.commandTexts[0], fullGameWidth >> 2, screenHeight - var3, 17, true);
          this.field_318[0] = this.commandTexts[0];
       }
 
       if (this.commandTexts[1] != null && (this.commandTexts[1] != this.field_318[1] || this.appState != 2 || var1)) {
-         this.method_36(this.commandTexts[1], field_18 * 3 >> 2, field_16 - var3, 17, true);
+         this.method_36(this.commandTexts[1], fullGameWidth * 3 >> 2, screenHeight - var3, 17, true);
          this.field_318[1] = this.commandTexts[1];
       }
 
@@ -1619,8 +1619,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: l () void
    public final void method_28() {
-      int var1 = 112 - ((field_18 >> 1) - 48 - 6);
-      int var2 = (field_18 >> 1) + 6 + 112;
+      int var1 = 112 - ((fullGameWidth >> 1) - 48 - 6);
+      int var2 = (fullGameWidth >> 1) + 6 + 112;
       if (this.field_111 <= 0 && field_125 || field_280 && this.field_108 == 59 && this.field_109 == 9) {
          int var3 = (660 - this.field_110) * 6;
          if (120 - var3 < 8) {
@@ -1628,13 +1628,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.field_108 == 59 && this.field_109 == 9) {
-            method_132(field_26, field_28[15], 0, 0, 48, 12, field_35[0], var3 - var1, field_22 >> 1, 20, true);
-            method_132(field_26, field_28[15], 0, 12, 48, 12, field_35[0], var2 - var3, field_22 >> 1, 20, true);
+            drawRegion(g, uiImages[15], 0, 0, 48, 12, field_35[0], var3 - var1, gameHeight >> 1, 20, true);
+            drawRegion(g, uiImages[15], 0, 12, 48, 12, field_35[0], var2 - var3, gameHeight >> 1, 20, true);
             return;
          }
 
-         method_132(field_26, field_28[14], 0, 0, 48, 12, field_35[0], var3 - var1, field_22 >> 1, 20, true);
-         method_132(field_26, field_28[14], 0, 12, 48, 12, field_35[0], var2 - var3, field_22 >> 1, 20, true);
+         drawRegion(g, uiImages[14], 0, 0, 48, 12, field_35[0], var3 - var1, gameHeight >> 1, 20, true);
+         drawRegion(g, uiImages[14], 0, 12, 48, 12, field_35[0], var2 - var3, gameHeight >> 1, 20, true);
       }
 
    }
@@ -1753,7 +1753,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                         }
                      }
 
-                     method_132(field_26, field_27, var15 % 16 * 12, var15 / 16 * 12, 12, 12, field_35[var11], var13 * 12 - (field_226[0] & 15), var14 * 12 - (field_226[1] & 15), 20, true);
+                     drawRegion(g, field_27, var15 % 16 * 12, var15 / 16 * 12, 12, 12, field_35[var11], var13 * 12 - (field_226[0] & 15), var14 * 12 - (field_226[1] & 15), 20, true);
                   }
                } catch (Exception var12) {
                }
@@ -1768,14 +1768,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       int var3 = method_124(field_226[0] & 15);
       int var4 = method_124(field_226[1] & 15);
 
-      for(int var5 = 0; var5 < field_316; ++var5) {
+      for(int var5 = 0; var5 < tilemapHSize; ++var5) {
          if (this.field_218 << 4 > (field_226[0] >> 4) + var5) {
-            for(int var6 = 0; var6 < field_317; ++var6) {
-               int var7 = this.field_214[var5][var6][1];
-               int var8 = this.field_214[var5][var6][0];
-               if (this.field_214[var5][var6][2] == 1 && var8 != 0 && !var2) {
+            for(int var6 = 0; var6 < tilemapVSize; ++var6) {
+               int var7 = this.tilemaps[var5][var6][1];
+               int var8 = this.tilemaps[var5][var6][0];
+               if (this.tilemaps[var5][var6][2] == 1 && var8 != 0 && !var2) {
                   try {
-                     var1.drawRegion(field_27, (var8 & 15) * 12, (var8 >> 4) * 12, 12, 12, field_35[var7], var5 * 12 - var3, var6 * 12 - var4 + field_23, 20);
+                     var1.drawRegion(field_27, (var8 & 15) * 12, (var8 >> 4) * 12, 12, 12, field_35[var7], var5 * 12 - var3, var6 * 12 - var4 + gameY, 20);
                   } catch (Throwable var10) {
                   }
                }
@@ -1795,11 +1795,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       int var10 = method_124(field_226[0] & 15);
       int var11 = method_124(field_226[1] & 15);
 
-      for(int var12 = 0; var12 < field_316; ++var12) {
+      for(int var12 = 0; var12 < tilemapHSize; ++var12) {
          int var14 = var12 * 12 - var10;
          int var15 = var8;
 
-         for(int var13 = 0; var13 < field_317; ++var13) {
+         for(int var13 = 0; var13 < tilemapVSize; ++var13) {
             int var16 = var13 * 12 - var11;
             int var3 = var9 >> 4;
             int var4 = var15 >> 4;
@@ -1825,15 +1825,15 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                }
             }
 
-            this.field_214[var12][var13][0] = var22;
+            this.tilemaps[var12][var13][0] = var22;
             if (var22 != 0) {
-               this.field_214[var12][var13][1] = var17;
-               this.field_214[var12][var13][2] = 0;
+               this.tilemaps[var12][var13][1] = var17;
+               this.tilemaps[var12][var13][2] = 0;
                if (this.field_231[var22] != 0) {
-                  this.field_214[var12][var13][2] = 1;
+                  this.tilemaps[var12][var13][2] = 1;
                } else if (!var2) {
                   try {
-                     var1.drawRegion(field_27, (var22 & 15) * 12, (var22 >> 4) * 12, 12, 12, field_35[var17], var14, var16 + field_23, 20);
+                     var1.drawRegion(field_27, (var22 & 15) * 12, (var22 >> 4) * 12, 12, 12, field_35[var17], var14, var16 + gameY, 20);
                   } catch (Throwable var21) {
                   }
                }
@@ -1863,13 +1863,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: a (java.lang.String, int, int, int, boolean) void
    private void method_36(String var1, int var2, int var3, int var4, boolean var5) {
-      int var6 = field_26.getFont().getHeight();
+      int var6 = g.getFont().getHeight();
       if (var1.length() != 0) {
-         int var7 = field_26.getFont().stringWidth(var1) + 5;
+         int var7 = g.getFont().stringWidth(var1) + 5;
          if ((var4 & 1) == 1) {
-            method_151(var2 - var7 / 2, var3, var7, var6);
+            drawScreenBackground(var2 - var7 / 2, var3, var7, var6);
          } else {
-            method_151(var2, var3, var7, var6);
+            drawScreenBackground(var2, var3, var7, var6);
          }
 
          if (var5) {
@@ -1889,23 +1889,23 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       if (!var1) {
          if (this.field_258 == this.field_106 && this.field_259 == this.score) {
             if (this.field_106 == 0 && (this.field_32 & 1) == 0) {
-               field_255 = true;
+               redrawRingAndScoreCounter = true;
             }
          } else {
-            field_255 = true;
+            redrawRingAndScoreCounter = true;
          }
 
          if (this.field_108 == 0 || this.field_260 != this.field_109 * 100 + this.field_108) {
-            field_256 = true;
+            redrawTimer = true;
          }
 
          if (this.field_261 != this.field_111) {
-            field_257 = true;
+            redrawLivesCounter = true;
          }
       } else {
-         field_255 = true;
-         field_257 = true;
-         field_256 = true;
+         redrawRingAndScoreCounter = true;
+         redrawLivesCounter = true;
+         redrawTimer = true;
       }
 
       if (this.field_111 > 99) {
@@ -1915,38 +1915,38 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_261 = this.field_111;
       this.field_258 = this.field_106;
       this.field_259 = this.score;
-      if (field_255) {
+      if (redrawRingAndScoreCounter) {
          boolean var12 = false;
-         method_151(0, 0, 100, field_23);
-         method_132(field_26, field_28[1], 0, 0, field_28[1].getWidth(), field_28[1].getHeight(), field_35[0], 4, -10, 36, true);
+         drawScreenBackground(0, 0, 100, gameY);
+         drawRegion(g, uiImages[1], 0, 0, uiImages[1].getWidth(), uiImages[1].getHeight(), field_35[0], 4, -10, 36, true);
          if (this.field_106 != 0 || (this.field_32 >> 1 & 1) == 0) {
             method_39(24, -30, this.field_106, 3);
          }
 
          method_39(24, -18, this.score, 8);
-         field_255 = false;
+         redrawRingAndScoreCounter = false;
       }
 
       this.field_260 = this.field_109 * 100 + this.field_108;
-      if (field_256) {
-         method_151(field_18 - 48, 0, 48, field_23);
-         method_132(field_26, field_28[11], 0, 0, field_28[11].getWidth(), field_28[11].getHeight(), field_35[0], field_18 - 48, -8, 36, true);
-         method_39(field_18 + -44, -18, this.field_109, 1);
-         method_39(field_18 + -30, -18, this.field_108, 2);
-         field_256 = false;
+      if (redrawTimer) {
+         drawScreenBackground(fullGameWidth - 48, 0, 48, gameY);
+         drawRegion(g, uiImages[11], 0, 0, uiImages[11].getWidth(), uiImages[11].getHeight(), field_35[0], fullGameWidth - 48, -8, Graphics.LEFT|Graphics.BOTTOM, true);
+         method_39(fullGameWidth + -44, -18, this.field_109, 1);
+         method_39(fullGameWidth + -30, -18, this.field_108, 2);
+         redrawTimer = false;
       }
 
-      if (field_257) {
-         method_151(0, field_23 + field_22, 50, field_23);
-         int var13 = 7 + field_28[2].getHeight() - field_28[12].getHeight();
-         method_132(field_26, field_28[2], 0, 0, 17, 15, field_35[0], 5, 7 + field_22, 20, true);
+      if (redrawLivesCounter) {
+         drawScreenBackground(0, gameY + gameHeight, 50, gameY);
+         int var13 = 7 + uiImages[2].getHeight() - uiImages[12].getHeight();
+         drawRegion(g, uiImages[2], 0, 0, 17, 15, field_35[0], 5, 7 + gameHeight, 20, true);
          if (this.field_111 > 9) {
-            method_39(31, field_22 + var13, this.field_111, 2);
+            method_39(31, gameHeight + var13, this.field_111, 2);
          } else {
-            method_39(31, field_22 + var13, this.field_111, 1);
+            method_39(31, gameHeight + var13, this.field_111, 1);
          }
 
-         field_257 = false;
+         redrawLivesCounter = false;
       }
 
    }
@@ -1955,7 +1955,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private static void method_39(int var0, int var1, int var2, int var3) {
       int var4 = var0 + var3 * 5 - 5;
       int var5 = var2 % 10;
-      method_132(field_26, field_28[12], 5 * var5, 0, 5, 10, field_35[0], var4, var1, 20, true);
+      drawRegion(g, uiImages[12], 5 * var5, 0, 5, 10, field_35[0], var4, var1, 20, true);
 
       for(int var6 = 1; var6 < var3; ++var6) {
          int var7 = 1;
@@ -1965,7 +1965,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          var5 = var2 / var7 % 10;
-         method_132(field_26, field_28[12], 5 * var5, 0, 5, 10, field_35[0], var4 - var6 * 5, var1, 20, true);
+         drawRegion(g, uiImages[12], 5 * var5, 0, 5, 10, field_35[0], var4 - var6 * 5, var1, 20, true);
       }
 
    }
@@ -2008,7 +2008,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_78[3][3] = 30;
       this.field_78[3][8] = -field_81[this.field_78[3][1]][2];
       this.field_78[3][9] = 0;
-      this.field_79 = field_18 + field_81[this.field_78[3][1]][2] >> 1;
+      this.field_79 = fullGameWidth + field_81[this.field_78[3][1]][2] >> 1;
       this.field_78[4][0] = 1;
       this.field_78[4][1] = 15;
       this.field_78[4][2] = 0 - field_81[this.field_78[4][1]][2];
@@ -2033,7 +2033,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.appState = 4;
          this.field_240 = false;
          this.field_241 = false;
-         this.field_155 = false;
+         this.finishedLevel = false;
          this.field_289 = true;
          this.field_290 = true;
          this.field_239 = 0;
@@ -2080,7 +2080,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.field_78[3][3] = 40;
          this.field_78[3][8] = -field_81[this.field_78[3][1]][2];
          this.field_78[3][9] = 0;
-         this.field_79 = (field_18 >> 1) + field_81[this.field_78[3][1]][2] / 2;
+         this.field_79 = (fullGameWidth >> 1) + field_81[this.field_78[3][1]][2] / 2;
          if (this.zone == 6) {
             this.field_78[4][0] = 1;
             this.field_78[4][1] = 3;
@@ -2129,7 +2129,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          if (var2 / var5 == 0) {
             var5 = var4;
-            method_132(field_26, field_28[13], 6 * var3, 37, 6, 10, field_35[0], var0 - 6, var1, 20, true);
+            drawRegion(g, uiImages[13], 6 * var3, 37, 6, 10, field_35[0], var0 - 6, var1, 20, true);
 
             for(var4 = 1; var4 < var5; ++var4) {
                var6 = 1;
@@ -2139,7 +2139,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                }
 
                var3 = var2 / var6 % 10;
-               method_132(field_26, field_28[13], 6 * var3, 37, 6, 10, field_35[0], var0 - var4 * 6 - 6, var1, 20, true);
+               drawRegion(g, uiImages[13], 6 * var3, 37, 6, 10, field_35[0], var0 - var4 * 6 - 6, var1, 20, true);
             }
 
             return;
@@ -2239,7 +2239,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.method_165();
       field_116[8] = -1;
       this.appState = 2;
-      this.field_201 = true;
+      this.redrawAllGameScreen = true;
       this.method_116();
       this.field_249 = true;
       this.field_250 = 10;
@@ -2247,7 +2247,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: ak () void
    private void method_47() {
-      unloadImages(commonImages);
+      unloadImages(gameImages);
       field_27 = null;
       this.field_240 = false;
       this.field_289 = true;
@@ -4191,23 +4191,23 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          if (this.field_240) {
             if (this.field_221 == 0) {
-               this.field_275[0] = 10720 - (field_21 >> 1) + -16;
-               this.field_275[1] = 10720 - (field_21 >> 1) + field_21 + 16;
+               this.field_275[0] = 10720 - (gameWidth >> 1) + -16;
+               this.field_275[1] = 10720 - (gameWidth >> 1) + gameWidth + 16;
                this.field_275[2] = 0;
                this.field_275[3] = 800 + var1;
             } else if (this.field_221 == 2) {
-               this.field_275[0] = 6272 - (field_21 >> 1) + -16;
-               this.field_275[1] = 6272 - (field_21 >> 1) + field_21 + 48;
+               this.field_275[0] = 6272 - (gameWidth >> 1) + -16;
+               this.field_275[1] = 6272 - (gameWidth >> 1) + gameWidth + 48;
                this.field_275[2] = 560;
                this.field_275[3] = 568 + var1;
             } else if (this.field_221 == 4) {
-               this.field_275[0] = 11424 - (field_21 >> 1) + -64;
-               this.field_275[1] = 11424 - (field_21 >> 1) + field_21 + 0;
+               this.field_275[0] = 11424 - (gameWidth >> 1) + -64;
+               this.field_275[1] = 11424 - (gameWidth >> 1) + gameWidth + 0;
                this.field_275[2] = 1232;
                this.field_275[3] = 1248 + var1;
             } else if (this.field_221 == 3) {
-               this.field_275[0] = 8400 - (field_21 >> 1);
-               this.field_275[1] = 8400 - (field_21 >> 1) + field_21;
+               this.field_275[0] = 8400 - (gameWidth >> 1);
+               this.field_275[1] = 8400 - (gameWidth >> 1) + gameWidth;
                this.field_275[2] = 528;
                this.field_275[3] = 576 + var1;
             }
@@ -4215,13 +4215,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          if (this.field_241) {
             if (this.field_221 == 0) {
-               this.field_275[0] = 10752 - (field_21 >> 1);
+               this.field_275[0] = 10752 - (gameWidth >> 1);
             } else if (this.field_221 == 2) {
-               this.field_275[0] = 6304 - (field_21 >> 1) - 16;
+               this.field_275[0] = 6304 - (gameWidth >> 1) - 16;
             } else if (this.field_221 == 4) {
-               this.field_275[0] = 11424 - (field_21 >> 1);
+               this.field_275[0] = 11424 - (gameWidth >> 1);
             } else if (this.field_221 == 3) {
-               this.field_275[0] = 8400 - (field_21 >> 1);
+               this.field_275[0] = 8400 - (gameWidth >> 1);
             }
          }
       }
@@ -4248,15 +4248,15 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: as () void
    private void method_94() {
-      int var1 = field_21 >> 1;
+      int var1 = gameWidth >> 1;
       int var2 = method_102();
-      if (field_225[0] >= this.field_275[1] - field_21 && !this.field_240 && this.field_239 == 0 && this.field_222 == 2) {
+      if (field_225[0] >= this.field_275[1] - gameWidth && !this.field_240 && this.field_239 == 0 && this.field_222 == 2) {
          this.method_242();
       }
 
       int[] var10000;
       if (var2 - field_225[0] < var1) {
-         if (this.field_155) {
+         if (this.finishedLevel) {
             if (field_225[0] + 16 << 8 > field_116[0]) {
                field_116[0] = field_225[0] + 16 << 8;
                if (field_116[10] < 0) {
@@ -4422,7 +4422,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                if (5888 <= field_225[0]) {
                   if (field_225[1] > 880) {
                      if (6144 <= field_225[0]) {
-                        this.field_275[1] = 6144 + field_21;
+                        this.field_275[1] = 6144 + gameWidth;
                         this.field_239 = 1;
                      }
                   } else {
@@ -5495,7 +5495,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: a (int, int, int, int, int, int, int, int) void
    public static void method_123(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var6, var7, 3, true);
+      drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var6, var7, 3, true);
    }
 
    // $FF: renamed from: h (int) int
@@ -5517,22 +5517,22 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public static void method_126(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = method_125(var6 - field_226[0]);
       int var9 = method_125(var7 - field_226[1]);
-      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var8, var9, 3, true);
+      drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var8, var9, 3, true);
    }
 
    // $FF: renamed from: a (int, int, int, int, int, int, int, int, int) void
    public static void method_127(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = method_125(var6 - field_226[0]);
       int var10 = method_125(var7 - field_226[1]);
-      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var9, var10, var8, true);
+      drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var9, var10, var8, true);
    }
 
    // $FF: renamed from: a (int, int, int, int, int) void
    public static void method_128(int var0, int var1, int var2, int var3, int var4) {
-      if (commonImages[var0] != null) {
+      if (gameImages[var0] != null) {
          int var5 = method_125(var2 - field_226[0]);
          int var6 = method_125(var3 - field_226[1]);
-         method_132(field_26, commonImages[var0], 0, 0, commonImages[var0].getWidth(), commonImages[var0].getHeight(), var1, var5, var6, var4, true);
+         drawRegion(g, gameImages[var0], 0, 0, gameImages[var0].getWidth(), gameImages[var0].getHeight(), var1, var5, var6, var4, true);
       }
    }
 
@@ -5540,7 +5540,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public static void method_129(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = method_125(var6 - field_226[0]);
       int var9 = method_125(var7 - field_226[1]);
-      method_132(field_26, commonImages[var0], var1, var2, var3, var4, var5, var8, var9, 20, true);
+      drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var8, var9, 20, true);
    }
 
    // $FF: renamed from: b (int, int, int, int, int) void
@@ -5564,24 +5564,23 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             int var11 = method_125(var0 - field_226[0]);
             int var12 = method_125(var1 - field_226[1]);
-            method_132(field_26, commonImages[var2], var6, var7, var8, var9, var4, var11, var12 + var10, var5, true);
+            drawRegion(g, gameImages[var2], var6, var7, var8, var9, var4, var11, var12 + var10, var5, true);
          }
       }
    }
 
-   // $FF: renamed from: a (javax.microedition.lcdui.Graphics, javax.microedition.lcdui.Image, int, int, int, int, int, int, int, int, boolean) void
-   public static void method_132(Graphics var0, Image var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, boolean var10) {
+   public static void drawRegion(Graphics g, Image src, int sx, int sy, int width, int height, int transform, int dx, int dy, int anchor, boolean gameCoordinate) {
       try {
-         if (var1 != null) {
-            if (var10) {
-               var8 += field_23;
+         if (src != null) {
+            if (gameCoordinate) {
+               dy += gameY;
             } else {
-               var8 += field_20;
+               dy += uiContentY;
             }
 
-            var0.drawRegion(var1, var2, var3, var4, var5, var6, var7, var8, var9);
+            g.drawRegion(src, sx, sy, width, height, transform, dx, dy, anchor);
          }
-      } catch (Exception var12) {
+      } catch (Exception error) {
       }
    }
 
@@ -5776,7 +5775,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          int var4 = 0;
          int var5 = 0;
 
-         while(method_145(var3, var4) < field_21 - 0) {
+         while(method_145(var3, var4) < gameWidth - 0) {
             var5 = var4;
             if ((var4 = method_144(var3, var4 + 1)) == -1) {
                var4 = var3.length();
@@ -5784,7 +5783,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   break;
                }
 
-               if (method_145(var3, var4) < field_21 - 0) {
+               if (method_145(var3, var4) < gameWidth - 0) {
                   var5 = 0;
                   break;
                }
@@ -5851,12 +5850,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
       this.field_68 = (byte)((this.field_68 + 1) % 24);
       switch (this.viewState) {
+         // Sega logo splashscreen
          case 0:
             ++this.field_295;
             if (this.field_295 > 150) {
                this.field_295 = 0;
                this.viewState = 11;
-               this.field_201 = true;
+               this.redrawAllGameScreen = true;
             }
             break;
          case 1:
@@ -5914,6 +5914,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                this.currentMenuItem = 1;
             }
             break;
+         // stage select
          case 4:
             if (this.rendering) {
                this.field_295 = (byte)((this.field_295 + 1) % 5);
@@ -5956,7 +5957,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.loadGameProgress();
                   if (this.level == 0 && this.field_243 == 9) {
                      this.resetPressedKeys();
-                     this.field_201 = true;
+                     this.redrawAllGameScreen = true;
                      this.field_111 = 3;
                      if (this.field_299) {
                         this.field_40 = this.field_301;
@@ -5992,7 +5993,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.act = 0;
                   this.field_221 = field_216[this.zone][this.act];
                   this.field_222 = field_217[this.zone][this.act];
-                  this.field_201 = true;
+                  this.redrawAllGameScreen = true;
                   this.appState = 3;
                   this.field_249 = true;
                   this.field_250 = 10;
@@ -6159,7 +6160,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                if (this.pressedKeys[0]) {
                   if (this.currentMenuItem == 0) {
                      this.resetPressedKeys();
-                     this.field_201 = true;
+                     this.redrawAllGameScreen = true;
                      unloadImages(menuImages);
                      this.field_111 = 3;
                      if (this.field_299) {
@@ -6178,7 +6179,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      this.method_42();
                   } else if (this.currentMenuItem == 1) {
                      this.resetPressedKeys();
-                     this.field_201 = true;
+                     this.redrawAllGameScreen = true;
                      unloadImages(menuImages);
                      this.field_111 = this.field_244;
                      this.score = this.field_245;
@@ -6236,12 +6237,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             this.field_72 = method_143(this.manualTexts[1 + this.currentMenuItem * 2]);
             break;
+         // ifone logo splashscreen
          case 11:
             ++this.field_295;
             if (this.field_295 > 150) {
                this.field_295 = 0;
                this.viewState = 1;
-               this.field_201 = true;
+               this.redrawAllGameScreen = true;
             }
             break;
          case 12:
@@ -6366,97 +6368,97 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       int var13;
       switch (this.viewState) {
          case 0:
-            field_26.setColor(16777215);
-            field_26.fillRect(0, 0, field_18, field_16);
-            field_26.drawImage(menuImages[0], field_18 >> 1, field_20 + (field_19 >> 1), 3);
+            g.setColor(16777215);
+            g.fillRect(0, 0, fullGameWidth, screenHeight);
+            g.drawImage(menuImages[0], fullGameWidth >> 1, uiContentY + (uiContentHeight >> 1), 3);
             if (this.field_295 < 30) {
-               var6 = field_18 * this.field_295 / 30;
-               field_26.fillRect(var6 - field_18 - 10, field_23, field_18, field_22);
-               field_26.fillRect(var6 + 10, field_23, field_18, field_22);
+               var6 = fullGameWidth * this.field_295 / 30;
+               g.fillRect(var6 - fullGameWidth - 10, gameY, fullGameWidth, gameHeight);
+               g.fillRect(var6 + 10, gameY, fullGameWidth, gameHeight);
                var7 = var6 - 11;
-               field_26.drawLine(var7 + 2, 0, var7 + 2, field_16);
-               field_26.drawLine(var7 + 3, 0, var7 + 3, field_16);
-               field_26.drawLine(var7 + 5, 0, var7 + 5, field_16);
-               field_26.drawLine(var7 + 8, 0, var7 + 8, field_16);
+               g.drawLine(var7 + 2, 0, var7 + 2, screenHeight);
+               g.drawLine(var7 + 3, 0, var7 + 3, screenHeight);
+               g.drawLine(var7 + 5, 0, var7 + 5, screenHeight);
+               g.drawLine(var7 + 8, 0, var7 + 8, screenHeight);
                var7 = var6 + 10;
-               field_26.drawLine(var7 - 2, 0, var7 - 2, field_16);
-               field_26.drawLine(var7 - 3, 0, var7 - 3, field_16);
-               field_26.drawLine(var7 - 5, 0, var7 - 5, field_16);
-               field_26.drawLine(var7 - 8, 0, var7 - 8, field_16);
+               g.drawLine(var7 - 2, 0, var7 - 2, screenHeight);
+               g.drawLine(var7 - 3, 0, var7 - 3, screenHeight);
+               g.drawLine(var7 - 5, 0, var7 - 5, screenHeight);
+               g.drawLine(var7 - 8, 0, var7 - 8, screenHeight);
                return;
             }
             break;
          case 1:
-            field_26.setColor(0);
-            field_26.fillRect(0, 0, field_18, field_16);
-            field_26.drawImage(menuImages[1], field_18 >> 1, field_20 + (field_19 >> 1), 3);
+            g.setColor(0);
+            g.fillRect(0, 0, fullGameWidth, screenHeight);
+            g.drawImage(menuImages[1], fullGameWidth >> 1, uiContentY + (uiContentHeight >> 1), 3);
             return;
          case 2:
-            field_26.setColor(0);
-            field_26.fillRect(0, field_20, field_18, field_19);
+            g.setColor(0);
+            g.fillRect(0, uiContentY, fullGameWidth, uiContentHeight);
             this.method_155();
-            field_26.setColor(16777215);
+            g.setColor(16777215);
             String var19 = this.texts[this.field_39[2][this.config[2]]];
             var2 = field_14.stringWidth(var19);
-            var1 = field_20 + (field_19 >> 1);
-            field_26.drawString(var19, field_18 >> 1, var1, 65);
-            field_26.drawImage(menuImages[1], (field_18 >> 1) + (var2 >> 1) + 5, var1, 36);
-            field_26.drawImage(menuImages[2], (field_18 >> 1) - (var2 >> 1) - 5, var1, 40);
+            var1 = uiContentY + (uiContentHeight >> 1);
+            g.drawString(var19, fullGameWidth >> 1, var1, 65);
+            g.drawImage(menuImages[1], (fullGameWidth >> 1) + (var2 >> 1) + 5, var1, 36);
+            g.drawImage(menuImages[2], (fullGameWidth >> 1) - (var2 >> 1) - 5, var1, 40);
             return;
          case 3:
             this.method_160(true, false);
             this.method_150();
             this.method_155();
-            var1 = field_23 + field_22;
-            this.method_154(this.texts[0], field_18 >> 1, var1, 16777215, 0);
+            var1 = gameY + gameHeight;
+            this.method_154(this.texts[0], fullGameWidth >> 1, var1, 16777215, 0);
             return;
          case 4:
             this.method_160(true, false);
             this.method_150();
             this.method_155();
-            var1 = field_23 + field_22;
+            var1 = gameY + gameHeight;
             if (this.resume > 0) {
                this.texts[2] = this.texts[70];
             }
 
-            this.method_154(this.texts[2 + this.currentMenuItem], field_18 >> 1, var1, 16777215, 16386570);
-            field_26.drawImage(menuImages[1], field_18 - 5, var1 + (field_15 >> 1), 6);
-            field_26.drawImage(menuImages[2], 2, var1 + (field_15 >> 1), 6);
+            this.method_154(this.texts[2 + this.currentMenuItem], fullGameWidth >> 1, var1, 16777215, 16386570);
+            g.drawImage(menuImages[1], fullGameWidth - 5, var1 + (field_15 >> 1), 6);
+            g.drawImage(menuImages[2], 2, var1 + (field_15 >> 1), 6);
             this.method_158(this.menuHelperText, true);
             return;
          case 5:
             var7 = field_15;
             this.method_160(true, true);
             this.method_155();
-            field_26.setColor(16777215);
+            g.setColor(16777215);
             boolean var18 = false;
             this.field_74 = false;
 
             for(int var8 = this.field_73; var8 < 5; ++var8) {
-               if (field_20 + 42 + var7 * (var8 - this.field_73) + field_15 < field_23 + field_22) {
-                  field_26.drawString("" + (var8 + 1) + " " + highscoreNames[var8] + " " + highscoreScores[var8], 6, field_20 + 42 + var7 * (var8 - this.field_73), 20);
-                  field_26.drawString(this.texts[31 + highscoreDiffculties[var8]], field_18 - 6, field_20 + 42 + var7 * (var8 - this.field_73), 24);
+               if (uiContentY + 42 + var7 * (var8 - this.field_73) + field_15 < gameY + gameHeight) {
+                  g.drawString("" + (var8 + 1) + " " + highscoreNames[var8] + " " + highscoreScores[var8], 6, uiContentY + 42 + var7 * (var8 - this.field_73), 20);
+                  g.drawString(this.texts[31 + highscoreDiffculties[var8]], fullGameWidth - 6, uiContentY + 42 + var7 * (var8 - this.field_73), 24);
                } else {
                   this.field_74 = true;
                }
             }
 
             if (this.field_73 > 0) {
-               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
+               drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], fullGameWidth >> 1, 0, 17, true);
             }
 
             if (this.field_74) {
-               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], (field_18 >> 1) + 10, 1, 17, true);
+               drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], (fullGameWidth >> 1) + 10, 1, 17, true);
             }
 
-            var1 = field_23 + field_22;
+            var1 = gameY + gameHeight;
             this.method_158(this.texts[5], false);
-            this.method_154(this.texts[20], field_18 >> 1, var1, 16777215, 0);
+            this.method_154(this.texts[20], fullGameWidth >> 1, var1, 16777215, 0);
             return;
          case 6:
             this.method_160(true, true);
             this.method_155();
-            field_26.setColor(16777215);
+            g.setColor(16777215);
             this.method_158(this.texts[21], false);
             this.method_148(this.texts[24], 2, 0, this.currentMenuItem == 0);
             this.method_148(this.texts[25], 2, 1, this.currentMenuItem == 1);
@@ -6464,30 +6466,30 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          case 7:
             this.method_160(true, true);
             this.method_155();
-            field_26.setColor(16777215);
-            field_26.drawString(this.texts[26], field_18 >> 1, field_20 + (field_19 >> 1) - 25, 17);
-            field_26.drawString(this.texts[27], field_18 >> 1, field_20 + (field_19 >> 1) + 2, 17);
+            g.setColor(16777215);
+            g.drawString(this.texts[26], fullGameWidth >> 1, uiContentY + (uiContentHeight >> 1) - 25, 17);
+            g.drawString(this.texts[27], fullGameWidth >> 1, uiContentY + (uiContentHeight >> 1) + 2, 17);
             return;
          case 8:
             this.method_160(true, true);
-            field_26.setColor(16777215);
+            g.setColor(16777215);
             int[] var9 = new int[3];
             int var10 = menuImages[1].getWidth();
             menuImages[2].getWidth();
-            int var12 = field_17 - var10;
+            int var12 = screenWidth - var10;
             if (this.config[1] > 1) {
                this.config[1] = 1;
             }
 
             for(var13 = 0; var13 < this.field_39.length; ++var13) {
                var9[var13] = field_14.stringWidth(this.texts[this.field_39[var13][this.config[var13]]]);
-               field_26.drawString(this.texts[28 + var13], 11, field_23 + 4 + var13 * 22, 20);
-               field_26.drawString(this.texts[this.field_39[var13][this.config[var13]]], var12, field_23 + 4 + var13 * 22, 24);
+               g.drawString(this.texts[28 + var13], 11, gameY + 4 + var13 * 22, 20);
+               g.drawString(this.texts[this.field_39[var13][this.config[var13]]], var12, gameY + 4 + var13 * 22, 24);
             }
 
-            field_26.drawImage(menuImages[1], var12 + var10, field_23 + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
+            g.drawImage(menuImages[1], var12 + var10, gameY + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
             field_14.stringWidth(this.texts[this.field_39[this.currentMenuItem][this.config[this.currentMenuItem]]]);
-            field_26.drawImage(menuImages[2], var12 - var9[this.currentMenuItem], field_23 + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
+            g.drawImage(menuImages[2], var12 - var9[this.currentMenuItem], gameY + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
             this.method_155();
             this.method_159();
             this.method_158(this.texts[6], false);
@@ -6495,54 +6497,54 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          case 9:
             this.method_160(true, true);
             this.method_155();
-            field_26.setColor(16777215);
+            g.setColor(16777215);
             this.method_148(this.texts[47], 2, 0, this.currentMenuItem == 0);
             this.method_148(this.texts[48], 2, 1, this.currentMenuItem == 1);
             field_14.stringWidth(this.texts[47 + this.currentMenuItem]);
             this.method_159();
             return;
          case 10:
-            field_26.setFont(field_75);
-            int var15 = field_26.getFont().getHeight();
+            g.setFont(field_75);
+            int var15 = g.getFont().getHeight();
             this.method_160(true, true);
             this.method_155();
-            int var16 = field_20 + 42;
-            var4 = field_22 + field_23 - var15;
+            int var16 = uiContentY + 42;
+            var4 = gameHeight + gameY - var15;
             var5 = this.field_73;
-            field_26.setColor(16777215);
+            g.setColor(16777215);
 
             while(var16 < var4 && var5 < this.field_72.size()) {
-               field_26.drawString((String)this.field_72.elementAt(var5), field_18 >> 1, var16, 17);
+               g.drawString((String)this.field_72.elementAt(var5), fullGameWidth >> 1, var16, 17);
                var16 += var15;
                ++var5;
             }
 
             if (var5 < this.field_72.size()) {
                this.field_74 = true;
-               int var17 = field_22;
-               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], field_18 >> 1, var17, 33, true);
+               int var17 = gameHeight;
+               drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], fullGameWidth >> 1, var17, 33, true);
             } else {
                this.field_74 = false;
             }
 
             if (this.field_73 > 0) {
-               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
+               drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], fullGameWidth >> 1, 0, 17, true);
             }
 
             this.method_158(this.manualTexts[this.currentMenuItem * 2], false);
             this.method_149(24);
             return;
          case 11:
-            field_26.setColor(16777215);
-            field_26.fillRect(0, 0, field_17, field_16);
-            field_26.drawImage(menuImages[2], 0, 0, 20);
+            g.setColor(16777215);
+            g.fillRect(0, 0, screenWidth, screenHeight);
+            g.drawImage(menuImages[2], 0, 0, 20);
             if (this.field_295 >= 120) {
-               field_26.setColor(0);
-               var6 = (this.field_295 - 120) * (field_18 >> 1) / 30;
+               g.setColor(0);
+               var6 = (this.field_295 - 120) * (fullGameWidth >> 1) / 30;
 
                for(var7 = 0; var7 < var6 << 1; var7 += 2) {
-                  field_26.drawLine(var7, 0, var7, field_16);
-                  field_26.drawLine(field_18 - 1 - var7, 0, field_18 - 1 - var7, field_16);
+                  g.drawLine(var7, 0, var7, screenHeight);
+                  g.drawLine(fullGameWidth - 1 - var7, 0, fullGameWidth - 1 - var7, screenHeight);
                }
             }
             break;
@@ -6563,8 +6565,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.manualTexts[55] = "Versione 1.0.12";
             }
 
-            var1 = field_23 + 3;
-            var4 = field_22 + field_23 - var13;
+            var1 = gameY + 3;
+            var4 = gameHeight + gameY - var13;
             var5 = this.field_73;
             int var14;
             if ((var14 = this.currentMenuItem * 7 + 52) + 6 >= this.manualTexts.length) {
@@ -6572,11 +6574,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             if (this.currentMenuItem >= 0) {
-               field_26.setColor(16777215);
+               g.setColor(16777215);
 
                while(var1 < var4 && var5 < 5) {
                   if (this.manualTexts[1 + var14 + var5] != null) {
-                     field_26.drawString(this.manualTexts[1 + var14 + var5], field_18 >> 1, var1, 17);
+                     g.drawString(this.manualTexts[1 + var14 + var5], fullGameWidth >> 1, var1, 17);
                   }
 
                   var1 += var13;
@@ -6586,13 +6588,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             if (var5 < 5) {
                this.field_74 = true;
-               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], field_18 >> 1, field_22, 33, true);
+               drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[1], fullGameWidth >> 1, gameHeight, 33, true);
             } else {
                this.field_74 = false;
             }
 
             if (this.field_73 > 0) {
-               method_132(field_26, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], field_18 >> 1, 0, 17, true);
+               drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), field_35[3], fullGameWidth >> 1, 0, 17, true);
             }
 
             this.method_158(this.manualTexts[var14], false);
@@ -6600,22 +6602,22 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             return;
          case 13:
             this.method_160(true, true);
-            field_26.setColor(16777215);
-            field_26.drawString(this.texts[81], 11, field_23 + 4 + 0, 20);
-            field_26.drawString(this.texts[this.field_298[0] ? 34 : 35], field_18 - 10, field_23 + 4 + 0, 24);
-            field_26.drawString(this.texts[83], 11, field_23 + 4 + 22, 20);
-            field_26.drawString(this.texts[this.field_298[2] ? 34 : 35], field_18 - 10, field_23 + 4 + 22, 24);
-            field_26.drawString(this.texts[84], 11, field_23 + 4 + 44, 20);
-            field_26.drawString(String.valueOf(this.field_301), field_18 - 10, field_23 + 4 + 44, 24);
-            field_26.drawString(this.texts[82], 11, field_23 + 4 + 66, 20);
-            field_26.drawString(this.texts[this.field_298[1] ? 34 : 35], field_18 - 10, field_23 + 4 + 66, 24);
-            field_26.drawString("COORDS", 11, field_23 + 4 + 88, 20);
-            field_26.drawString(this.texts[this.field_298[3] ? 34 : 35], field_18 - 10, field_23 + 4 + 88, 24);
-            field_26.drawString("CAMERA", 11, field_23 + 4 + 110, 20);
-            field_26.drawString(this.texts[this.field_298[4] ? 34 : 35], field_18 - 10, field_23 + 4 + 110, 24);
-            field_26.drawImage(menuImages[1], field_18 - 8, field_23 + this.currentMenuItem * 22 + 8, 20);
+            g.setColor(16777215);
+            g.drawString(this.texts[81], 11, gameY + 4 + 0, 20);
+            g.drawString(this.texts[this.field_298[0] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 0, 24);
+            g.drawString(this.texts[83], 11, gameY + 4 + 22, 20);
+            g.drawString(this.texts[this.field_298[2] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 22, 24);
+            g.drawString(this.texts[84], 11, gameY + 4 + 44, 20);
+            g.drawString(String.valueOf(this.field_301), fullGameWidth - 10, gameY + 4 + 44, 24);
+            g.drawString(this.texts[82], 11, gameY + 4 + 66, 20);
+            g.drawString(this.texts[this.field_298[1] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 66, 24);
+            g.drawString("COORDS", 11, gameY + 4 + 88, 20);
+            g.drawString(this.texts[this.field_298[3] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 88, 24);
+            g.drawString("CAMERA", 11, gameY + 4 + 110, 20);
+            g.drawString(this.texts[this.field_298[4] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 110, 24);
+            g.drawImage(menuImages[1], fullGameWidth - 8, gameY + this.currentMenuItem * 22 + 8, 20);
             var2 = field_14.stringWidth(this.texts[35]);
-            field_26.drawImage(menuImages[2], field_18 - var2 - 12, field_23 + this.currentMenuItem * 22 + 8, 24);
+            g.drawImage(menuImages[2], fullGameWidth - var2 - 12, gameY + this.currentMenuItem * 22 + 8, 24);
             this.method_155();
             this.method_158("CHEATS", false);
             return;
@@ -6627,9 +6629,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.method_148(this.texts[25], 2, 1, this.currentMenuItem == 1);
             return;
          case 15:
-            field_26.setColor(16777215);
-            field_26.fillRect(0, 0, field_17, field_16);
-            field_26.drawImage(menuImages[1], 0, 0, 20);
+            g.setColor(16777215);
+            g.fillRect(0, 0, screenWidth, screenHeight);
+            g.drawImage(menuImages[1], 0, 0, 20);
       }
 
    }
@@ -6637,28 +6639,28 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a (java.lang.String, int, int, boolean) void
    public final void method_148(String var1, int var2, int var3, boolean var4) {
       Font var5;
-      int var6 = (var5 = field_26.getFont()).stringWidth(var1);
+      int var6 = (var5 = g.getFont()).stringWidth(var1);
       int var7;
       int var8 = (var7 = var5.getHeight()) + 2;
       int var9 = var2 * var8;
-      int var10 = field_16 - var9 >> 1;
+      int var10 = screenHeight - var9 >> 1;
       int var11 = var3 * var8 + var10;
-      this.method_154(var1, field_17 >> 1, var11, 16777215, 0);
+      this.method_154(var1, screenWidth >> 1, var11, 16777215, 0);
       Image var12 = null;
       if (menuImages != null) {
          var12 = menuImages[4];
       }
 
       if (var12 == null) {
-         var12 = commonImages[0];
+         var12 = gameImages[0];
       }
 
       if (var4) {
          int var13 = var12.getWidth() >> 1;
          int var14 = var12.getHeight() >> 2;
          int var15 = (this.field_68 >> 3) * var14;
-         method_132(field_26, var12, 0, var15, var13, var14, field_35[0], (field_17 >> 1) - (var6 >> 1) - 15, var11 - field_20 + (var7 >> 1), 3, false);
-         method_132(field_26, var12, 0, var15, var13, var14, field_35[0], (field_17 >> 1) + (var6 >> 1) + 15, var11 - field_20 + (var7 >> 1), 3, false);
+         drawRegion(g, var12, 0, var15, var13, var14, field_35[0], (screenWidth >> 1) - (var6 >> 1) - 15, var11 - uiContentY + (var7 >> 1), 3, false);
+         drawRegion(g, var12, 0, var15, var13, var14, field_35[0], (screenWidth >> 1) + (var6 >> 1) + 15, var11 - uiContentY + (var7 >> 1), 3, false);
       }
 
    }
@@ -6666,103 +6668,101 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: l (int) void
    private void method_149(int var1) {
       int var3;
-      int var4 = (var3 = field_23 + field_22) + 1;
+      int var4 = (var3 = gameY + gameHeight) + 1;
       int var6;
-      int var7 = (var6 = field_18 - 30) / var1;
-      field_26.setColor(2257915);
-      field_26.fillRect(15, var3, var6, 7);
-      field_26.setColor(410260);
-      field_26.drawRect(14, var3, var6 + 1, 7);
-      field_26.setColor(8506866);
+      int var7 = (var6 = fullGameWidth - 30) / var1;
+      g.setColor(2257915);
+      g.fillRect(15, var3, var6, 7);
+      g.setColor(410260);
+      g.drawRect(14, var3, var6 + 1, 7);
+      g.setColor(8506866);
       if (this.currentMenuItem > 22) {
          int var8 = this.currentMenuItem - 2;
-         field_26.fillRect(15 + var8 * var6 / var1, var4, var7, 5);
+         g.fillRect(15 + var8 * var6 / var1, var4, var7, 5);
       } else {
-         field_26.fillRect(15 + this.currentMenuItem * var6 / var1, var4, var7, 5);
+         g.fillRect(15 + this.currentMenuItem * var6 / var1, var4, var7, 5);
       }
 
-      field_26.drawImage(menuImages[1], 15 + var6 + 6, var3, 20);
-      field_26.drawImage(menuImages[2], 7, var3, 20);
+      g.drawImage(menuImages[1], 15 + var6 + 6, var3, 20);
+      g.drawImage(menuImages[2], 7, var3, 20);
    }
 
    // $FF: renamed from: aw () void
    private void method_150() {
-      method_132(field_26, menuImages[0], field_320[0][0], field_320[0][1], field_320[0][2], field_320[0][3], field_35[0], field_18 >> 1, (field_19 >> 1) - 0, 3, false);
+      drawRegion(g, menuImages[0], field_320[0][0], field_320[0][1], field_320[0][2], field_320[0][3], field_35[0], fullGameWidth >> 1, (uiContentHeight >> 1) - 0, 3, false);
       int var1 = (10 - this.field_295) * 3;
       if (this.field_67 == 0) {
-         method_132(field_26, menuImages[0], field_320[1][0], field_320[1][1], field_320[1][2], field_320[1][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) + var1 - 0, 33, false);
+         drawRegion(g, menuImages[0], field_320[1][0], field_320[1][1], field_320[1][2], field_320[1][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) + var1 - 0, 33, false);
       } else if (this.field_67 == 1) {
-         method_132(field_26, menuImages[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         drawRegion(g, menuImages[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 33, false);
       } else if (this.field_67 == 2) {
-         method_132(field_26, menuImages[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
-         method_132(field_26, menuImages[0], field_320[3][0], field_320[3][1], field_320[3][2], field_320[3][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         drawRegion(g, menuImages[0], field_320[2][0], field_320[2][1], field_320[2][2], field_320[2][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 33, false);
+         drawRegion(g, menuImages[0], field_320[3][0], field_320[3][1], field_320[3][2], field_320[3][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 33, false);
       } else if (this.field_67 == 3) {
-         method_132(field_26, menuImages[0], field_320[4][0], field_320[4][1], field_320[4][2], field_320[4][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         drawRegion(g, menuImages[0], field_320[4][0], field_320[4][1], field_320[4][2], field_320[4][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 33, false);
       } else if (this.field_67 == 4) {
-         method_132(field_26, menuImages[0], field_320[5][0], field_320[5][1], field_320[5][2], field_320[5][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 33, false);
+         drawRegion(g, menuImages[0], field_320[5][0], field_320[5][1], field_320[5][2], field_320[5][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 33, false);
       } else if (this.field_67 == 5) {
-         method_132(field_26, menuImages[0], field_320[6][0], field_320[6][1], field_320[6][2], field_320[6][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 40, false);
-         method_132(field_26, menuImages[0], field_320[7][0], field_320[7][1], field_320[7][2], field_320[7][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+         drawRegion(g, menuImages[0], field_320[6][0], field_320[6][1], field_320[6][2], field_320[6][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 40, false);
+         drawRegion(g, menuImages[0], field_320[7][0], field_320[7][1], field_320[7][2], field_320[7][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 36, false);
       } else {
-         method_132(field_26, menuImages[0], field_320[8][0], field_320[8][1], field_320[8][2], field_320[8][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 40, false);
-         method_132(field_26, menuImages[0], field_320[9][0], field_320[9][1], field_320[9][2], field_320[9][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+         drawRegion(g, menuImages[0], field_320[8][0], field_320[8][1], field_320[8][2], field_320[8][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 40, false);
+         drawRegion(g, menuImages[0], field_320[9][0], field_320[9][1], field_320[9][2], field_320[9][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 36, false);
          if ((this.field_295 >> 1 & 1) == 0) {
-            method_132(field_26, menuImages[0], field_320[10][0], field_320[10][1], field_320[10][2], field_320[10][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+            drawRegion(g, menuImages[0], field_320[10][0], field_320[10][1], field_320[10][2], field_320[10][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 36, false);
          } else {
-            method_132(field_26, menuImages[0], field_320[11][0], field_320[11][1], field_320[11][2], field_320[11][3], field_35[0], (field_18 >> 1) + 10, (field_19 >> 1) - 0, 36, false);
+            drawRegion(g, menuImages[0], field_320[11][0], field_320[11][1], field_320[11][2], field_320[11][3], field_35[0], (fullGameWidth >> 1) + 10, (uiContentHeight >> 1) - 0, 36, false);
          }
       }
 
-      method_132(field_26, menuImages[0], field_320[12][0], field_320[12][1], field_320[12][2], field_320[12][3], field_35[0], field_18 >> 1, (field_19 >> 1) - 1 - 0, 17, false);
+      drawRegion(g, menuImages[0], field_320[12][0], field_320[12][1], field_320[12][2], field_320[12][3], field_35[0], fullGameWidth >> 1, (uiContentHeight >> 1) - 1 - 0, 17, false);
    }
 
-   // $FF: renamed from: b (int, int, int, int) void
-   public static void method_151(int var0, int var1, int var2, int var3) {
-      field_26.setClip(var0, var1, var2, var3);
-      int var4 = field_26.getColor();
+   public static void drawScreenBackground(int x, int y, int w, int h) {
+      g.setClip(x, y, w, h);
+      int previousColor = g.getColor();
       boolean var5 = false;
 
-      for(int var6 = 0; var6 < var3; ++var6) {
-         int var7;
-         int var8;
-         if ((var7 = var6 + var1) == 0) {
-            var8 = 8506866;
-         } else if (var7 % 3 == 0) {
-            var8 = 1858252;
+      for(int line = 0; line < h; ++line) {
+         int lineY;
+         int lineColor;
+         if ((lineY = line + y) == 0) {
+            lineColor = 0x81CDF2;
+         } else if (lineY % 3 == 0) {
+            lineColor = 0x1C5ACC;
          } else {
-            var8 = 2257915;
+            lineColor = 0x2273FB;
          }
 
-         field_26.setColor(var8);
-         field_26.drawLine(var0, var7, var0 + var2, var7);
+         g.setColor(lineColor);
+         g.drawLine(x, lineY, x + w, lineY);
       }
 
-      if (var0 == 0) {
-         field_26.setColor(2257915);
-         field_26.drawRect(var0, var1, 1, var3);
+      if (x == 0) {
+         g.setColor(0x2273FB);
+         g.drawRect(x, y, 1, h);
       }
 
-      field_26.setColor(var4);
-      field_26.setClip(0, 0, field_17, field_16);
+      g.setColor(previousColor);
+      g.setClip(0, 0, screenWidth, screenHeight);
    }
 
-   // $FF: renamed from: F () void
-   public static void method_152() {
-      if (field_28[8] != null) {
-         field_26.drawImage(field_28[8], field_18 - 2, field_23 + field_22 + 2, 24);
+   public static void drawSonicLogo() {
+      if (uiImages[8] != null) {
+         g.drawImage(uiImages[8], fullGameWidth - 2, gameY + gameHeight + 2, Graphics.TOP|Graphics.RIGHT);
       }
 
    }
 
    // $FF: renamed from: a (java.lang.String, int, int, int, int, int) void
    public static void method_153(String var0, int var1, int var2, int var3, int var4, int var5) {
-      field_26.setColor(var4);
-      field_26.drawString(var0, var1 - 1, var2, var5);
-      field_26.drawString(var0, var1 + 1, var2, var5);
-      field_26.drawString(var0, var1, var2 + 1, var5);
-      field_26.drawString(var0, var1, var2 - 1, var5);
-      field_26.setColor(var3);
-      field_26.drawString(var0, var1, var2, var5);
+      g.setColor(var4);
+      g.drawString(var0, var1 - 1, var2, var5);
+      g.drawString(var0, var1 + 1, var2, var5);
+      g.drawString(var0, var1, var2 + 1, var5);
+      g.drawString(var0, var1, var2 - 1, var5);
+      g.setColor(var3);
+      g.drawString(var0, var1, var2, var5);
    }
 
    // $FF: renamed from: a (java.lang.String, int, int, int, int) void
@@ -6772,8 +6772,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: G () void
    public final void method_155() {
-      method_151(0, 0, field_18, field_23);
-      method_151(0, field_23 + field_22, field_18, field_23);
+      drawScreenBackground(0, 0, fullGameWidth, gameY);
+      drawScreenBackground(0, gameY + gameHeight, fullGameWidth, gameY);
    }
 
    // $FF: renamed from: m (int) void
@@ -6791,32 +6791,32 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a (java.lang.String, boolean) void
    public final void method_158(String var1, boolean var2) {
       int var3;
-      if ((var3 = (field_23 >> 1) - (field_15 >> 1)) < 2) {
+      if ((var3 = (gameY >> 1) - (field_15 >> 1)) < 2) {
          var3 = 2;
       }
 
       if (!var2) {
-         method_153(var1, field_18 >> 1, var3, 16777215, 0, 17);
+         method_153(var1, fullGameWidth >> 1, var3, 16777215, 0, 17);
       } else {
-         method_153(var1, field_18 - this.field_62, var3, 16777215, 0, 20);
+         method_153(var1, fullGameWidth - this.field_62, var3, 16777215, 0, 20);
       }
    }
 
    // $FF: renamed from: ay () void
    private void method_159() {
-      int var1 = field_23 + field_22 + 2;
-      method_153(this.menuHelperText, field_18 - this.field_62, var1, 16777215, 0, 20);
+      int var1 = gameY + gameHeight + 2;
+      method_153(this.menuHelperText, fullGameWidth - this.field_62, var1, 16777215, 0, 20);
    }
 
    // $FF: renamed from: a (boolean, boolean) void
    private void method_160(boolean var1, boolean var2) {
       class_0.method_0(0, 0);
-      class_0.method_1(field_26, this.field_32 * 5, 120, var1);
+      class_0.method_1(g, this.field_32 * 5, 120, var1);
       if (var2) {
-         field_26.setColor(0);
+         g.setColor(0);
 
-         for(int var3 = 0; var3 < field_22; var3 += 2) {
-            field_26.drawLine(0, field_23 + var3, field_18, field_23 + var3);
+         for(int var3 = 0; var3 < gameHeight; var3 += 2) {
+            g.drawLine(0, gameY + var3, fullGameWidth, gameY + var3);
          }
       }
 
@@ -6824,7 +6824,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    }
 
    public final void loadMenu(boolean splashscreen) {
-      unloadImages(commonImages);
+      unloadImages(gameImages);
       this.updateMenuCommandsText(3);
       if (splashscreen) {
          menuImages[0] = loadImage("/t_license1.png");
@@ -6903,17 +6903,17 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: aA () void
    private static void loadOptionsImages() {
-      field_28[10] = loadImage("/Systxt.png");
-      field_28[13] = loadImage("/Systxt2.png");
-      field_28[11] = loadImage("/windou_time.png");
-      field_28[12] = loadImage("/windou_suuji.png");
-      field_28[14] = loadImage("/gameover.png");
-      field_28[15] = loadImage("/timeover.png");
-      field_28[1] = loadImage("/windou_ring.png");
-      field_28[2] = loadImage("/windou_zanki.png");
-      field_28[3] = loadImage("/score.png");
-      field_28[4] = loadImage("/t_cur1.png");
-      field_28[5] = loadImage("/t_cur2.png");
+      uiImages[10] = loadImage("/Systxt.png");
+      uiImages[13] = loadImage("/Systxt2.png");
+      uiImages[11] = loadImage("/windou_time.png");
+      uiImages[12] = loadImage("/windou_suuji.png");
+      uiImages[14] = loadImage("/gameover.png");
+      uiImages[15] = loadImage("/timeover.png");
+      uiImages[1] = loadImage("/windou_ring.png");
+      uiImages[2] = loadImage("/windou_zanki.png");
+      uiImages[3] = loadImage("/score.png");
+      uiImages[4] = loadImage("/t_cur1.png");
+      uiImages[5] = loadImage("/t_cur2.png");
    }
 
    private void updateMenuCommandsText(int menuState) {
@@ -7382,15 +7382,15 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.method_13();
                } else if (this.field_80 < 30) {
                   var10000 = this.field_78[0];
-                  var10000[2] += field_18 / 20;
+                  var10000[2] += fullGameWidth / 20;
                   var10000 = this.field_78[1];
-                  var10000[2] += field_18 / 20;
+                  var10000[2] += fullGameWidth / 20;
                   var10000 = this.field_78[2];
-                  var10000[2] += field_18 / 20;
+                  var10000[2] += fullGameWidth / 20;
                   var10000 = this.field_78[3];
-                  var10000[2] -= field_18 / 20;
+                  var10000[2] -= fullGameWidth / 20;
                   var10000 = this.field_78[4];
-                  var10000[2] -= field_18 / 20;
+                  var10000[2] -= fullGameWidth / 20;
                   this.method_13();
                } else if (this.field_80 == 30) {
                   this.field_78[0][0] = 0;
@@ -7411,8 +7411,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
       for(int var2 = 0; var2 < this.field_78.length; ++var2) {
          if (this.field_78[var2][0] >= 1) {
-            if (field_28[10] != null) {
-               method_132(field_26, field_28[10], this.field_78[var2][4], this.field_78[var2][5], this.field_78[var2][6], this.field_78[var2][7], field_35[0], this.field_78[var2][2], this.field_78[var2][3], 20, true);
+            if (uiImages[10] != null) {
+               drawRegion(g, uiImages[10], this.field_78[var2][4], this.field_78[var2][5], this.field_78[var2][6], this.field_78[var2][7], field_35[0], this.field_78[var2][2], this.field_78[var2][3], 20, true);
             }
 
             if (var1 < this.field_78[var2][3]) {
@@ -7423,17 +7423,17 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
       if (this.field_266) {
          int[] var7 = new int[]{this.score, this.field_269, this.field_268};
-         int var3 = field_17 * 30 / 100;
+         int var3 = screenWidth * 30 / 100;
          int var4 = var1 + 10;
-         int var5 = field_17 * 90 / 100;
+         int var5 = screenWidth * 90 / 100;
 
          for(int var6 = 0; var6 < 3; ++var6) {
-            method_132(field_26, field_28[13], 0, var6 * 12, 62, 12, field_35[0], var3, var4 + 12 * var6, 20, true);
+            drawRegion(g, uiImages[13], 0, var6 * 12, 62, 12, field_35[0], var3, var4 + 12 * var6, 20, true);
             method_43(var5, var4 + 12 * var6 - 36 + 40, var7[var6]);
          }
 
          if (this.field_269 == 0 && this.field_268 == 0) {
-            this.method_154(this.texts[0], field_18 >> 1, field_23 + field_22 - field_15 - 2, 16777215, 0);
+            this.method_154(this.texts[0], fullGameWidth >> 1, gameY + gameHeight - field_15 - 2, 16777215, 0);
          }
       }
 
@@ -7504,38 +7504,38 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: aC () void
    private void method_179() {
-      commonImages[151] = loadImage("/sonic.png");
-      commonImages[152] = loadImage("/sonic_s.png");
-      commonImages[2] = loadImage("/sjump.png");
-      commonImages[96] = loadImage("/tama.png");
-      commonImages[47] = loadImage("/ring_large.png");
-      commonImages[154] = loadImage("/emeralds.png");
-      commonImages[0] = loadImage("/ring.png");
-      commonImages[36] = loadImage("/save.png");
-      commonImages[42] = loadImage("/item.png");
-      commonImages[109] = loadImage("/effect.png");
-      commonImages[9] = loadImage("/toge.png");
-      commonImages[153] = loadImage("/sjump2.png");
-      commonImages[15] = loadImage("/switch.png");
-      commonImages[97] = loadImage("/bakuhatu.png");
-      commonImages[44] = loadImage("/gole.png");
-      commonImages[45] = loadImage("/bten.png");
-      commonImages[100] = loadImage("/animal.png");
+      gameImages[151] = loadImage("/sonic.png");
+      gameImages[152] = loadImage("/sonic_s.png");
+      gameImages[2] = loadImage("/sjump.png");
+      gameImages[96] = loadImage("/tama.png");
+      gameImages[47] = loadImage("/ring_large.png");
+      gameImages[154] = loadImage("/emeralds.png");
+      gameImages[0] = loadImage("/ring.png");
+      gameImages[36] = loadImage("/save.png");
+      gameImages[42] = loadImage("/item.png");
+      gameImages[109] = loadImage("/effect.png");
+      gameImages[9] = loadImage("/toge.png");
+      gameImages[153] = loadImage("/sjump2.png");
+      gameImages[15] = loadImage("/switch.png");
+      gameImages[97] = loadImage("/bakuhatu.png");
+      gameImages[44] = loadImage("/gole.png");
+      gameImages[45] = loadImage("/bten.png");
+      gameImages[100] = loadImage("/animal.png");
       switch (this.field_221) {
          case 0:
-            commonImages[41] = loadImage("/musi.png");
-            commonImages[40] = loadImage("/hachi.png");
-            commonImages[86] = loadImage("/fish.png");
-            commonImages[39] = loadImage("/kamere.png");
-            commonImages[57] = loadImage("/kani.png");
-            commonImages[3] = loadImage("/buranko.png");
-            commonImages[4] = loadImage("/thashi.png");
-            commonImages[18] = loadImage("/brkabe_g.png");
-            commonImages[5] = loadImage("/hashi.png");
-            commonImages[58] = loadImage("/jyama.png");
-            commonImages[6] = loadImage("/break.png");
-            commonImages[37] = loadImage("/kageb.png");
-            commonImages[16] = loadImage("/shima.png");
+            gameImages[41] = loadImage("/musi.png");
+            gameImages[40] = loadImage("/hachi.png");
+            gameImages[86] = loadImage("/fish.png");
+            gameImages[39] = loadImage("/kamere.png");
+            gameImages[57] = loadImage("/kani.png");
+            gameImages[3] = loadImage("/buranko.png");
+            gameImages[4] = loadImage("/thashi.png");
+            gameImages[18] = loadImage("/brkabe_g.png");
+            gameImages[5] = loadImage("/hashi.png");
+            gameImages[58] = loadImage("/jyama.png");
+            gameImages[6] = loadImage("/break.png");
+            gameImages[37] = loadImage("/kageb.png");
+            gameImages[16] = loadImage("/shima.png");
          case 1:
          case 3:
          case 5:
@@ -7543,39 +7543,39 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          default:
             break;
          case 2:
-            commonImages[40] = loadImage("/hachi.png");
-            commonImages[49] = loadImage("/imo.png");
-            commonImages[78] = loadImage("/bat.png");
-            commonImages[101] = loadImage("/fire.png");
-            commonImages[79] = loadImage("/ochi.png");
-            commonImages[54] = loadImage("/dai.png");
-            commonImages[8] = loadImage("/turi.png");
-            commonImages[94] = loadImage("/turi2.png");
-            commonImages[95] = loadImage("/turi3.png");
-            commonImages[13] = loadImage("/yogan2.png");
-            commonImages[99] = loadImage("/yogan22.png");
-            commonImages[11] = loadImage("/fblock.png");
-            commonImages[77] = loadImage("/yoganc.png");
-            commonImages[14] = loadImage("/myogan.png");
-            commonImages[98] = loadImage("/myogan2.png");
-            commonImages[7] = loadImage("/yuka.png");
-            commonImages[27] = loadImage("/bryuka.png");
-            commonImages[3] = loadImage("/buranko_m.png");
+            gameImages[40] = loadImage("/hachi.png");
+            gameImages[49] = loadImage("/imo.png");
+            gameImages[78] = loadImage("/bat.png");
+            gameImages[101] = loadImage("/fire.png");
+            gameImages[79] = loadImage("/ochi.png");
+            gameImages[54] = loadImage("/dai.png");
+            gameImages[8] = loadImage("/turi.png");
+            gameImages[94] = loadImage("/turi2.png");
+            gameImages[95] = loadImage("/turi3.png");
+            gameImages[13] = loadImage("/yogan2.png");
+            gameImages[99] = loadImage("/yogan22.png");
+            gameImages[11] = loadImage("/fblock.png");
+            gameImages[77] = loadImage("/yoganc.png");
+            gameImages[14] = loadImage("/myogan.png");
+            gameImages[98] = loadImage("/myogan2.png");
+            gameImages[7] = loadImage("/yuka.png");
+            gameImages[27] = loadImage("/bryuka.png");
+            gameImages[3] = loadImage("/buranko_m.png");
             break;
          case 4:
-            commonImages[101] = loadImage("/fire.png");
-            commonImages[40] = loadImage("/hachi.png");
-            commonImages[57] = loadImage("/kani.png");
-            commonImages[71] = loadImage("/yado.png");
-            commonImages[70] = loadImage("/aruma.png");
-            commonImages[60] = loadImage("/tekyu.png");
-            commonImages[102] = loadImage("/block.png");
-            commonImages[107] = loadImage("/dai2_3.png");
-            commonImages[83] = loadImage("/dai4_.png");
-            commonImages[17] = loadImage("/dai2.png");
-            commonImages[61] = loadImage("/signal.png");
-            commonImages[56] = loadImage("/bobin.png");
-            commonImages[16] = loadImage("/shima5.png");
+            gameImages[101] = loadImage("/fire.png");
+            gameImages[40] = loadImage("/hachi.png");
+            gameImages[57] = loadImage("/kani.png");
+            gameImages[71] = loadImage("/yado.png");
+            gameImages[70] = loadImage("/aruma.png");
+            gameImages[60] = loadImage("/tekyu.png");
+            gameImages[102] = loadImage("/block.png");
+            gameImages[107] = loadImage("/dai2_3.png");
+            gameImages[83] = loadImage("/dai4_.png");
+            gameImages[17] = loadImage("/dai2.png");
+            gameImages[61] = loadImage("/signal.png");
+            gameImages[56] = loadImage("/bobin.png");
+            gameImages[16] = loadImage("/shima5.png");
       }
 
       this.field_321 = false;
@@ -7583,67 +7583,67 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: aD () void
    private void method_180() {
-      commonImages[2] = null;
-      commonImages[96] = null;
-      commonImages[47] = null;
-      commonImages[154] = null;
-      commonImages[36] = null;
-      commonImages[42] = null;
-      commonImages[9] = null;
-      commonImages[153] = null;
-      commonImages[15] = null;
-      commonImages[44] = null;
-      commonImages[45] = null;
+      gameImages[2] = null;
+      gameImages[96] = null;
+      gameImages[47] = null;
+      gameImages[154] = null;
+      gameImages[36] = null;
+      gameImages[42] = null;
+      gameImages[9] = null;
+      gameImages[153] = null;
+      gameImages[15] = null;
+      gameImages[44] = null;
+      gameImages[45] = null;
       switch (this.field_221) {
          case 0:
-            commonImages[41] = null;
-            commonImages[40] = null;
-            commonImages[86] = null;
-            commonImages[39] = null;
-            commonImages[57] = null;
-            commonImages[3] = null;
-            commonImages[4] = null;
-            commonImages[18] = null;
-            commonImages[5] = null;
-            commonImages[58] = null;
-            commonImages[6] = null;
-            commonImages[37] = null;
+            gameImages[41] = null;
+            gameImages[40] = null;
+            gameImages[86] = null;
+            gameImages[39] = null;
+            gameImages[57] = null;
+            gameImages[3] = null;
+            gameImages[4] = null;
+            gameImages[18] = null;
+            gameImages[5] = null;
+            gameImages[58] = null;
+            gameImages[6] = null;
+            gameImages[37] = null;
          case 1:
          case 3:
          default:
             break;
          case 2:
-            commonImages[40] = null;
-            commonImages[49] = null;
-            commonImages[78] = null;
-            commonImages[79] = null;
-            commonImages[54] = null;
-            commonImages[8] = null;
-            commonImages[94] = null;
-            commonImages[95] = null;
-            commonImages[13] = null;
-            commonImages[99] = null;
-            commonImages[11] = null;
-            commonImages[77] = null;
-            commonImages[14] = null;
-            commonImages[98] = null;
-            commonImages[7] = null;
-            commonImages[27] = null;
-            commonImages[3] = null;
+            gameImages[40] = null;
+            gameImages[49] = null;
+            gameImages[78] = null;
+            gameImages[79] = null;
+            gameImages[54] = null;
+            gameImages[8] = null;
+            gameImages[94] = null;
+            gameImages[95] = null;
+            gameImages[13] = null;
+            gameImages[99] = null;
+            gameImages[11] = null;
+            gameImages[77] = null;
+            gameImages[14] = null;
+            gameImages[98] = null;
+            gameImages[7] = null;
+            gameImages[27] = null;
+            gameImages[3] = null;
             break;
          case 4:
-            commonImages[101] = null;
-            commonImages[40] = null;
-            commonImages[57] = null;
-            commonImages[71] = null;
-            commonImages[70] = null;
-            commonImages[60] = null;
-            commonImages[107] = null;
-            commonImages[83] = null;
-            commonImages[17] = null;
-            commonImages[61] = null;
-            commonImages[56] = null;
-            commonImages[16] = null;
+            gameImages[101] = null;
+            gameImages[40] = null;
+            gameImages[57] = null;
+            gameImages[71] = null;
+            gameImages[70] = null;
+            gameImages[60] = null;
+            gameImages[107] = null;
+            gameImages[83] = null;
+            gameImages[17] = null;
+            gameImages[61] = null;
+            gameImages[56] = null;
+            gameImages[16] = null;
       }
 
       System.gc();
@@ -8859,7 +8859,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                var3 = 0;
          }
 
-         method_132(field_26, field_28[3], var2, var3, var4, 6, 0, var6, var7, 3, true);
+         drawRegion(g, uiImages[3], var2, var3, var4, 6, 0, var6, var7, 3, true);
       }
    }
 
@@ -9084,8 +9084,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.method_180();
          switch (this.field_221) {
             case 0:
-               commonImages[120] = loadImage("/boss.png");
-               commonImages[121] = loadImage("/bossball.png");
+               gameImages[120] = loadImage("/boss.png");
+               gameImages[121] = loadImage("/bossball.png");
                var1[1] = 120;
                this.field_178 = 10752;
                this.field_179 = 808;
@@ -9094,8 +9094,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             default:
                break;
             case 2:
-               commonImages[120] = loadImage("/boss.png");
-               commonImages[131] = loadImage("/fire.png");
+               gameImages[120] = loadImage("/boss.png");
+               gameImages[131] = loadImage("/fire.png");
                var1[1] = 130;
                this.field_178 = 6304;
                this.field_179 = 608;
@@ -9104,13 +9104,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                break;
             case 4:
                this.method_7();
-               commonImages[120] = loadImage("/boss.png");
+               gameImages[120] = loadImage("/boss.png");
                var1[1] = 140;
                this.field_174 = 0;
                this.field_175 = 0;
          }
 
-         commonImages[55] = loadImage("/masin.png");
+         gameImages[55] = loadImage("/masin.png");
          var1[0] = 1;
          var1[2] = var1[16] = field_226[0] + 256 + 46;
          var1[3] = var1[17] = field_226[1] + 46;
@@ -9126,13 +9126,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: O () void
    public final void method_241() {
-      commonImages[120] = null;
+      gameImages[120] = null;
       switch (this.field_221) {
          case 0:
-            commonImages[121] = null;
+            gameImages[121] = null;
             return;
          case 2:
-            commonImages[131] = null;
+            gameImages[131] = null;
          default:
       }
    }
@@ -9733,7 +9733,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private void method_252() {
       this.field_52 = 0;
       this.appState = 6;
-      this.field_201 = true;
+      this.redrawAllGameScreen = true;
    }
 
    // $FF: renamed from: S () void
@@ -9787,12 +9787,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             default:
                this.field_52 = 1;
             case 1:
-               this.field_53 = this.field_58;
+               this.field_53 = this.fullGameHCenter;
                this.field_54 = 0;
                this.field_57 = 659;
                this.field_55 = -1;
                this.field_56 = -1;
-               commonImages[121] = loadImage("/continue.png");
+               gameImages[121] = loadImage("/continue.png");
                this.audio.play(15, -1);
                this.field_52 = 2;
          }
@@ -9805,13 +9805,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public final void method_254() {
       this.field_322 = true;
       int var1;
-      int var2 = (var1 = field_22 >> 1) + 6;
-      int var3 = field_22 >> 2;
-      int var4 = field_18 >> 1;
-      field_26.setColor(0);
-      field_26.setClip(0, field_23, field_18, field_22);
-      field_26.fillRect(0, field_23, field_18, field_22);
-      if (commonImages[121] != null) {
+      int var2 = (var1 = gameHeight >> 1) + 6;
+      int var3 = gameHeight >> 2;
+      int var4 = fullGameWidth >> 1;
+      g.setColor(0);
+      g.setClip(0, gameY, fullGameWidth, gameHeight);
+      g.fillRect(0, gameY, fullGameWidth, gameHeight);
+      if (gameImages[121] != null) {
          if (this.field_52 != 1) {
             int var5;
             int var6;
@@ -9889,21 +9889,21 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: V () void
    public final void method_256() {
-      int var1 = commonImages[154].getWidth() / 6;
-      int var2 = field_28[10].getWidth();
+      int var1 = gameImages[154].getWidth() / 6;
+      int var2 = uiImages[10].getWidth();
       this.method_155();
-      field_26.setColor(16777215);
-      field_26.fillRect(0, field_23, field_18, field_22);
-      method_132(field_26, field_28[10], 0, 108, var2, var1, field_35[0], field_24, 10, 17, true);
+      g.setColor(16777215);
+      g.fillRect(0, gameY, fullGameWidth, gameHeight);
+      drawRegion(g, uiImages[10], 0, 108, var2, var1, field_35[0], screenGameHCenter, 10, 17, true);
 
       for(int var4 = 0; var4 < this.field_40 - 1; ++var4) {
-         method_132(field_26, commonImages[154], var4 * var1, 0, var1, var1, field_35[0], this.field_43[var4] >> 16, this.field_43[var4] & '\uffff', 0, true);
+         drawRegion(g, gameImages[154], var4 * var1, 0, var1, var1, field_35[0], this.field_43[var4] >> 16, this.field_43[var4] & '\uffff', 0, true);
       }
 
       switch (this.field_41) {
          case 2:
             if ((this.field_32 >> 1 & 1) == 0) {
-               method_132(field_26, commonImages[154], (this.field_40 - 1) * var1, 0, var1, var1, field_35[0], this.field_43[this.field_40 - 1] >> 16, this.field_43[this.field_40 - 1] & '\uffff', 0, true);
+               drawRegion(g, gameImages[154], (this.field_40 - 1) * var1, 0, var1, var1, field_35[0], this.field_43[this.field_40 - 1] >> 16, this.field_43[this.field_40 - 1] & '\uffff', 0, true);
             }
          default:
       }
@@ -10013,7 +10013,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                this.appState = 1;
                this.field_249 = true;
                this.field_250 = 10;
-               commonImages = new Image[160];
+               gameImages = new Image[160];
                this.loadMenu(false);
             }
             break;
@@ -10021,16 +10021,16 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.field_44 = 0;
          case 0:
             field_27 = null;
-            unloadImages(commonImages);
-            commonImages[155] = loadImage("/ED3.png");
-            commonImages[154] = loadImage("/emeralds.png");
+            unloadImages(gameImages);
+            gameImages[155] = loadImage("/ED3.png");
+            gameImages[154] = loadImage("/emeralds.png");
             if (this.field_40 == 6) {
-               commonImages[157] = loadImage("/endegg_b.png");
+               gameImages[157] = loadImage("/endegg_b.png");
                this.field_44 = 1;
                this.field_45 = 0;
                this.field_48 = 0;
             } else {
-               commonImages[157] = loadImage("/endegg_a.png");
+               gameImages[157] = loadImage("/endegg_a.png");
                this.field_48 = 0;
                this.field_44 = 2;
             }
@@ -10077,18 +10077,18 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: X () void
    public final void method_259() {
-      field_26.setClip(0, 0, field_17, field_16);
-      field_26.setColor(0);
-      field_26.fillRect(0, 0, field_17, field_16);
+      g.setClip(0, 0, screenWidth, screenHeight);
+      g.setColor(0);
+      g.fillRect(0, 0, screenWidth, screenHeight);
       if (this.field_44 == 2 || this.field_44 == 1) {
          this.method_160(false, false);
       }
 
       this.method_155();
       int var1;
-      if (field_21 < field_17) {
-         var1 = field_17 - field_21 >> 1;
-         field_26.translate(var1, 0);
+      if (gameWidth < screenWidth) {
+         var1 = screenWidth - gameWidth >> 1;
+         g.translate(var1, 0);
       }
 
       int var2;
@@ -10098,63 +10098,63 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       label72:
       switch (this.field_44) {
          case 1:
-            field_26.setClip(0, field_23, field_17, field_22);
-            this.method_34(field_26, false);
+            g.setClip(0, gameY, screenWidth, gameHeight);
+            this.method_34(g, false);
             switch (this.field_45) {
                case 0:
                   var1 = this.field_46 >> 1 & 1;
-                  field_26.drawRegion(commonImages[157], var1 * 24, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
+                  g.drawRegion(gameImages[157], var1 * 24, 72, 24, 30, field_35[0], screenGameHCenter, gameY + gameHeight - 5, 33);
                   break label72;
                case 1:
-                  field_26.drawRegion(commonImages[157], 48, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
+                  g.drawRegion(gameImages[157], 48, 72, 24, 30, field_35[0], screenGameHCenter, gameY + gameHeight - 5, 33);
                   if ((this.field_46 >> 1 & 1) == 0) {
                      for(var2 = 0; var2 < 6; ++var2) {
                         var4 = (var3 = Math.min(60, this.field_46 - 240) / 4 * 3) * method_6(var2 * 36) / 100;
                         var5 = var3 * method_5(var2 * 36) / 100;
-                        field_26.drawRegion(commonImages[154], var2 * 12, 0, 12, 12, field_35[0], field_24 + var4, field_23 + field_22 - 22 - (var3 >> 1) - var5, 3);
+                        g.drawRegion(gameImages[154], var2 * 12, 0, 12, 12, field_35[0], screenGameHCenter + var4, gameY + gameHeight - 22 - (var3 >> 1) - var5, 3);
                      }
                   }
                   break label72;
                case 2:
                   var1 = 3 + (this.field_46 >> 5 & 1);
-                  field_26.drawRegion(commonImages[157], var1 * 24, 72, 24, 30, field_35[0], field_24, field_23 + field_22 - 5, 33);
+                  g.drawRegion(gameImages[157], var1 * 24, 72, 24, 30, field_35[0], screenGameHCenter, gameY + gameHeight - 5, 33);
 
                   for(var2 = 0; var2 < 6; ++var2) {
                      var4 = 45 * method_6(var2 * 36) / 100;
                      var5 = 45 * method_5(var2 * 36) / 100;
-                     field_26.drawRegion(commonImages[154], var2 * 12, 0, 12, 12, field_35[0], field_24 + var4, field_23 + field_22 - 22 - 22 - var5, 3);
+                     g.drawRegion(gameImages[154], var2 * 12, 0, 12, 12, field_35[0], screenGameHCenter + var4, gameY + gameHeight - 22 - 22 - var5, 3);
                   }
                default:
                   break label72;
             }
          case 2:
-            field_26.setClip(0, field_23, field_17, field_22);
-            this.method_34(field_26, false);
+            g.setClip(0, gameY, screenWidth, gameHeight);
+            this.method_34(g, false);
             switch (this.field_48) {
                case 0:
-                  field_26.drawRegion(commonImages[155], 0, 0, 24, 30, field_35[0], field_24, field_23 + field_22 - 10, 33);
+                  g.drawRegion(gameImages[155], 0, 0, 24, 30, field_35[0], screenGameHCenter, gameY + gameHeight - 10, 33);
                   break label72;
                case 1:
-                  field_26.drawRegion(commonImages[155], 0, 30, 36, 54, field_35[0], field_24, field_23 + field_22 - 20, 33);
+                  g.drawRegion(gameImages[155], 0, 30, 36, 54, field_35[0], screenGameHCenter, gameY + gameHeight - 20, 33);
                   break label72;
                case 2:
-                  field_26.drawRegion(commonImages[155], 36, 0, 132, 100, field_35[0], field_24, field_23 + field_22 - 20, 33);
+                  g.drawRegion(gameImages[155], 36, 0, 132, 100, field_35[0], screenGameHCenter, gameY + gameHeight - 20, 33);
                default:
                   break label72;
             }
          case 3:
-            field_26.setColor(0);
-            field_26.fillRect(0, field_23, field_17, field_22);
+            g.setColor(0);
+            g.fillRect(0, gameY, screenWidth, gameHeight);
             var1 = this.field_49 / 15 % 3;
-            field_26.drawRegion(commonImages[157], var1 * 48, 0, 48, 72, field_35[0], field_24, field_25, 3);
+            g.drawRegion(gameImages[157], var1 * 48, 0, 48, 72, field_35[0], screenGameHCenter, screenGameVCenter, 3);
             break;
          case 4:
-            field_26.setColor(0);
-            field_26.fillRect(0, field_23, field_17, field_22);
+            g.setColor(0);
+            g.fillRect(0, gameY, screenWidth, gameHeight);
             label54:
             switch (this.field_51) {
                case 0:
-                  field_26.drawRegion(commonImages[157], 96, 0, 96, 84, field_35[0], field_24, field_25, 3);
+                  g.drawRegion(gameImages[157], 96, 0, 96, 84, field_35[0], screenGameHCenter, screenGameVCenter, 3);
                   var4 = 0;
 
                   while(true) {
@@ -10163,19 +10163,19 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      }
 
                      var5 = Math.max(Math.min(145, this.field_323 + var4 * 16), 0);
-                     var2 = field_24 + 40 * method_6(var5) / 100;
-                     var3 = field_25 - 15 - 40 * method_5(var5) / 100;
-                     field_26.drawRegion(commonImages[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
+                     var2 = screenGameHCenter + 40 * method_6(var5) / 100;
+                     var3 = screenGameVCenter - 15 - 40 * method_5(var5) / 100;
+                     g.drawRegion(gameImages[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
                      ++var4;
                   }
                case 1:
-                  var2 = field_24 + 40;
-                  var3 = field_25 - 20;
-                  field_26.drawRegion(commonImages[157], 0, 0, 96, 84, field_35[0], field_24, field_25, 3);
-                  field_26.drawRegion(commonImages[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
+                  var2 = screenGameHCenter + 40;
+                  var3 = screenGameVCenter - 20;
+                  g.drawRegion(gameImages[157], 0, 0, 96, 84, field_35[0], screenGameHCenter, screenGameVCenter, 3);
+                  g.drawRegion(gameImages[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
                   break;
                case 2:
-                  field_26.drawRegion(commonImages[157], 96, 0, 96, 84, field_35[4], field_24, field_25, 3);
+                  g.drawRegion(gameImages[157], 96, 0, 96, 84, field_35[4], screenGameHCenter, screenGameVCenter, 3);
                   var4 = 0;
 
                   while(true) {
@@ -10184,23 +10184,23 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      }
 
                      var5 = Math.min(Math.max(35, this.field_323 - var4 * 16), 180);
-                     var2 = field_24 + 40 * method_6(var5) / 100;
-                     var3 = field_25 - 15 - 40 * method_5(var5) / 100;
-                     field_26.drawRegion(commonImages[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
+                     var2 = screenGameHCenter + 40 * method_6(var5) / 100;
+                     var3 = screenGameVCenter - 15 - 40 * method_5(var5) / 100;
+                     g.drawRegion(gameImages[154], (5 - var4) * 12, 0, 12, 12, field_35[0], var2, var3, 3);
                      ++var4;
                   }
                case 3:
-                  var2 = field_24 - 40;
-                  var3 = field_25 - 20;
-                  field_26.drawRegion(commonImages[157], 0, 0, 96, 84, field_35[0], field_24, field_25, 3);
-                  field_26.drawRegion(commonImages[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
+                  var2 = screenGameHCenter - 40;
+                  var3 = screenGameVCenter - 20;
+                  g.drawRegion(gameImages[157], 0, 0, 96, 84, field_35[0], screenGameHCenter, screenGameVCenter, 3);
+                  g.drawRegion(gameImages[154], 0, 0, 12, 12, field_35[0], var2, var3, 3);
             }
 
-            field_26.drawRegion(commonImages[157], 0, 86, 190, 26, field_35[0], field_24, field_23 + field_22, 33);
+            g.drawRegion(gameImages[157], 0, 86, 190, 26, field_35[0], screenGameHCenter, gameY + gameHeight, 33);
       }
 
-      if (field_21 < field_17) {
-         field_26.translate(-(field_17 - field_21 >> 1), 0);
+      if (gameWidth < screenWidth) {
+         g.translate(-(screenWidth - gameWidth >> 1), 0);
       }
 
    }
@@ -10276,8 +10276,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: Z () void
    public final void method_262() {
       this.method_155();
-      field_26.setColor(0);
-      field_26.fillRect(0, field_23, field_18, field_22);
+      g.setColor(0);
+      g.fillRect(0, gameY, fullGameWidth, gameHeight);
       switch (this.config[2]) {
          case 0:
             this.method_158("ENTER NAME", false);
@@ -10295,17 +10295,17 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.method_158("INSERISCI NOME", false);
       }
 
-      field_26.setColor(16777215);
-      int var1 = field_17 / (this.nameInput.length + 1);
+      g.setColor(16777215);
+      int var1 = screenWidth / (this.nameInput.length + 1);
 
       int var2;
       for(var2 = 0; var2 < this.nameInput.length; ++var2) {
-         field_26.drawString(String.valueOf(CHARS[this.nameInput[var2]]), (var2 + 1) * var1, field_25 + (field_26.getFont().getHeight() >> 1), 65);
+         g.drawString(String.valueOf(CHARS[this.nameInput[var2]]), (var2 + 1) * var1, screenGameVCenter + (g.getFont().getHeight() >> 1), 65);
       }
 
-      field_26.setColor(16386570);
-      var2 = field_26.getFont().getHeight() * 3 >> 1;
-      field_26.drawRect((this.nameInputIndex + 1) * var1 - (var2 >> 1), field_25 - (var2 >> 1), var2, var2);
+      g.setColor(16386570);
+      var2 = g.getFont().getHeight() * 3 >> 1;
+      g.drawRect((this.nameInputIndex + 1) * var1 - (var2 >> 1), screenGameVCenter - (var2 >> 1), var2, var2);
    }
 
    // $FF: renamed from: e (int) int
@@ -10367,14 +10367,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    static {
       field_15 = field_14.getHeight();
-      field_16 = 0;
-      field_17 = 0;
-      field_18 = field_17;
-      field_19 = field_16;
-      field_21 = field_17;
-      field_22 = field_16;
-      field_28 = new Image[20];
-      commonImages = new Image[160];
+      screenHeight = 0;
+      screenWidth = 0;
+      fullGameWidth = screenWidth;
+      uiContentHeight = screenHeight;
+      gameWidth = screenWidth;
+      gameHeight = screenHeight;
+      uiImages = new Image[20];
+      gameImages = new Image[160];
       field_34 = new Random();
       field_35 = new int[]{0, 5, 3, 6, 2, 7, 1, 4};
       audioTracks = new String[]{"/greenhill_loop", "/labyrinth_loop", "/marble_loop", "/starlight_loop", "/springyard_loop", "/scrapbrain", "/invincible", "/1up", "/specialstage", "/maintitle", "/ending", "/bossstage", "/bossstagefinal_loop", "/stageclear", "/gameover", "/continue", "/credits", "/hurry", "/chaosemerald"};
@@ -10422,9 +10422,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       field_225 = new int[2];
       field_226 = new int[2];
       field_238 = new int[][][]{{{4, 0, 9407, 0, 768, 96}, {4, 0, 7871, 0, 768, 96}, {4, 0, 10496, 0, 768, 96}, {4, 0, 10943, 0, 768, 96}}, new int[0][], {{4, 0, 6079, 0, 464, 96}, {4, 0, 6079, 0, 1312, 96}, {4, 0, 6048, 0, 1824, 96}, {4, 0, 5823, 0, 1824, 96}}, new int[0][], {{4, 0, 8896, 0, 1056, 96}, {4, 0, 10432, 0, 1312, 96}, {4, 0, 11264, 0, 1568, 96}, {4, 0, 11968, 0, 1568, 96}}, new int[0][]};
-      field_255 = true;
-      field_256 = true;
-      field_257 = true;
+      redrawRingAndScoreCounter = true;
+      redrawTimer = true;
+      redrawLivesCounter = true;
       field_303 = new int[]{0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736, 1908, 2079, 2249, 2419, 2588, 2756, 2924, 3090, 3256, 3420, 3584, 3746, 3907, 4067, 4226, 4384, 4540, 4695, 4848, 5000, 5150, 5299, 5446, 5592, 5736, 5878, 6018, 6156, 6293, 6428, 6560, 6691, 6820, 6946, 7071, 7193, 7313, 7431, 7547, 7660, 7771, 7880, 7986, 8090, 8191, 8290, 8387, 8480, 8572, 8660, 8746, 8829, 8910, 8988, 9063, 9135, 9205, 9272, 9336, 9397, 9455, 9510, 9563, 9613, 9659, 9703, 9744, 9781, 9816, 9848, 9877, 9903, 9925, 9945, 9962, 9976, 9986, 9994, 9998, 10000};
       var10000 = new int[]{0, 0, 0, 2};
       field_320 = new int[][]{{0, 0, 142, 81}, {0, 120, 36, 42}, {0, 81, 42, 37}, {80, 141, 39, 27}, {46, 81, 45, 41}, {37, 124, 41, 42}, {95, 82, 26, 42}, {122, 81, 20, 43}, {95, 82, 26, 42}, {101, 125, 19, 15}, {122, 125, 20, 43}, {122, 82, 20, 43}, {0, 168, 142, 42}};

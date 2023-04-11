@@ -29,14 +29,14 @@ public final class Game extends GameCanvas {
 
    // $FF: renamed from: aa () void
    private void method_265() {
-      if (GameCanvas.field_21 < GameCanvas.field_17) {
-         int var1 = GameCanvas.field_17 - GameCanvas.field_21 >> 1;
-         GameCanvas.field_26.translate(var1, 0);
+      if (GameCanvas.gameWidth < GameCanvas.screenWidth) {
+         int var1 = GameCanvas.screenWidth - GameCanvas.gameWidth >> 1;
+         GameCanvas.g.translate(var1, 0);
       }
 
-      GameCanvas.field_26.setClip(0, GameCanvas.field_23, GameCanvas.field_21, GameCanvas.field_22);
-      class_0.method_1(GameCanvas.field_26, GameCanvas.field_226[0], GameCanvas.field_226[1], true);
-      this.method_34(GameCanvas.field_26, super.field_221 == 1 || super.field_221 == 5);
+      GameCanvas.g.setClip(0, GameCanvas.gameY, GameCanvas.gameWidth, GameCanvas.gameHeight);
+      class_0.method_1(GameCanvas.g, GameCanvas.field_226[0], GameCanvas.field_226[1], true);
+      this.method_34(GameCanvas.g, super.field_221 == 1 || super.field_221 == 5);
       this.method_264(false);
       this.method_207();
       if (!GameCanvas.field_125) {
@@ -44,18 +44,18 @@ public final class Game extends GameCanvas {
       }
 
       this.method_113();
-      this.method_33(GameCanvas.field_26, super.field_221 == 1 || super.field_221 == 5);
+      this.method_33(GameCanvas.g, super.field_221 == 1 || super.field_221 == 5);
       this.method_264(true);
       if (GameCanvas.field_125) {
          this.method_109();
       }
 
-      if (GameCanvas.field_21 < GameCanvas.field_17) {
-         GameCanvas.field_26.translate(-(GameCanvas.field_17 - GameCanvas.field_21 >> 1), 0);
+      if (GameCanvas.gameWidth < GameCanvas.screenWidth) {
+         GameCanvas.g.translate(-(GameCanvas.screenWidth - GameCanvas.gameWidth >> 1), 0);
       }
 
       this.method_28();
-      GameCanvas.field_26.setClip(0, 0, GameCanvas.field_17, GameCanvas.field_16);
+      GameCanvas.g.setClip(0, 0, GameCanvas.screenWidth, GameCanvas.screenHeight);
    }
 
    // $FF: renamed from: ab () void
@@ -64,19 +64,18 @@ public final class Game extends GameCanvas {
          case 1:
             this.method_147();
             break;
+         // game
          case 2:
-            // field_155 ??? finished game
-            // field_201 ??? menu control?
-            if (super.field_201 || super.field_155) {
-               GameCanvas.method_151(0, 0, GameCanvas.field_17, GameCanvas.field_16);
-               GameCanvas.method_152();
-               GameCanvas.field_255 = true;
-               GameCanvas.field_257 = true;
-               GameCanvas.field_256 = true;
-               super.field_201 = false;
+            if (super.redrawAllGameScreen || super.finishedLevel) {
+               GameCanvas.drawScreenBackground(0, 0, GameCanvas.screenWidth, GameCanvas.screenHeight);
+               GameCanvas.drawSonicLogo();
+               GameCanvas.redrawRingAndScoreCounter = true;
+               GameCanvas.redrawLivesCounter = true;
+               GameCanvas.redrawTimer = true;
+               super.redrawAllGameScreen = false;
             }
 
-            if (super.field_32 % 5 == 0 || super.field_155) {
+            if (super.field_32 % 5 == 0 || super.finishedLevel) {
                this.method_37();
             }
 
@@ -85,34 +84,36 @@ public final class Game extends GameCanvas {
             break;
          case 3:
             this.method_155();
-            GameCanvas.field_26.setColor(0);
-            GameCanvas.field_26.fillRect(0, GameCanvas.field_23, GameCanvas.field_18, GameCanvas.field_22);
-            super.field_79 = GameCanvas.field_18 + GameCanvas.field_81[GameCanvas.field_215[super.zone]][2] >> 1;
+            GameCanvas.g.setColor(0);
+            GameCanvas.g.fillRect(0, GameCanvas.gameY, GameCanvas.fullGameWidth, GameCanvas.gameHeight);
+            super.field_79 = GameCanvas.fullGameWidth + GameCanvas.field_81[GameCanvas.field_215[super.zone]][2] >> 1;
             int[] var2 = new int[]{82, 100, 108, 116, 100, 84};
-            GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[10][0], GameCanvas.field_81[10][1], GameCanvas.field_81[10][2], GameCanvas.field_81[10][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] - 1, var2[0], 20, false);
+            GameCanvas.drawRegion(GameCanvas.g, GameCanvas.uiImages[10], GameCanvas.field_81[10][0], GameCanvas.field_81[10][1], GameCanvas.field_81[10][2], GameCanvas.field_81[10][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] - 1, var2[0], 20, false);
             if (super.zone == 6) {
-               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[3][0], GameCanvas.field_81[3][1], GameCanvas.field_81[3][2], GameCanvas.field_81[3][3], GameCanvas.field_35[0], super.field_79 - 48, var2[1], 20, false);
+               GameCanvas.drawRegion(GameCanvas.g, GameCanvas.uiImages[10], GameCanvas.field_81[3][0], GameCanvas.field_81[3][1], GameCanvas.field_81[3][2], GameCanvas.field_81[3][3], GameCanvas.field_35[0], super.field_79 - 48, var2[1], 20, false);
             } else {
-               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[4 + super.act][0], GameCanvas.field_81[4 + super.act][1], GameCanvas.field_81[4 + super.act][2], GameCanvas.field_81[4 + super.act][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] + 25, var2[2], 20, false);
-               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[8][0], GameCanvas.field_81[8][1], GameCanvas.field_81[8][2], GameCanvas.field_81[8][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] + 1, var2[3], 20, false);
-               GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[3][0], GameCanvas.field_81[3][1], GameCanvas.field_81[3][2], GameCanvas.field_81[3][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[GameCanvas.field_215[super.zone]][2], var2[4], 20, false);
+               GameCanvas.drawRegion(GameCanvas.g, GameCanvas.uiImages[10], GameCanvas.field_81[4 + super.act][0], GameCanvas.field_81[4 + super.act][1], GameCanvas.field_81[4 + super.act][2], GameCanvas.field_81[4 + super.act][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] + 25, var2[2], 20, false);
+               GameCanvas.drawRegion(GameCanvas.g, GameCanvas.uiImages[10], GameCanvas.field_81[8][0], GameCanvas.field_81[8][1], GameCanvas.field_81[8][2], GameCanvas.field_81[8][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[10][2] + 1, var2[3], 20, false);
+               GameCanvas.drawRegion(GameCanvas.g, GameCanvas.uiImages[10], GameCanvas.field_81[3][0], GameCanvas.field_81[3][1], GameCanvas.field_81[3][2], GameCanvas.field_81[3][3], GameCanvas.field_35[0], super.field_79 - GameCanvas.field_81[GameCanvas.field_215[super.zone]][2], var2[4], 20, false);
             }
 
-            GameCanvas.method_132(GameCanvas.field_26, GameCanvas.field_28[10], GameCanvas.field_81[GameCanvas.field_215[super.zone]][0], GameCanvas.field_81[GameCanvas.field_215[super.zone]][1], GameCanvas.field_81[GameCanvas.field_215[super.zone]][2], GameCanvas.field_81[GameCanvas.field_215[super.zone]][3], GameCanvas.field_35[0], super.field_79, var2[5], 24, false);
-            GameCanvas.field_26.drawImage(GameCanvas.field_28[4], GameCanvas.field_18 - 10, GameCanvas.field_20 + (GameCanvas.field_19 >> 1), 20);
-            GameCanvas.field_26.drawImage(GameCanvas.field_28[5], 10, GameCanvas.field_20 + (GameCanvas.field_19 >> 1), 24);
+            GameCanvas.drawRegion(GameCanvas.g, GameCanvas.uiImages[10], GameCanvas.field_81[GameCanvas.field_215[super.zone]][0], GameCanvas.field_81[GameCanvas.field_215[super.zone]][1], GameCanvas.field_81[GameCanvas.field_215[super.zone]][2], GameCanvas.field_81[GameCanvas.field_215[super.zone]][3], GameCanvas.field_35[0], super.field_79, var2[5], 24, false);
+            GameCanvas.g.drawImage(GameCanvas.uiImages[4], GameCanvas.fullGameWidth - 10, GameCanvas.uiContentY + (GameCanvas.uiContentHeight >> 1), 20);
+            GameCanvas.g.drawImage(GameCanvas.uiImages[5], 10, GameCanvas.uiContentY + (GameCanvas.uiContentHeight >> 1), 24);
             break;
+         // Loading Act
          case 4:
-            GameCanvas.method_151(0, 0, GameCanvas.field_18, GameCanvas.field_23);
-            GameCanvas.method_151(0, GameCanvas.field_23 + GameCanvas.field_22, GameCanvas.field_18, GameCanvas.field_23);
-            GameCanvas.method_152();
-            super.field_201 = false;
-            GameCanvas.field_257 = true;
-            GameCanvas.field_26.setColor(0);
-            GameCanvas.field_26.fillRect(0, GameCanvas.field_23, GameCanvas.field_18, GameCanvas.field_22);
+            GameCanvas.drawScreenBackground(0, 0, GameCanvas.fullGameWidth, GameCanvas.gameY);
+            GameCanvas.drawScreenBackground(0, GameCanvas.gameY + GameCanvas.gameHeight, GameCanvas.fullGameWidth, GameCanvas.gameY);
+            GameCanvas.drawSonicLogo();
+            super.redrawAllGameScreen = false;
+            GameCanvas.redrawLivesCounter = true;
+            GameCanvas.g.setColor(0);
+            GameCanvas.g.fillRect(0, GameCanvas.gameY, GameCanvas.fullGameWidth, GameCanvas.gameHeight);
          case 5:
          default:
             break;
+         // continue
          case 6:
             super.commandTexts[0] = "";
             this.method_155();
@@ -129,14 +130,15 @@ public final class Game extends GameCanvas {
          case 9:
             this.method_262();
             break;
+         // Pause menu
          case 10:
          case 11:
-            GameCanvas.method_151(0, 0, GameCanvas.field_17, GameCanvas.field_16);
+            GameCanvas.drawScreenBackground(0, 0, GameCanvas.screenWidth, GameCanvas.screenHeight);
             this.method_265();
-            GameCanvas.field_26.setColor(0);
+            GameCanvas.g.setColor(0);
 
-            for(int var1 = 0; var1 < GameCanvas.field_22; var1 += 2) {
-               GameCanvas.field_26.fillRect(0, var1 + GameCanvas.field_23, GameCanvas.field_18, 1);
+            for(int line = 0; line < GameCanvas.gameHeight; line += 2) {
+               GameCanvas.g.fillRect(0, line + GameCanvas.gameY, GameCanvas.fullGameWidth, 1);
             }
 
             if (super.appState == 11) {
@@ -149,7 +151,7 @@ public final class Game extends GameCanvas {
                this.method_148(super.texts[71], 2, 1, super.currentPauseMenuItem == 1);
             }
 
-            super.field_201 = true;
+            super.redrawAllGameScreen = true;
       }
 
       if (super.appState == 4 || super.appState == 2) {
@@ -157,7 +159,7 @@ public final class Game extends GameCanvas {
       }
 
       if (super.field_254) {
-         GameCanvas.method_152();
+         GameCanvas.drawSonicLogo();
          super.field_254 = false;
       }
 
@@ -172,7 +174,7 @@ public final class Game extends GameCanvas {
       int var1;
       int var2;
       if (super.field_252) {
-         GameCanvas.field_26.setColor(0);
+         GameCanvas.g.setColor(0);
 
          for(var1 = 0; var1 < 10; ++var1) {
             if ((var2 = 24 - (super.field_251 - var1) * 4) >= 0) {
@@ -180,7 +182,7 @@ public final class Game extends GameCanvas {
                   var2 = 24;
                }
 
-               GameCanvas.field_26.fillRect(var1 * 24 + (24 - var2), 0, var2, 240);
+               GameCanvas.g.fillRect(var1 * 24 + (24 - var2), 0, var2, 240);
             }
          }
 
@@ -194,7 +196,7 @@ public final class Game extends GameCanvas {
 
       this.method_175();
       if (super.field_253) {
-         GameCanvas.field_26.setColor(0);
+         GameCanvas.g.setColor(0);
 
          for(var1 = 0; var1 < 10; ++var1) {
             if (super.field_251 - var1 > 0) {
@@ -202,7 +204,7 @@ public final class Game extends GameCanvas {
                   var2 = 24;
                }
 
-               GameCanvas.field_26.fillRect(var1 * 24, GameCanvas.field_20, var2, GameCanvas.field_19);
+               GameCanvas.g.fillRect(var1 * 24, GameCanvas.uiContentY, var2, GameCanvas.uiContentHeight);
             }
          }
 
@@ -215,17 +217,17 @@ public final class Game extends GameCanvas {
       }
 
       if (super.field_38) {
-         this.method_154(super.texts[49], GameCanvas.field_18 >> 1, GameCanvas.field_23 + GameCanvas.field_22 - GameCanvas.field_15 - 2, 16777215, 658170);
+         this.method_154(super.texts[49], GameCanvas.fullGameWidth >> 1, GameCanvas.gameY + GameCanvas.gameHeight - GameCanvas.field_15 - 2, 16777215, 658170);
       }
 
    }
 
-   public final void paint(Graphics var1) {
+   public final void paint(Graphics g) {
       try {
-         GameCanvas.field_26 = var1;
+         GameCanvas.g = g;
          this.method_266();
          if (super.field_299) {
-            Font var2 = var1.getFont();
+            Font var2 = g.getFont();
             String var3;
             int var4;
             if (super.field_298[1]) {
@@ -236,23 +238,23 @@ public final class Game extends GameCanvas {
                }
 
                var3 = var3 + " fps";
-               var1.setColor(0);
-               var1.fillRect(0, 0, var2.stringWidth("XXXXXX"), GameCanvas.field_15);
-               var1.setColor(16777215);
-               var1.drawString(var3, 0, 0, 20);
+               g.setColor(0);
+               g.fillRect(0, 0, var2.stringWidth("XXXXXX"), GameCanvas.field_15);
+               g.setColor(16777215);
+               g.drawString(var3, 0, 0, 20);
             }
 
             if (super.field_298[3]) {
                var3 = Integer.toHexString(GameCanvas.field_226[0]).toUpperCase() + ", " + Integer.toHexString(GameCanvas.field_226[1]).toUpperCase();
                var4 = var2.stringWidth(var3);
-               var1.setColor(0);
-               var1.fillRect(GameCanvas.field_18 - var4, 0, var4, GameCanvas.field_15);
-               var1.setColor(16777215);
-               var1.drawString(var3, GameCanvas.field_18, 0, 24);
+               g.setColor(0);
+               g.fillRect(GameCanvas.fullGameWidth - var4, 0, var4, GameCanvas.field_15);
+               g.setColor(16777215);
+               g.drawString(var3, GameCanvas.fullGameWidth, 0, 24);
             }
          }
 
-         GameCanvas.field_26 = null;
+         GameCanvas.g = null;
       } catch (Throwable var5) {
       }
    }
@@ -297,7 +299,7 @@ public final class Game extends GameCanvas {
                break;
             case 2:
                super.field_105 = super.field_106;
-               if (super.field_155) {
+               if (super.finishedLevel) {
                   super.field_249 = true;
                   super.field_250 = 10;
                   GameCanvas.field_131 = true;
@@ -407,6 +409,7 @@ public final class Game extends GameCanvas {
             case 5:
             default:
                break;
+            // continue
             case 6:
                ++super.field_33;
                this.method_253();
@@ -430,11 +433,11 @@ public final class Game extends GameCanvas {
                   this.saveConfig();
                   if (super.currentPauseMenuItem == 0) {
                      super.appState = 2;
-                     super.field_201 = true;
+                     super.redrawAllGameScreen = true;
                      super.field_249 = true;
                      super.field_250 = 10;
                      super.field_254 = true;
-                     GameCanvas.field_257 = true;
+                     GameCanvas.redrawLivesCounter = true;
                      this.method_178();
                      this.method_13();
                   } else {
@@ -1370,7 +1373,7 @@ public final class Game extends GameCanvas {
 
    // $FF: renamed from: a (int, int, int, int) boolean
    private static boolean method_284(int var0, int var1, int var2, int var3) {
-      return (var2 == -1 || 0 <= var0 - GameCanvas.field_225[0] + var2 && GameCanvas.field_18 >= var0 - GameCanvas.field_225[0] - var2) && (var3 == -1 || 0 <= var1 - GameCanvas.field_225[1] + var3 && 240 >= var1 - GameCanvas.field_225[1] - var3);
+      return (var2 == -1 || 0 <= var0 - GameCanvas.field_225[0] + var2 && GameCanvas.fullGameWidth >= var0 - GameCanvas.field_225[0] - var2) && (var3 == -1 || 0 <= var1 - GameCanvas.field_225[1] + var3 && 240 >= var1 - GameCanvas.field_225[1] - var3);
    }
 
    // $FF: renamed from: ah () void
@@ -3071,7 +3074,7 @@ public final class Game extends GameCanvas {
       } else if (super.field_199[5] == 0 && GameCanvas.method_102() > super.field_199[2] - 3 && super.field_199[3] + 48 > GameCanvas.method_103()) {
          super.field_199[5] = 1;
          super.field_199[10] = 0;
-         super.field_155 = true;
+         super.finishedLevel = true;
       }
 
    }
@@ -3143,7 +3146,7 @@ public final class Game extends GameCanvas {
             this.method_138(super.field_199[2], var1);
             this.method_107(super.field_199[22]);
             if (super.field_199[4] == 1 && super.field_199[5] == 0) {
-               super.field_155 = true;
+               super.finishedLevel = true;
                super.field_199[5] = 1;
                int[] var10000 = super.field_199;
                var10000[3] += 8;
@@ -4013,9 +4016,9 @@ public final class Game extends GameCanvas {
    // $FF: renamed from: aT () void
    private void method_323() {
       boolean var1 = false;
-      if (GameCanvas.commonImages[5] != null) {
-         int var2 = GameCanvas.commonImages[5].getHeight();
-         int var3 = GameCanvas.commonImages[5].getWidth() / 3;
+      if (GameCanvas.gameImages[5] != null) {
+         int var2 = GameCanvas.gameImages[5].getHeight();
+         int var3 = GameCanvas.gameImages[5].getWidth() / 3;
 
          for(int var4 = 0; var4 < 12; ++var4) {
             int var5;
@@ -4130,12 +4133,12 @@ public final class Game extends GameCanvas {
          int var4 = super.field_199[9] - 18 + var3 * 12 + var2;
          if (var3 == 0) {
             int var5 = Math.max(GameCanvas.method_125(super.field_199[9] - 24 - GameCanvas.field_226[1] + 4), 0);
-            GameCanvas.field_26.setClip(0, GameCanvas.field_23 + var5, GameCanvas.field_21, GameCanvas.field_22 - var5);
+            GameCanvas.g.setClip(0, GameCanvas.gameY + var5, GameCanvas.gameWidth, GameCanvas.gameHeight - var5);
          }
 
          GameCanvas.method_126(94, 0, 6, 24, 12, var1, super.field_199[8], var4);
          if (var3 == 0) {
-            GameCanvas.field_26.setClip(0, GameCanvas.field_23, GameCanvas.field_21, GameCanvas.field_22);
+            GameCanvas.g.setClip(0, GameCanvas.gameY, GameCanvas.gameWidth, GameCanvas.gameHeight);
          }
       }
 
@@ -4159,15 +4162,15 @@ public final class Game extends GameCanvas {
 
    // $FF: renamed from: aY () void
    private void method_328() {
-      if (GameCanvas.commonImages[9] != null) {
+      if (GameCanvas.gameImages[9] != null) {
          byte var1 = 0;
          if (super.field_199[19] == 2) {
             var1 = 2;
          }
 
          int var2;
-         int var3 = (var2 = GameCanvas.commonImages[9].getWidth()) / 5;
-         int var4 = GameCanvas.commonImages[9].getHeight();
+         int var3 = (var2 = GameCanvas.gameImages[9].getWidth()) / 5;
+         int var4 = GameCanvas.gameImages[9].getHeight();
          int var5;
          if (super.field_199[4] == 48) {
             for(var5 = 0; var5 < 3; ++var5) {
@@ -4219,14 +4222,14 @@ public final class Game extends GameCanvas {
             GameCanvas.method_128(54, 0, super.field_199[2] - 62 + 31 * var1, super.field_199[3] - 16, 20);
          }
       } else {
-         GameCanvas.method_126(54, 0, 0, GameCanvas.commonImages[54].getWidth(), GameCanvas.commonImages[54].getHeight(), GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
+         GameCanvas.method_126(54, 0, 0, GameCanvas.gameImages[54].getWidth(), GameCanvas.gameImages[54].getHeight(), GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
       }
 
    }
 
    // $FF: renamed from: ba () void
    private void method_330() {
-      GameCanvas.method_126(11, 0, 0, GameCanvas.commonImages[11].getWidth(), GameCanvas.commonImages[11].getHeight(), GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
+      GameCanvas.method_126(11, 0, 0, GameCanvas.gameImages[11].getWidth(), GameCanvas.gameImages[11].getHeight(), GameCanvas.field_35[0], super.field_199[2], super.field_199[3]);
    }
 
    // $FF: renamed from: bb () void
@@ -4316,8 +4319,8 @@ public final class Game extends GameCanvas {
 
    // $FF: renamed from: be () void
    private void method_334() {
-      int var1 = GameCanvas.commonImages[15].getWidth();
-      GameCanvas.commonImages[15].getHeight();
+      int var1 = GameCanvas.gameImages[15].getWidth();
+      GameCanvas.gameImages[15].getHeight();
       if (super.field_204[super.field_199[4]]) {
          GameCanvas.method_126(15, 0, 12, var1, 6, GameCanvas.field_35[0], super.field_199[2], super.field_199[3] - 1);
       } else {
@@ -4394,7 +4397,7 @@ public final class Game extends GameCanvas {
                var4 = 0;
             }
 
-            int var5 = GameCanvas.commonImages[27].getWidth() / 4;
+            int var5 = GameCanvas.gameImages[27].getWidth() / 4;
             GameCanvas.method_126(27, var3 % 4 * var5, var3 / 4 * var5, var5, var5, 0, super.field_199[2] + GameCanvas.field_153[var1] % 4 * 16 - 16 - 8, super.field_199[3] + GameCanvas.field_153[var1] / 4 * 16 + var4 * (var4 / 5));
          }
       }
@@ -4440,8 +4443,8 @@ public final class Game extends GameCanvas {
    // $FF: renamed from: bm () void
    private void method_342() {
       byte var1 = 24;
-      if (GameCanvas.commonImages[42] != null) {
-         int var3 = GameCanvas.commonImages[42].getWidth();
+      if (GameCanvas.gameImages[42] != null) {
+         int var3 = GameCanvas.gameImages[42].getWidth();
          byte var4 = 0;
          if (super.field_199[4] < 7) {
             if (GameCanvas.field_160[super.field_199[4]] == 8) {
@@ -4505,7 +4508,7 @@ public final class Game extends GameCanvas {
    // $FF: renamed from: bp () void
    private void method_345() {
       boolean var1 = false;
-      int var2 = GameCanvas.commonImages[45].getWidth();
+      int var2 = GameCanvas.gameImages[45].getWidth();
       byte var6;
       if (super.field_199[4] != 0 && super.field_199[4] != 3) {
          if (super.field_199[4] == 1) {
@@ -4729,7 +4732,7 @@ public final class Game extends GameCanvas {
             var1 = var1 % 2 + 2;
          }
 
-         int var3 = GameCanvas.commonImages[14].getWidth();
+         int var3 = GameCanvas.gameImages[14].getWidth();
 
          int var2;
          for(var2 = 0; var2 < (super.field_199[9] - super.field_199[3]) / 32; ++var2) {
@@ -4741,7 +4744,7 @@ public final class Game extends GameCanvas {
             GameCanvas.method_129(14, 0, var3 / 2 * (var2 % 2), var3, var4, GameCanvas.field_35[0], super.field_199[2] - 20 + 24 - 32, super.field_199[3] - 48 + var2 * 32 + 16);
          }
 
-         int var5 = GameCanvas.commonImages[77].getWidth();
+         int var5 = GameCanvas.gameImages[77].getWidth();
          GameCanvas.method_129(77, 0, GameCanvas.field_164[var1], var5, GameCanvas.field_164[var1 + 1] - GameCanvas.field_164[var1], GameCanvas.field_35[0], super.field_199[8] - 20 - 32, super.field_199[9] - 48);
          GameCanvas.method_129(77, 0, GameCanvas.field_164[var1 + 2], var5, GameCanvas.field_164[var1 + 1 + 2] - GameCanvas.field_164[var1 + 2], GameCanvas.field_35[0], super.field_199[2] - 20 - 32, super.field_199[3] - 48);
       }
@@ -5555,9 +5558,9 @@ public final class Game extends GameCanvas {
    // $FF: renamed from: bO () void
    private void method_371() {
       if (super.field_221 == 0) {
-         if (GameCanvas.commonImages[5] != null) {
-            int var1 = GameCanvas.commonImages[5].getHeight();
-            int var2 = GameCanvas.commonImages[5].getWidth() / 3 * 2;
+         if (GameCanvas.gameImages[5] != null) {
+            int var1 = GameCanvas.gameImages[5].getHeight();
+            int var2 = GameCanvas.gameImages[5].getWidth() / 3 * 2;
             int var3 = GameCanvas.field_35[0];
             if (super.field_199[19] == 0) {
                var3 = GameCanvas.field_35[4];
