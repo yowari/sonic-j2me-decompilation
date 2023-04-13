@@ -21,9 +21,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: c javax.microedition.lcdui.Image[]
    private static Image[] menuImages = new Image[5];
    // $FF: renamed from: a javax.microedition.lcdui.Font
-   public static final Font field_14 = Font.getFont(0, 0, 16);
+   public static final Font defaultFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_LARGE);
    // $FF: renamed from: a int
-   public static final int field_15;
+   public static final int defaultFontHeight;
    // $FF: renamed from: b int
    public static int screenHeight;
    // $FF: renamed from: c int
@@ -61,7 +61,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: k int
    public int field_33 = 1;
    // $FF: renamed from: a java.util.Random
-   private static final Random field_34;
+   private static final Random random;
    // $FF: renamed from: a int[]
    public static final int[] field_35;
    // $FF: renamed from: a d
@@ -203,9 +203,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: t int
    public int field_104;
    // $FF: renamed from: u int
-   public int field_105;
+   public int prevRings;
    // $FF: renamed from: v int
-   public int field_106;
+   public int rings;
    // $FF: renamed from: w int
    public int score;
    // $FF: renamed from: x int
@@ -215,7 +215,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: z int
    public int field_110;
    // $FF: renamed from: A int
-   public int field_111;
+   public int lives;
    // $FF: renamed from: B int
    public int field_112;
    // $FF: renamed from: C int
@@ -303,7 +303,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: m int[]
    public static final int[] field_154;
    // $FF: renamed from: p boolean
-   public boolean finishedLevel;
+   public boolean clearedAct;
    // $FF: renamed from: n int[]
    public static final int[] field_156;
    // $FF: renamed from: o int[]
@@ -425,9 +425,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: x int[]
    public static final int[] field_215;
    // $FF: renamed from: f int[][]
-   public static final int[][] field_216;
+   public static final int[][] zoneIDs;
    // $FF: renamed from: g int[][]
-   public static final int[][] field_217;
+   public static final int[][] actIDs;
    // $FF: renamed from: bt int
    private int field_218;
    // $FF: renamed from: bu int
@@ -435,9 +435,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: ai int
    public int appState;
    // $FF: renamed from: aj int
-   public int field_221;
+   public int zoneID;
    // $FF: renamed from: ak int
-   public int field_222;
+   public int actID;
    // $FF: renamed from: al int
    public int zone;
    // $FF: renamed from: am int
@@ -445,7 +445,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: y int[]
    public static int[] field_225;
    // $FF: renamed from: z int[]
-   public static int[] field_226;
+   public static int[] cameraPosition;
    // $FF: renamed from: G int[]
    private int[] field_227;
    // $FF: renamed from: H int[]
@@ -589,15 +589,15 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: aw int
    public int field_297;
    // $FF: renamed from: f boolean[]
-   public boolean[] field_298;
+   public boolean[] cheatsOptions;
    // $FF: renamed from: G boolean
-   public boolean field_299;
+   public boolean cheatsEnabled;
    // $FF: renamed from: ax int
-   public int field_300;
+   public int nextCheatsCodeKey;
    // $FF: renamed from: ay int
-   public int field_301;
+   public int emeralds;
    // $FF: renamed from: H boolean
-   public boolean field_302;
+   public boolean cameraModeEnabled;
    // $FF: renamed from: A int[]
    public static final int[] field_303;
    // $FF: renamed from: a javax.microedition.midlet.MIDlet
@@ -966,7 +966,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_144 = 0;
       this.field_146 = new int[]{64, 32, 64};
       this.field_152 = new boolean[256];
-      this.finishedLevel = false;
+      this.clearedAct = false;
       this.field_187 = new byte[8192];
       this.field_195 = new int[256][25];
       this.field_199 = new int[25];
@@ -979,8 +979,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_210 = 0;
       this.field_211 = 0;
       this.field_212 = 0;
-      this.field_221 = -1;
-      this.field_222 = 0;
+      this.zoneID = -1;
+      this.actID = 0;
       this.zone = 0;
       this.act = 0;
       this.field_227 = new int[2];
@@ -1019,11 +1019,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_294 = 0;
       this.config = new byte[4];
       this.field_297 = 0;
-      this.field_298 = new boolean[]{false, false, false, false, false};
-      this.field_299 = false;
-      this.field_300 = 0;
-      this.field_301 = 0;
-      this.field_302 = false;
+      this.cheatsOptions = new boolean[]{false, false, false, false, false};
+      this.cheatsEnabled = false;
+      this.nextCheatsCodeKey = 0;
+      this.emeralds = 0;
+      this.cameraModeEnabled = false;
       this.resume = 0;
       this.frame = 0;
       this.renderedFrame = 0;
@@ -1043,21 +1043,21 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.sizeChanged(this.getWidth(), this.getHeight());
    }
 
-   public final void keyPressed(int var1) {
-      if (!this.field_299 && this.appState == 1) {
-         if (var1 == "230691".charAt(this.field_300)) {
-            ++this.field_300;
+   public final void keyPressed(int keyCode) {
+      if (!this.cheatsEnabled && this.appState == 1) {
+         if (keyCode == "230691".charAt(this.nextCheatsCodeKey)) {
+            ++this.nextCheatsCodeKey;
          } else {
-            this.field_300 = 0;
+            this.nextCheatsCodeKey = 0;
          }
 
-         if (this.field_300 == 6) {
-            this.field_299 = true;
+         if (this.nextCheatsCodeKey == 6) {
+            this.cheatsEnabled = true;
          }
       }
 
       if (!field_129 || this.appState != 2) {
-         switch (this.method_263(var1)) {
+         switch (this.getKey(keyCode)) {
             case 1:
                this.pressedKeys[3] = true;
                this.pressedKeys[2] = true;
@@ -1096,8 +1096,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                return;
             case 10:
                this.pressedKeys[9] = true;
-               if (this.field_299 && this.field_298[4]) {
-                  this.field_302 = !this.field_302;
+               if (this.cheatsEnabled && this.cheatsOptions[4]) {
+                  this.cameraModeEnabled = !this.cameraModeEnabled;
                   return;
                }
             case 11:
@@ -1114,8 +1114,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
    }
 
-   public final void keyReleased(int var1) {
-      switch (this.method_263(var1)) {
+   public final void keyReleased(int keyCode) {
+      switch (this.getKey(keyCode)) {
          case 1:
             this.pressedKeys[3] = false;
             this.pressedKeys[2] = false;
@@ -1166,7 +1166,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    }
 
    public final void playerUpdate(Player player, String event, Object eventDatas) {
-      if (event == "endOfMedia") {
+      if (event == END_OF_MEDIA) {
          switch (this.audio.currentTrack) {
             case 7:
                this.audio.replayInterruptedTrack();
@@ -1184,7 +1184,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    public final void init() throws Exception {
       this.loadConfig();
-      this.loadTranslation();
+      this.loadTexts();
       this.loadGameProgress();
       this.loadHighscore();
       this.redrawAllGameScreen = true;
@@ -1198,7 +1198,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_196 = 0;
    }
 
-   public void paint(Graphics var1) {
+   public void paint(Graphics g) {
    }
 
    public void run() {
@@ -1254,7 +1254,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          this.field_245 = var2;
-         this.field_301 = this.field_40 = saveData[7];
+         this.emeralds = this.field_40 = saveData[7];
       } catch (Exception error) {
          this.saveGameProgress();
       }
@@ -1316,8 +1316,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
    }
 
-   // $FF: renamed from: af () void
-   private void method_20() {
+   private void updateCommandTexts() {
       if (this.appState == 1) {
          if (this.viewState == 3 || this.viewState == 4) {
             if (this.config[1] != 0) {
@@ -1352,7 +1351,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.appState == 2) {
-            if ((this.field_111 > 0 || !field_125) && !this.finishedLevel) {
+            if ((this.lives > 0 || !field_125) && !this.clearedAct) {
                this.commandTexts[1] = this.texts[60];
                return;
             }
@@ -1398,22 +1397,22 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          // field_76 ???
          this.field_76 = false;
-         byte command = -1;
+         byte commandAction = -1;
          if (this.pressedKeys[5]) {
             this.pressedKeys[5] = false;
-            command = 0;
+            commandAction = 0;
          } else if (this.pressedKeys[6]) {
             if (this.appState == 1) {
                return false;
             }
 
             this.pressedKeys[6] = false;
-            command = 1;
+            commandAction = 1;
          }
 
-         if (command != -1) {
+         if (commandAction != -1) {
             // back
-            if (this.commandTexts[command].equals(this.texts[59])) {
+            if (this.commandTexts[commandAction].equals(this.texts[59])) {
                if (this.appState == 3) {
                   this.appState = 1;
                   this.field_249 = true;
@@ -1434,7 +1433,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // pause
-            if (this.commandTexts[command].equals(this.texts[60])) {
+            if (this.commandTexts[commandAction].equals(this.texts[60])) {
                this.appState = 10;
                this.field_249 = true;
                this.field_250 = 10;
@@ -1444,7 +1443,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // resume
-            if (this.commandTexts[command].equals(this.texts[61])) {
+            if (this.commandTexts[commandAction].equals(this.texts[61])) {
                this.saveConfig();
                this.appState = 2;
                this.redrawAllGameScreen = true;
@@ -1457,7 +1456,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // title
-            if (this.commandTexts[command].equals(this.texts[66])) {
+            if (this.commandTexts[commandAction].equals(this.texts[66])) {
                this.appState = 1;
                this.field_249 = true;
                this.field_250 = 10;
@@ -1466,7 +1465,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // sound
-            if (this.commandTexts[command].equals(this.texts[68])) {
+            if (this.commandTexts[commandAction].equals(this.texts[68])) {
                this.config[1] = this.prevConfig[1];
                if (this.config[1] == 0) {
                   this.config[1] = 1;
@@ -1480,7 +1479,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // mute
-            if (this.commandTexts[command].equals(this.texts[69])) {
+            if (this.commandTexts[commandAction].equals(this.texts[69])) {
                this.prevConfig[1] = this.config[1];
                this.config[1] = 0;
                this.saveConfig();
@@ -1491,7 +1490,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // quit
-            if (this.commandTexts[command].equals(this.texts[57])) {
+            if (this.commandTexts[commandAction].equals(this.texts[57])) {
                this.viewState = 14;
                this.currentMenuItem = 1;
                this.updateMenuCommandsText(3);
@@ -1499,7 +1498,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             // ok
-            if (this.commandTexts[command].equals("OK")) {
+            if (this.commandTexts[commandAction].equals("OK")) {
                this.updateHighscore();
             }
          }
@@ -1527,7 +1526,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a (boolean) void
    public final void method_23(boolean var1) {
       for(int var2 = 0; var2 < 6; ++var2) {
-         if (var1 && this.zone < field_216.length) {
+         if (var1 && this.zone < zoneIDs.length) {
             ++this.zone;
             if (this.zone == 6 && this.act == 3 || this.zone > 6) {
                this.zone = 0;
@@ -1541,7 +1540,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
          }
 
-         if (method_24(field_216[this.zone][0])) {
+         if (method_24(zoneIDs[this.zone][0])) {
             return;
          }
       }
@@ -1562,7 +1561,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: j () void
    public final void method_25() {
       if (this.field_249) {
-         this.method_20();
+         this.updateCommandTexts();
          if (this.field_250 > 0) {
             --this.field_250;
             return;
@@ -1621,7 +1620,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public final void method_28() {
       int var1 = 112 - ((fullGameWidth >> 1) - 48 - 6);
       int var2 = (fullGameWidth >> 1) + 6 + 112;
-      if (this.field_111 <= 0 && field_125 || field_280 && this.field_108 == 59 && this.field_109 == 9) {
+      if (this.lives <= 0 && field_125 || field_280 && this.field_108 == 59 && this.field_109 == 9) {
          int var3 = (660 - this.field_110) * 6;
          if (120 - var3 < 8) {
             var3 = 112;
@@ -1674,7 +1673,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: m () void
    public final void method_30() {
       int[][] var1 = new int[][]{{0, 0, 48, 48}, {49, 0, 35, 48}, {84, 0, 18, 48}, {102, 0, 36, 48}};
-      if (this.field_106 >= 50 && this.field_199[5] == 0) {
+      if (this.rings >= 50 && this.field_199[5] == 0) {
          int var2 = field_35[0];
          int var3;
          if ((var3 = this.field_32 >> 1 & 3) == 3) {
@@ -1689,7 +1688,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: n () void
    public final void method_31() {
-      if (this.field_106 >= 50) {
+      if (this.rings >= 50) {
          this.field_199[6] = this.field_199[2];
          this.field_199[7] = this.field_199[3];
          if (this.field_199[5] == 0) {
@@ -1719,16 +1718,16 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       boolean var10 = false;
 
       for(int var13 = var1; var13 < var1 + var3; ++var13) {
-         if (this.field_218 << 4 > (field_226[0] >> 4) + var13) {
+         if (this.field_218 << 4 > (cameraPosition[0] >> 4) + var13) {
             for(int var14 = var2; var14 < var2 + var4; ++var14) {
-               int var7 = (field_226[0] >> 4) + var13 >> 4;
-               int var8 = ((field_226[1] >> 4) + var14 >> 4) % this.field_219;
+               int var7 = (cameraPosition[0] >> 4) + var13 >> 4;
+               int var8 = ((cameraPosition[1] >> 4) + var14 >> 4) % this.field_219;
 
                try {
-                  int var16 = (this.field_236[var8][var7] << 9) + (((field_226[0] >> 4) + var13 & 15) + (((field_226[1] >> 4) + var14 & 15) << 4) << 1) + 1;
+                  int var16 = (this.field_236[var8][var7] << 9) + (((cameraPosition[0] >> 4) + var13 & 15) + (((cameraPosition[1] >> 4) + var14 & 15) << 4) << 1) + 1;
                   int var15;
                   if ((var15 = (this.field_230[var16] & 255) + (this.field_188[var16 >> 1] << 8)) != 0) {
-                     if (this.field_221 == 2) {
+                     if (this.zoneID == 2) {
                         if (var15 == 367 || var15 == 366) {
                            var15 = (var15 + this.field_32 / 5 & 1) + 366;
                         }
@@ -1753,7 +1752,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                         }
                      }
 
-                     drawRegion(g, field_27, var15 % 16 * 12, var15 / 16 * 12, 12, 12, field_35[var11], var13 * 12 - (field_226[0] & 15), var14 * 12 - (field_226[1] & 15), 20, true);
+                     drawRegion(g, field_27, var15 % 16 * 12, var15 / 16 * 12, 12, 12, field_35[var11], var13 * 12 - (cameraPosition[0] & 15), var14 * 12 - (cameraPosition[1] & 15), 20, true);
                   }
                } catch (Exception var12) {
                }
@@ -1765,11 +1764,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: a (javax.microedition.lcdui.Graphics, boolean) void
    public final void method_33(Graphics var1, boolean var2) {
-      int var3 = method_124(field_226[0] & 15);
-      int var4 = method_124(field_226[1] & 15);
+      int var3 = method_124(cameraPosition[0] & 15);
+      int var4 = method_124(cameraPosition[1] & 15);
 
       for(int var5 = 0; var5 < tilemapHSize; ++var5) {
-         if (this.field_218 << 4 > (field_226[0] >> 4) + var5) {
+         if (this.field_218 << 4 > (cameraPosition[0] >> 4) + var5) {
             for(int var6 = 0; var6 < tilemapVSize; ++var6) {
                int var7 = this.tilemaps[var5][var6][1];
                int var8 = this.tilemaps[var5][var6][0];
@@ -1789,11 +1788,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public final void method_34(Graphics var1, boolean var2) {
       boolean var5 = false;
       int var6 = 0;
-      int var7 = field_226[0] >> 4;
-      int var8 = field_226[1] >> 4;
+      int var7 = cameraPosition[0] >> 4;
+      int var8 = cameraPosition[1] >> 4;
       int var9 = var7;
-      int var10 = method_124(field_226[0] & 15);
-      int var11 = method_124(field_226[1] & 15);
+      int var10 = method_124(cameraPosition[0] & 15);
+      int var11 = method_124(cameraPosition[1] & 15);
 
       for(int var12 = 0; var12 < tilemapHSize; ++var12) {
          int var14 = var12 * 12 - var10;
@@ -1848,7 +1847,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a (int, boolean) void
    public final void method_35(int var1, boolean var2) {
       if (99950000 > this.score && this.score % '\uc350' > (this.score + var1) % '\uc350') {
-         ++this.field_111;
+         ++this.lives;
          if (var2) {
             this.audio.interruptTrackAndPlay(7, 1);
          }
@@ -1887,8 +1886,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: c (boolean) void
    public final void method_38(boolean var1) {
       if (!var1) {
-         if (this.field_258 == this.field_106 && this.field_259 == this.score) {
-            if (this.field_106 == 0 && (this.field_32 & 1) == 0) {
+         if (this.field_258 == this.rings && this.field_259 == this.score) {
+            if (this.rings == 0 && (this.field_32 & 1) == 0) {
                redrawRingAndScoreCounter = true;
             }
          } else {
@@ -1899,7 +1898,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             redrawTimer = true;
          }
 
-         if (this.field_261 != this.field_111) {
+         if (this.field_261 != this.lives) {
             redrawLivesCounter = true;
          }
       } else {
@@ -1908,19 +1907,19 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          redrawTimer = true;
       }
 
-      if (this.field_111 > 99) {
-         this.field_111 = 99;
+      if (this.lives > 99) {
+         this.lives = 99;
       }
 
-      this.field_261 = this.field_111;
-      this.field_258 = this.field_106;
+      this.field_261 = this.lives;
+      this.field_258 = this.rings;
       this.field_259 = this.score;
       if (redrawRingAndScoreCounter) {
          boolean var12 = false;
          drawScreenBackground(0, 0, 100, gameY);
          drawRegion(g, uiImages[1], 0, 0, uiImages[1].getWidth(), uiImages[1].getHeight(), field_35[0], 4, -10, 36, true);
-         if (this.field_106 != 0 || (this.field_32 >> 1 & 1) == 0) {
-            method_39(24, -30, this.field_106, 3);
+         if (this.rings != 0 || (this.field_32 >> 1 & 1) == 0) {
+            method_39(24, -30, this.rings, 3);
          }
 
          method_39(24, -18, this.score, 8);
@@ -1940,10 +1939,10 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          drawScreenBackground(0, gameY + gameHeight, 50, gameY);
          int var13 = 7 + uiImages[2].getHeight() - uiImages[12].getHeight();
          drawRegion(g, uiImages[2], 0, 0, 17, 15, field_35[0], 5, 7 + gameHeight, 20, true);
-         if (this.field_111 > 9) {
-            method_39(31, gameHeight + var13, this.field_111, 2);
+         if (this.lives > 9) {
+            method_39(31, gameHeight + var13, this.lives, 2);
          } else {
-            method_39(31, gameHeight + var13, this.field_111, 1);
+            method_39(31, gameHeight + var13, this.lives, 1);
          }
 
          redrawLivesCounter = false;
@@ -2033,7 +2032,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.appState = 4;
          this.field_240 = false;
          this.field_241 = false;
-         this.finishedLevel = false;
+         this.clearedAct = false;
          this.field_289 = true;
          this.field_290 = true;
          this.field_239 = 0;
@@ -2157,7 +2156,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: ai () void
    private void method_45() {
-      this.field_106 = 0;
+      this.rings = 0;
       this.field_108 = 0;
       this.field_109 = 0;
       this.field_110 = 0;
@@ -2210,7 +2209,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private void method_46() {
       this.resetPressedKeys();
       this.method_45();
-      if (this.field_221 == 4 && this.field_222 == 2) {
+      if (this.zoneID == 4 && this.actID == 2) {
          this.method_197(150, 11424, 1394, 0, 0);
       }
 
@@ -2223,9 +2222,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_94[1] = 0;
       field_225[0] = 0;
       field_225[1] = 0;
-      if (this.field_221 != 5 || this.field_222 != 3) {
-         field_116[0] = field_134[this.field_221][this.field_222 * 2 + 0] << 8;
-         field_116[1] = (field_134[this.field_221][this.field_222 * 2 + 1] << 8) + 5120;
+      if (this.zoneID != 5 || this.actID != 3) {
+         field_116[0] = field_134[this.zoneID][this.actID * 2 + 0] << 8;
+         field_116[1] = (field_134[this.zoneID][this.actID * 2 + 1] << 8) + 5120;
       }
 
       if (this.field_112 != 0 || this.field_113 != 0) {
@@ -2252,7 +2251,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_240 = false;
       this.field_289 = true;
       this.field_290 = true;
-      if (this.field_221 != 1) {
+      if (this.zoneID != 1) {
          this.field_208 = 16777215;
       }
 
@@ -2261,9 +2260,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.method_55();
       this.method_29();
       this.method_198();
-      method_56(this.field_221, this.field_222);
+      method_56(this.zoneID, this.actID);
       this.method_179();
-      class_0.method_0(this.field_221, this.field_222);
+      class_0.method_0(this.zoneID, this.actID);
       this.method_13();
    }
 
@@ -2367,7 +2366,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.field_233 = null;
          System.gc();
          int[][][] var3 = (int[][][])null;
-         switch (this.field_221) {
+         switch (this.zoneID) {
             case 0:
                var3 = method_52(method_48("/mc_gh_map_data.bin"));
             case 1:
@@ -2382,21 +2381,21 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          closeLastOpenedResource();
-         this.field_218 = var3[this.field_222][0].length;
-         this.field_219 = var3[this.field_222].length;
+         this.field_218 = var3[this.actID][0].length;
+         this.field_219 = var3[this.actID].length;
          this.field_236 = new byte[this.field_219][this.field_218];
 
          for(int var4 = 0; var4 < this.field_219; ++var4) {
             for(int var5 = 0; var5 < this.field_218; ++var5) {
-               this.field_236[var4][var5] = (byte)var3[this.field_222][var4][var5];
+               this.field_236[var4][var5] = (byte)var3[this.actID][var4][var5];
             }
          }
 
          System.gc();
-         this.field_232 = method_50("/zone" + (this.field_221 + 1) + ".blt");
-         this.field_231 = method_50("/MapLzone" + (this.field_221 + 1) + ".blt");
-         this.field_230 = method_50("/zone" + (this.field_221 + 1) + ".bmd");
-         DataInputStream var1 = method_48("/ZONE" + (this.field_221 + 1) + "ACT.act");
+         this.field_232 = method_50("/zone" + (this.zoneID + 1) + ".blt");
+         this.field_231 = method_50("/MapLzone" + (this.zoneID + 1) + ".blt");
+         this.field_230 = method_50("/zone" + (this.zoneID + 1) + ".bmd");
+         DataInputStream var1 = method_48("/ZONE" + (this.zoneID + 1) + "ACT.act");
          this.field_234 = new byte[4][];
          this.field_234[0] = new byte[var1.readShort()];
          this.field_234[1] = new byte[var1.readShort()];
@@ -2446,7 +2445,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public final void method_57() {
       if (this.appState != 2 || this.field_262 || this.field_80 >= 30) {
          int[] var10000;
-         if (this.field_299 && this.field_298[4] && this.field_302) {
+         if (this.cheatsEnabled && this.cheatsOptions[4] && this.cameraModeEnabled) {
             if (this.pressedKeys[2]) {
                var10000 = field_116;
                var10000[1] -= 2048;
@@ -2504,7 +2503,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: c (int) int
    public static int method_58(int var0) {
-      return Math.abs(field_34.nextInt()) % var0;
+      return Math.abs(random.nextInt()) % var0;
    }
 
    // $FF: renamed from: d (int, int) boolean
@@ -2715,7 +2714,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       int var1;
       int var2;
       if (field_100 > 22 && field_100 < 338) {
-         if (this.field_221 != 1 || field_100 != 316) {
+         if (this.zoneID != 1 || field_100 != 316) {
             return false;
          }
 
@@ -2726,7 +2725,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          var2 = method_103() - 12;
       }
 
-      if ((this.field_221 == 4 || this.field_221 == 3) && field_100 != 0) {
+      if ((this.zoneID == 4 || this.zoneID == 3) && field_100 != 0) {
          return false;
       } else if (!this.method_60(var1, var2)) {
          return false;
@@ -2748,9 +2747,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private boolean method_69() {
       if (field_100 > 22 && field_100 < 338) {
          return false;
-      } else if ((this.field_221 == 4 || this.field_221 == 3) && field_100 != 0) {
+      } else if ((this.zoneID == 4 || this.zoneID == 3) && field_100 != 0) {
          return false;
-      } else if (this.field_221 == 2 && field_100 == 22) {
+      } else if (this.zoneID == 2 && field_100 == 22) {
          return false;
       } else {
          int var1 = method_102() - 12;
@@ -2854,7 +2853,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: am () void
    private void method_73() {
-      if (this.field_221 != 1 || this.field_208 >= method_103() - 12) {
+      if (this.zoneID != 1 || this.field_208 >= method_103() - 12) {
          this.field_83 = 2100;
       }
    }
@@ -2872,11 +2871,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          return true;
       } else if (this.field_267) {
          return false;
-      } else if (this.field_221 == 0 && (this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 31 || this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 32)) {
+      } else if (this.zoneID == 0 && (this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 31 || this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 32)) {
          this.pressedKeys[2] = false;
          return false;
       } else if (this.pressedKeys[2]) {
-         if (this.field_221 == 5 && this.field_222 != 2 && method_74()) {
+         if (this.zoneID == 5 && this.actID != 2 && method_74()) {
             return false;
          } else if (this.field_203) {
             field_122 = true;
@@ -2923,7 +2922,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.field_276 = 1;
                }
 
-               if (Math.abs(field_116[10]) > 2560 && this.field_221 == 4 && this.field_222 == 1 && field_116[0] > 9216) {
+               if (Math.abs(field_116[10]) > 2560 && this.zoneID == 4 && this.actID == 1 && field_116[0] > 9216) {
                   int[] var10000 = field_116;
                   var10000[5] -= 768;
                   field_116[3] = method_5(var2) * this.field_92 / 100 + 2560;
@@ -3001,14 +3000,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
 
       byte var4 = this.field_236[method_103() >> 8][method_102() >> 8];
-      if (this.field_221 == 0 && (var4 == 31 || var4 == 32)) {
+      if (this.zoneID == 0 && (var4 == 31 || var4 == 32)) {
          var3 = 256;
       }
 
       int var5 = field_100;
       if (this.method_78()) {
          this.field_203 = false;
-         if (this.field_221 == 4 && (var5 == 79 && field_100 == 90 || var5 == 281 && field_100 == 270)) {
+         if (this.zoneID == 4 && (var5 == 79 && field_100 == 90 || var5 == 281 && field_100 == 270)) {
             if (field_100 == 90) {
                field_116[10] = 640;
             } else {
@@ -3030,7 +3029,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             var10000[1] += method_6(var1 + 180) * var3 / 100;
             if (this.method_78()) {
                this.field_203 = false;
-               if (this.field_221 == 4 && (var5 == 79 && field_100 == 90 || var5 == 281 && field_100 == 270)) {
+               if (this.zoneID == 4 && (var5 == 79 && field_100 == 90 || var5 == 281 && field_100 == 270)) {
                   if (field_100 == 90) {
                      field_116[10] = 640;
                   } else {
@@ -3057,8 +3056,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          return false;
       } else {
          byte var1 = this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8];
-         if (this.field_221 != 5 || this.field_222 == 2) {
-            if (this.field_221 == 0) {
+         if (this.zoneID != 5 || this.actID == 2) {
+            if (this.zoneID == 0) {
                if (var1 != 31 && var1 != 32) {
                   if (this.field_94[0] >= 0) {
                      this.field_86 = this.method_79();
@@ -3084,7 +3083,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                return this.method_71(0);
             }
 
-            if (this.field_221 != 3) {
+            if (this.zoneID != 3) {
                if (this.field_94[0] >= 0) {
                   this.field_86 = this.method_79();
                   if (!this.field_86) {
@@ -3145,7 +3144,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
                   var10000 = field_116;
                   var10000[1] += (method_6(var1 + 180) << 8) / 100;
-                  if (this.field_221 == 3 && var5 == 350) {
+                  if (this.zoneID == 3 && var5 == 350) {
                      var5 = 0;
                   }
 
@@ -3260,14 +3259,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             return false;
          } else {
             this.method_100(0);
-            if (this.field_221 == 0 || this.field_221 == 3) {
+            if (this.zoneID == 0 || this.zoneID == 3) {
                this.method_122();
             }
 
             if (!field_128) {
                boolean var2 = false;
                byte var3 = this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8];
-               if (this.field_221 == 0 && (var3 == 31 || var3 == 32)) {
+               if (this.zoneID == 0 && (var3 == 31 || var3 == 32)) {
                   var2 = true;
                   field_124 = true;
                   var10000 = field_116;
@@ -3277,7 +3276,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   }
                }
 
-               if (this.field_221 == 0 && (var3 == 53 || var3 == 54)) {
+               if (this.zoneID == 0 && (var3 == 53 || var3 == 54)) {
                   var2 = true;
                }
 
@@ -3357,7 +3356,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                } else if (!this.field_203 && var6) {
                   field_116[0] = var4;
                   field_116[1] = var5;
-                  if (field_100 != 22 || this.field_221 != 1 || this.field_222 != 1) {
+                  if (field_100 != 22 || this.zoneID != 1 || this.actID != 1) {
                      field_116[3] = method_5(field_100 + 90) * field_116[10] / 100;
                      field_116[5] = method_6(field_100 + 90) * field_116[10] / 100;
                   }
@@ -3366,7 +3365,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      if (field_100 == 90) {
                         var10000 = field_116;
                         var10000[0] += 256;
-                        if (this.field_221 == 4 && this.field_222 != 0) {
+                        if (this.zoneID == 4 && this.actID != 0) {
                            field_116[5] = 0;
                         }
                      } else {
@@ -3390,11 +3389,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   }
                } else {
                   var2 = false;
-                  if (this.field_221 == 0 && (var3 == 31 || var3 == 32)) {
+                  if (this.zoneID == 0 && (var3 == 31 || var3 == 32)) {
                      var2 = true;
                   }
 
-                  if (this.field_221 == 2 && (field_116[8] == 365 || field_116[8] == 364 || field_116[8] == 363 || field_116[8] == 362)) {
+                  if (this.zoneID == 2 && (field_116[8] == 365 || field_116[8] == 364 || field_116[8] == 363 || field_116[8] == 362)) {
                      this.method_104();
                   }
 
@@ -3467,7 +3466,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
 
       this.method_100(1);
-      if (this.field_221 == 0 || this.field_221 == 3) {
+      if (this.zoneID == 0 || this.zoneID == 3) {
          this.method_122();
       }
 
@@ -3509,7 +3508,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          Math.abs(field_116[10]);
-         if (this.field_221 == 0 || this.field_221 == 3) {
+         if (this.zoneID == 0 || this.zoneID == 3) {
             this.method_122();
          }
 
@@ -3517,7 +3516,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             boolean var1 = false;
             byte var2 = this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8];
             int[] var10000;
-            if (this.field_221 == 0) {
+            if (this.zoneID == 0) {
                if (var2 == 31 || var2 == 32) {
                   var1 = true;
                   var10000 = field_116;
@@ -3526,11 +3525,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      field_116[10] = 4096;
                   }
                }
-            } else if (this.field_221 == 0) {
+            } else if (this.zoneID == 0) {
                if (var2 == 53 || var2 == 54) {
                   var1 = true;
                }
-            } else if (this.field_221 == 3 && (var2 == 42 || var2 == 43 || var2 == 52 || var2 == 53)) {
+            } else if (this.zoneID == 3 && (var2 == 42 || var2 == 43 || var2 == 52 || var2 == 53)) {
                var1 = true;
             }
 
@@ -3610,7 +3609,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             } else if (!this.field_203 && var5 && !var1) {
                field_116[0] = var3;
                field_116[1] = var4;
-               if (this.field_221 == 0 && Math.abs(field_116[10]) > 2560) {
+               if (this.zoneID == 0 && Math.abs(field_116[10]) > 2560) {
                   if (field_116[10] < 0) {
                      field_116[10] = -4224;
                   } else {
@@ -3624,13 +3623,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   if (field_100 == 90) {
                      var10000 = field_116;
                      var10000[0] += 256;
-                     if (this.field_221 == 4 && this.field_222 != 0) {
+                     if (this.zoneID == 4 && this.actID != 0) {
                         field_116[5] = 0;
                      }
                   } else {
                      var10000 = field_116;
                      var10000[0] -= 256;
-                     if (field_116[10] > 3072 && this.field_221 == 4) {
+                     if (field_116[10] > 3072 && this.zoneID == 4) {
                         this.field_294 = 15;
                      }
                   }
@@ -3648,11 +3647,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                }
             } else {
                var1 = false;
-               if (this.field_221 == 0 && (this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 31 || this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 32)) {
+               if (this.zoneID == 0 && (this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 31 || this.field_236[(method_103() >> 8) % this.field_219][method_102() >> 8] == 32)) {
                   var1 = true;
                }
 
-               if (this.field_221 == 2 && (field_116[8] == 365 || field_116[8] == 364 || field_116[8] == 363 || field_116[8] == 362)) {
+               if (this.zoneID == 2 && (field_116[8] == 365 || field_116[8] == 364 || field_116[8] == 363 || field_116[8] == 362)) {
                   this.method_104();
                }
 
@@ -3726,7 +3725,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
 
       this.method_100(1);
-      if (this.field_221 == 0 || this.field_221 == 3) {
+      if (this.zoneID == 0 || this.zoneID == 3) {
          this.method_122();
       }
 
@@ -3802,7 +3801,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          field_116[5] = 0;
          field_116[3] = 0;
-         if (this.field_221 == 2 && (field_116[8] == 365 || field_116[8] == 364 || field_116[8] == 363 || field_116[8] == 362)) {
+         if (this.zoneID == 2 && (field_116[8] == 365 || field_116[8] == 364 || field_116[8] == 363 || field_116[8] == 362)) {
             this.field_273 = true;
          }
 
@@ -3859,7 +3858,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          this.method_88(1);
       } else if (!field_119) {
-         if (this.field_221 == 5 && this.field_222 != 2 && (37 == field_116[8] || 38 == field_116[8] || 39 == field_116[8] || 41 == field_116[8] || 42 == field_116[8] || 47 == field_116[8] || 48 == field_116[8] || 49 == field_116[8] || 52 == field_116[8] || 59 == field_116[8] || 62 == field_116[8] || 69 == field_116[8] || 71 == field_116[8] || 72 == field_116[8] || 78 == field_116[8] || 79 == field_116[8] || 87 == field_116[8] || 88 == field_116[8] || 89 == field_116[8])) {
+         if (this.zoneID == 5 && this.actID != 2 && (37 == field_116[8] || 38 == field_116[8] || 39 == field_116[8] || 41 == field_116[8] || 42 == field_116[8] || 47 == field_116[8] || 48 == field_116[8] || 49 == field_116[8] || 52 == field_116[8] || 59 == field_116[8] || 62 == field_116[8] || 69 == field_116[8] || 71 == field_116[8] || 72 == field_116[8] || 78 == field_116[8] || 79 == field_116[8] || 87 == field_116[8] || 88 == field_116[8] || 89 == field_116[8])) {
             var10000 = field_116;
             var10000[10] += 256;
             if (1024 < field_116[10]) {
@@ -3965,7 +3964,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          this.method_88(1);
-      } else if (this.field_221 == 5 && this.field_222 != 2 && (37 == field_116[8] || 38 == field_116[8] || 39 == field_116[8] || 41 == field_116[8] || 42 == field_116[8] || 47 == field_116[8] || 48 == field_116[8] || 49 == field_116[8] || 52 == field_116[8] || 59 == field_116[8] || 62 == field_116[8] || 69 == field_116[8] || 71 == field_116[8] || 72 == field_116[8] || 78 == field_116[8] || 79 == field_116[8] || 87 == field_116[8] || 88 == field_116[8] || 89 == field_116[8])) {
+      } else if (this.zoneID == 5 && this.actID != 2 && (37 == field_116[8] || 38 == field_116[8] || 39 == field_116[8] || 41 == field_116[8] || 42 == field_116[8] || 47 == field_116[8] || 48 == field_116[8] || 49 == field_116[8] || 52 == field_116[8] || 59 == field_116[8] || 62 == field_116[8] || 69 == field_116[8] || 71 == field_116[8] || 72 == field_116[8] || 78 == field_116[8] || 79 == field_116[8] || 87 == field_116[8] || 88 == field_116[8] || 89 == field_116[8])) {
          var10000 = field_116;
          var10000[10] += 256;
          if (2560 < field_116[10]) {
@@ -4155,7 +4154,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
 
       int[] var10000;
-      if (this.field_221 == 0 && this.field_222 == 3) {
+      if (this.zoneID == 0 && this.actID == 3) {
          this.field_275[0] = 0;
          this.field_275[2] = 0;
          this.field_275[1] = 3840;
@@ -4164,48 +4163,48 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             var10000 = this.field_275;
             var10000[1] += 768;
          }
-      } else if (this.field_221 != 5 || this.field_222 != 3) {
+      } else if (this.zoneID != 5 || this.actID != 3) {
          this.field_275[0] = 0;
          this.field_275[2] = 0;
-         this.field_275[1] = field_238[this.field_221][this.field_222][2] + 320;
+         this.field_275[1] = field_238[this.zoneID][this.actID][2] + 320;
          this.field_275[3] = this.method_96() + (240 - (184 - var1));
          if (this.field_274 == 2) {
             this.field_267 = true;
          }
 
-         if (this.field_222 != 2 || this.field_221 != 1) {
-            if (this.field_222 < 2) {
-               if (method_102() >= field_213[this.field_221][this.field_222] || this.field_274 == 1) {
-                  this.field_275[0] = field_213[this.field_221][this.field_222] - 144;
+         if (this.actID != 2 || this.zoneID != 1) {
+            if (this.actID < 2) {
+               if (method_102() >= field_213[this.zoneID][this.actID] || this.field_274 == 1) {
+                  this.field_275[0] = field_213[this.zoneID][this.actID] - 144;
                   this.field_274 = 1;
                }
-            } else if (this.field_274 == 2 && this.field_221 != 1) {
-               this.field_275[0] = (short)(field_238[this.field_221][this.field_222][2] + 320);
+            } else if (this.field_274 == 2 && this.zoneID != 1) {
+               this.field_275[0] = (short)(field_238[this.zoneID][this.actID][2] + 320);
             }
          }
 
-         if (this.field_222 == 2 && this.field_221 != 1 && this.field_241) {
+         if (this.actID == 2 && this.zoneID != 1 && this.field_241) {
             var10000 = this.field_275;
             var10000[1] += 256;
          }
 
          if (this.field_240) {
-            if (this.field_221 == 0) {
+            if (this.zoneID == 0) {
                this.field_275[0] = 10720 - (gameWidth >> 1) + -16;
                this.field_275[1] = 10720 - (gameWidth >> 1) + gameWidth + 16;
                this.field_275[2] = 0;
                this.field_275[3] = 800 + var1;
-            } else if (this.field_221 == 2) {
+            } else if (this.zoneID == 2) {
                this.field_275[0] = 6272 - (gameWidth >> 1) + -16;
                this.field_275[1] = 6272 - (gameWidth >> 1) + gameWidth + 48;
                this.field_275[2] = 560;
                this.field_275[3] = 568 + var1;
-            } else if (this.field_221 == 4) {
+            } else if (this.zoneID == 4) {
                this.field_275[0] = 11424 - (gameWidth >> 1) + -64;
                this.field_275[1] = 11424 - (gameWidth >> 1) + gameWidth + 0;
                this.field_275[2] = 1232;
                this.field_275[3] = 1248 + var1;
-            } else if (this.field_221 == 3) {
+            } else if (this.zoneID == 3) {
                this.field_275[0] = 8400 - (gameWidth >> 1);
                this.field_275[1] = 8400 - (gameWidth >> 1) + gameWidth;
                this.field_275[2] = 528;
@@ -4214,13 +4213,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.field_241) {
-            if (this.field_221 == 0) {
+            if (this.zoneID == 0) {
                this.field_275[0] = 10752 - (gameWidth >> 1);
-            } else if (this.field_221 == 2) {
+            } else if (this.zoneID == 2) {
                this.field_275[0] = 6304 - (gameWidth >> 1) - 16;
-            } else if (this.field_221 == 4) {
+            } else if (this.zoneID == 4) {
                this.field_275[0] = 11424 - (gameWidth >> 1);
-            } else if (this.field_221 == 3) {
+            } else if (this.zoneID == 3) {
                this.field_275[0] = 8400 - (gameWidth >> 1);
             }
          }
@@ -4250,13 +4249,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private void method_94() {
       int var1 = gameWidth >> 1;
       int var2 = method_102();
-      if (field_225[0] >= this.field_275[1] - gameWidth && !this.field_240 && this.field_239 == 0 && this.field_222 == 2) {
+      if (field_225[0] >= this.field_275[1] - gameWidth && !this.field_240 && this.field_239 == 0 && this.actID == 2) {
          this.method_242();
       }
 
       int[] var10000;
       if (var2 - field_225[0] < var1) {
-         if (this.finishedLevel) {
+         if (this.clearedAct) {
             if (field_225[0] + 16 << 8 > field_116[0]) {
                field_116[0] = field_225[0] + 16 << 8;
                if (field_116[10] < 0) {
@@ -4331,7 +4330,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: i (int) void
    private void method_95(int var1) {
       int var3 = method_103();
-      if (this.field_240 && (this.field_221 != 1 || this.field_222 != 2) && field_225[1] + var1 > this.field_275[3]) {
+      if (this.field_240 && (this.zoneID != 1 || this.actID != 2) && field_225[1] + var1 > this.field_275[3]) {
          field_225[1] = this.field_275[3] - var1;
       }
 
@@ -4340,7 +4339,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.field_289 = true;
          var10000 = field_225;
          var10000[1] -= var1 - (var3 - field_225[1]);
-         if ((this.field_221 == 1 && this.field_222 == 2 && field_225[0] < 7936 || this.field_221 == 5 && this.field_222 == 1) && this.field_85 <= 0 && this.field_84 <= 0) {
+         if ((this.zoneID == 1 && this.actID == 2 && field_225[0] < 7936 || this.zoneID == 5 && this.actID == 1) && this.field_85 <= 0 && this.field_84 <= 0) {
             return;
          }
 
@@ -4356,12 +4355,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             field_225[1] = this.field_275[3] - var1;
          }
 
-         if (this.field_221 != 1 || this.field_222 != 2) {
-            if (this.field_221 == 5 && this.field_222 == 1) {
+         if (this.zoneID != 1 || this.actID != 2) {
+            if (this.zoneID == 5 && this.actID == 1) {
                return;
             }
 
-            if ((this.field_221 == 3 && field_225[1] + 168 << 8 < field_116[1] || field_225[1] - 16 + 240 << 8 < field_116[1]) && !field_125) {
+            if ((this.zoneID == 3 && field_225[1] + 168 << 8 < field_116[1] || field_225[1] - 16 + 240 << 8 < field_116[1]) && !field_125) {
                field_116[1] = field_225[1] - 16 + 240 << 8;
                this.method_105();
             }
@@ -4373,7 +4372,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: c () int
    private int method_96() {
       int var1 = this.field_219 * 256 - 232;
-      switch (this.field_221) {
+      switch (this.zoneID) {
          case 0:
             var1 = this.method_97();
          case 1:
@@ -4393,7 +4392,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: d () int
    private int method_97() {
       short var1 = 1024;
-      switch (this.field_222) {
+      switch (this.actID) {
          case 0:
             if (6016 > field_225[0]) {
                var1 = 768;
@@ -4440,7 +4439,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: e () int
    private int method_98() {
       short var1;
-      switch (this.field_222) {
+      switch (this.actID) {
          case 0:
             if ((this.field_112 != 0 || this.field_113 != 0) && field_225[0] == 0 && field_225[1] == 0) {
                var1 = 1280;
@@ -4488,7 +4487,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private int method_99() {
       boolean var1 = false;
       short var2;
-      switch (this.field_222) {
+      switch (this.actID) {
          case 1:
             var2 = 1312;
             if (9632 <= field_225[0] && 1248 > method_103()) {
@@ -4509,7 +4508,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private void method_100(int var1) {
       this.method_73();
       int[] var10000;
-      if (this.field_221 == 1 && this.field_208 < method_103() - 12) {
+      if (this.zoneID == 1 && this.field_208 < method_103() - 12) {
          var10000 = field_116;
          var10000[0] += this.field_94[0] >> 1;
          var10000 = field_116;
@@ -4539,7 +4538,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
       if (var1 == 1) {
          if (this.field_96 <= 0) {
-            if (this.field_221 == 1 && this.field_208 < method_103() - 12) {
+            if (this.zoneID == 1 && this.field_208 < method_103() - 12) {
                var10000 = field_116;
                var10000[5] += this.field_91 / 2;
             } else {
@@ -4635,7 +4634,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public final void method_104() {
       if (!this.field_277) {
          if (this.field_101 <= 0) {
-            if (this.field_299 && this.field_298[0]) {
+            if (this.cheatsEnabled && this.cheatsOptions[0]) {
                return;
             }
 
@@ -4659,7 +4658,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             if (this.field_102 <= 0) {
-               if (this.field_106 <= 0) {
+               if (this.rings <= 0) {
                   this.method_105();
                   return;
                }
@@ -4683,9 +4682,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                field_116[12] = (field_116[12] + 1) % 2;
                field_116[13] = 0;
                field_116[14] = 0;
-               if (!this.field_299 || !this.field_298[0]) {
-                  this.method_201(method_102(), method_103() - 12, this.field_106);
-                  this.field_106 = 0;
+               if (!this.cheatsEnabled || !this.cheatsOptions[0]) {
+                  this.method_201(method_102(), method_103() - 12, this.rings);
+                  this.rings = 0;
                }
 
                this.field_277 = true;
@@ -4726,11 +4725,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          --this.field_110;
          if (field_225[1] - 16 + 240 << 8 < field_116[1] && this.field_278) {
             this.field_278 = false;
-            if (!this.field_299 || !this.field_298[0]) {
-               --this.field_111;
+            if (!this.cheatsEnabled || !this.cheatsOptions[0]) {
+               --this.lives;
             }
 
-            if (this.field_111 <= 0) {
+            if (this.lives <= 0) {
                this.audio.play(14, -1);
                this.field_110 = 240;
                this.field_249 = true;
@@ -4747,7 +4746,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.field_110 < 0) {
-            if (this.field_111 <= 0) {
+            if (this.lives <= 0) {
                this.method_252();
                this.field_249 = true;
                this.field_250 = 10;
@@ -5090,19 +5089,19 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: au () void
    private void method_114() {
       int var1 = 0;
-      if (this.field_222 > 3) {
-         this.field_222 = 3;
+      if (this.actID > 3) {
+         this.actID = 3;
       }
 
       int var2;
       byte var3;
-      for(var2 = 0; var2 < this.field_234[this.field_222].length / 7; ++var2) {
-         var3 = this.field_234[this.field_222][var2 * 7 + 5];
+      for(var2 = 0; var2 < this.field_234[this.actID].length / 7; ++var2) {
+         var3 = this.field_234[this.actID][var2 * 7 + 5];
          if (0 != var3 && 1 != var3 && 63 != var3 && 64 != var3 && 65 != var3 && 66 != var3 && 67 != var3 && 68 != var3 && 69 != var3) {
             ++var1;
          } else {
             ++var1;
-            var1 += this.field_234[this.field_222][var2 * 7 + 6];
+            var1 += this.field_234[this.actID][var2 * 7 + 6];
          }
       }
 
@@ -5111,13 +5110,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_198 = new boolean[var1 + 20];
       var1 = 0;
 
-      for(var2 = 0; var2 < this.field_234[this.field_222].length / 7; ++var2) {
+      for(var2 = 0; var2 < this.field_234[this.actID].length / 7; ++var2) {
          this.field_235[var2] = var1;
-         var3 = this.field_234[this.field_222][var2 * 7 + 5];
+         var3 = this.field_234[this.actID][var2 * 7 + 5];
          if (0 != var3 && 1 != var3 && 63 != var3 && 64 != var3 && 65 != var3 && 66 != var3 && 67 != var3 && 68 != var3 && 69 != var3) {
             ++var1;
          } else {
-            for(int var4 = 0; var4 < this.field_234[this.field_222][var2 * 7 + 6] + 1; ++var4) {
+            for(int var4 = 0; var4 < this.field_234[this.actID][var2 * 7 + 6] + 1; ++var4) {
                ++var1;
             }
          }
@@ -5138,7 +5137,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: A () void
    public final void method_116() {
-      int var2 = this.field_234[this.field_222].length / 7;
+      int var2 = this.field_234[this.actID].length / 7;
 
       try {
          int var3;
@@ -5154,8 +5153,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             var4 = this.field_287 * 7;
 
             label70: {
-               while(((this.field_234[this.field_222][var3 + 0] & 255) << 8 | this.field_234[this.field_222][var3 + 1] & 255) - field_225[0] <= this.field_292) {
-                  if (Math.abs(((this.field_234[this.field_222][var3 + 2] & 255) << 8 | this.field_234[this.field_222][var3 + 3] & 255) - field_225[1]) < this.field_293 && !this.field_197[this.field_235[this.field_288]]) {
+               while(((this.field_234[this.actID][var3 + 0] & 255) << 8 | this.field_234[this.actID][var3 + 1] & 255) - field_225[0] <= this.field_292) {
+                  if (Math.abs(((this.field_234[this.actID][var3 + 2] & 255) << 8 | this.field_234[this.actID][var3 + 3] & 255) - field_225[1]) < this.field_293 && !this.field_197[this.field_235[this.field_288]]) {
                      this.method_117(this.field_288);
                   }
 
@@ -5171,7 +5170,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                this.field_289 = false;
             }
 
-            while(((this.field_234[this.field_222][var4 + 0] & 255) << 8 | this.field_234[this.field_222][var4 + 1] & 255) - field_225[0] < this.field_291) {
+            while(((this.field_234[this.actID][var4 + 0] & 255) << 8 | this.field_234[this.actID][var4 + 1] & 255) - field_225[0] < this.field_291) {
                ++this.field_287;
                var4 += 7;
                if (this.field_287 >= var2) {
@@ -5190,8 +5189,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             var4 = this.field_287 * 7;
 
             label54: {
-               while(((this.field_234[this.field_222][var3 + 0] & 255) << 8 | this.field_234[this.field_222][var3 + 1] & 255) - field_225[0] >= this.field_291) {
-                  if (Math.abs(((this.field_234[this.field_222][var3 + 2] & 255) << 8 | this.field_234[this.field_222][var3 + 3] & 255) - field_225[1]) < this.field_293 && !this.field_197[this.field_235[this.field_288]]) {
+               while(((this.field_234[this.actID][var3 + 0] & 255) << 8 | this.field_234[this.actID][var3 + 1] & 255) - field_225[0] >= this.field_291) {
+                  if (Math.abs(((this.field_234[this.actID][var3 + 2] & 255) << 8 | this.field_234[this.actID][var3 + 3] & 255) - field_225[1]) < this.field_293 && !this.field_197[this.field_235[this.field_288]]) {
                      this.method_117(this.field_288);
                   }
 
@@ -5207,7 +5206,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                this.field_290 = false;
             }
 
-            while(((this.field_234[this.field_222][var4 + 0] & 255) << 8 | this.field_234[this.field_222][var4 + 1] & 255) - field_225[0] > this.field_292) {
+            while(((this.field_234[this.actID][var4 + 0] & 255) << 8 | this.field_234[this.actID][var4 + 1] & 255) - field_225[0] > this.field_292) {
                --this.field_287;
                var4 -= 7;
                if (this.field_287 < 0) {
@@ -5226,18 +5225,18 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private void method_117(int var1) {
       int var2 = 1;
       int var3 = var1 * 7;
-      int var4 = this.field_234[this.field_222][var1 * 7 + 5] & 255;
+      int var4 = this.field_234[this.actID][var1 * 7 + 5] & 255;
       int var5;
       if (0 != var4 && 1 != var4 && 63 != var4 && 64 != var4 && 65 != var4 && 66 != var4 && 67 != var4 && 68 != var4 && 69 != var4) {
-         if ((var4 == 41 || var4 == 86 || var4 == 57 || var4 == 78 || var4 == 40 || var4 == 70 || var4 == 39 || var4 == 49 || var4 == 71 || var4 == 10 || var4 == 35) && (var5 = (this.field_234[this.field_222][var3 + 0] & 255) << 8 | this.field_234[this.field_222][var3 + 1] & 255) - field_225[0] > -48 && var5 - field_225[0] < 288) {
+         if ((var4 == 41 || var4 == 86 || var4 == 57 || var4 == 78 || var4 == 40 || var4 == 70 || var4 == 39 || var4 == 49 || var4 == 71 || var4 == 10 || var4 == 35) && (var5 = (this.field_234[this.actID][var3 + 0] & 255) << 8 | this.field_234[this.actID][var3 + 1] & 255) - field_225[0] > -48 && var5 - field_225[0] < 288) {
             return;
          }
       } else {
-         var2 = 1 + this.field_234[this.field_222][var3 + 6];
-         var5 = (this.field_234[this.field_222][var3 + 0] & 255) << 8 | this.field_234[this.field_222][var3 + 1] & 255;
+         var2 = 1 + this.field_234[this.actID][var3 + 6];
+         var5 = (this.field_234[this.actID][var3 + 0] & 255) << 8 | this.field_234[this.actID][var3 + 1] & 255;
          boolean var6 = false;
          if (var2 != 1) {
-            switch (this.field_234[this.field_222][var3 + 5]) {
+            switch (this.field_234[this.actID][var3 + 5]) {
                case 0:
                   var5 += (var2 - 1) * 24;
                case 1:
@@ -5275,13 +5274,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          int[] var7 = new int[25];
          if (!this.field_198[this.field_235[var1] + var5] && !this.field_197[this.field_235[var1] + var5]) {
             var7[0] = 1;
-            var7[1] = this.field_234[this.field_222][var3 + 5] & 255;
-            var7[2] = (this.field_234[this.field_222][var3 + 0] & 255) << 8 | this.field_234[this.field_222][var3 + 1] & 255;
-            var7[3] = (this.field_234[this.field_222][var3 + 2] & 255) << 8 | this.field_234[this.field_222][var3 + 3] & 255;
-            var7[8] = (this.field_234[this.field_222][var3 + 0] & 255) << 8 | this.field_234[this.field_222][var3 + 1] & 255;
-            var7[9] = (this.field_234[this.field_222][var3 + 2] & 255) << 8 | this.field_234[this.field_222][var3 + 3] & 255;
+            var7[1] = this.field_234[this.actID][var3 + 5] & 255;
+            var7[2] = (this.field_234[this.actID][var3 + 0] & 255) << 8 | this.field_234[this.actID][var3 + 1] & 255;
+            var7[3] = (this.field_234[this.actID][var3 + 2] & 255) << 8 | this.field_234[this.actID][var3 + 3] & 255;
+            var7[8] = (this.field_234[this.actID][var3 + 0] & 255) << 8 | this.field_234[this.actID][var3 + 1] & 255;
+            var7[9] = (this.field_234[this.actID][var3 + 2] & 255) << 8 | this.field_234[this.actID][var3 + 3] & 255;
             if (var2 != 1) {
-               switch (this.field_234[this.field_222][var3 + 5]) {
+               switch (this.field_234[this.actID][var3 + 5]) {
                   case 0:
                      var7[2] += var5 * 24;
                      var7[8] += var5 * 24;
@@ -5326,8 +5325,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                }
             }
 
-            var7[4] = this.field_234[this.field_222][var3 + 6] & 255;
-            var7[19] = this.field_234[this.field_222][var3 + 4] & 255;
+            var7[4] = this.field_234[this.actID][var3 + 6] & 255;
+            var7[19] = this.field_234[this.actID][var3 + 4] & 255;
             var7[20] = this.field_235[var1] + var5;
             var7[22] = this.field_235[var1];
             if (this.config[0] == 0) {
@@ -5347,12 +5346,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: B () void
    public final void method_118() {
-      if (!this.field_299 || !this.field_298[0]) {
+      if (!this.cheatsEnabled || !this.cheatsOptions[0]) {
          if (this.field_133[0] && this.field_133[3]) {
             this.method_105();
          } else if ((!field_122 || this.field_203) && this.field_133[3]) {
             this.method_105();
-         } else if (this.field_221 != 2 && this.field_221 != 4) {
+         } else if (this.zoneID != 2 && this.zoneID != 4) {
             if (this.field_203 && (this.method_60(method_102() - 8, method_103() - 24) || this.method_60(method_102() + 8, method_103() - 24))) {
                this.method_105();
             }
@@ -5461,16 +5460,16 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             int var2 = method_102() >> 8;
             int var3 = method_103() >> 8;
             byte var4 = this.field_236[var3 % this.field_219][var2];
-            if (field_95[0] >> 8 < var2 && this.field_221 == 0 && (var4 == 53 || var4 == 54)) {
+            if (field_95[0] >> 8 < var2 && this.zoneID == 0 && (var4 == 53 || var4 == 54)) {
                this.field_236[var3 % this.field_219][var2] = 53;
             }
 
-            if (field_95[0] >> 8 > var2 && this.field_221 == 0 && (var4 == 53 || var4 == 54)) {
+            if (field_95[0] >> 8 > var2 && this.zoneID == 0 && (var4 == 53 || var4 == 54)) {
                this.field_236[var3 % this.field_219][var2] = 54;
             }
 
             int var5 = this.field_236[var3 % this.field_219][var2] & 1;
-            if (this.field_221 == 0 && (var4 == 53 || var4 == 54)) {
+            if (this.zoneID == 0 && (var4 == 53 || var4 == 54)) {
                var1 = true;
             }
 
@@ -5515,31 +5514,31 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: b (int, int, int, int, int, int, int, int) void
    public static void method_126(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      int var8 = method_125(var6 - field_226[0]);
-      int var9 = method_125(var7 - field_226[1]);
+      int var8 = method_125(var6 - cameraPosition[0]);
+      int var9 = method_125(var7 - cameraPosition[1]);
       drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var8, var9, 3, true);
    }
 
    // $FF: renamed from: a (int, int, int, int, int, int, int, int, int) void
    public static void method_127(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      int var9 = method_125(var6 - field_226[0]);
-      int var10 = method_125(var7 - field_226[1]);
+      int var9 = method_125(var6 - cameraPosition[0]);
+      int var10 = method_125(var7 - cameraPosition[1]);
       drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var9, var10, var8, true);
    }
 
    // $FF: renamed from: a (int, int, int, int, int) void
    public static void method_128(int var0, int var1, int var2, int var3, int var4) {
       if (gameImages[var0] != null) {
-         int var5 = method_125(var2 - field_226[0]);
-         int var6 = method_125(var3 - field_226[1]);
+         int var5 = method_125(var2 - cameraPosition[0]);
+         int var6 = method_125(var3 - cameraPosition[1]);
          drawRegion(g, gameImages[var0], 0, 0, gameImages[var0].getWidth(), gameImages[var0].getHeight(), var1, var5, var6, var4, true);
       }
    }
 
    // $FF: renamed from: c (int, int, int, int, int, int, int, int) void
    public static void method_129(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      int var8 = method_125(var6 - field_226[0]);
-      int var9 = method_125(var7 - field_226[1]);
+      int var8 = method_125(var6 - cameraPosition[0]);
+      int var9 = method_125(var7 - cameraPosition[1]);
       drawRegion(g, gameImages[var0], var1, var2, var3, var4, var5, var8, var9, 20, true);
    }
 
@@ -5562,8 +5561,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                var10 = field_207[var2][var3][4];
             }
 
-            int var11 = method_125(var0 - field_226[0]);
-            int var12 = method_125(var1 - field_226[1]);
+            int var11 = method_125(var0 - cameraPosition[0]);
+            int var12 = method_125(var1 - cameraPosition[1]);
             drawRegion(g, gameImages[var2], var6, var7, var8, var9, var4, var11, var12 + var10, var5, true);
          }
       }
@@ -5613,7 +5612,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    public final void method_135(int var1) {
       switch (var1) {
          case 2:
-            ++this.field_111;
+            ++this.lives;
             this.audio.interruptTrackAndPlay(7, 1);
             return;
          case 3:
@@ -5629,7 +5628,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.audio.play(6, -1);
             return;
          case 6:
-            this.field_106 += 10;
+            this.rings += 10;
          default:
       }
    }
@@ -5740,7 +5739,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: e (boolean) void
    private void method_142(boolean var1) {
       if (var1) {
-         this.field_111 = 3;
+         this.lives = 3;
          this.score = 0;
          this.field_110 = 0;
          this.method_42();
@@ -5873,14 +5872,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.config[2] = 0;
                }
 
-               this.loadTranslation();
+               this.loadTexts();
             } else if (this.pressedKeys[3]) {
                --this.config[2];
                if (this.config[2] < 0) {
                   this.config[2] = 4;
                }
 
-               this.loadTranslation();
+               this.loadTexts();
             } else if (this.pressedKeys[0]) {
                this.saveConfig();
                this.loadMenu(false);
@@ -5926,7 +5925,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.currentMenuItem = (byte)(this.currentMenuItem + 2);
                }
 
-               if (this.field_299 && this.currentMenuItem == 9 || !this.field_299 && this.currentMenuItem == 8) {
+               if (this.cheatsEnabled && this.currentMenuItem == 9 || !this.cheatsEnabled && this.currentMenuItem == 8) {
                   this.currentMenuItem = 0;
                }
 
@@ -5936,7 +5935,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             if (this.pressedKeys[3]) {
                --this.currentMenuItem;
                if (this.currentMenuItem < 0) {
-                  if (this.field_299) {
+                  if (this.cheatsEnabled) {
                      this.currentMenuItem = 8;
                   } else {
                      this.currentMenuItem = 7;
@@ -5958,9 +5957,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   if (this.level == 0 && this.field_243 == 9) {
                      this.resetPressedKeys();
                      this.redrawAllGameScreen = true;
-                     this.field_111 = 3;
-                     if (this.field_299) {
-                        this.field_40 = this.field_301;
+                     this.lives = 3;
+                     if (this.cheatsEnabled) {
+                        this.field_40 = this.emeralds;
                      } else {
                         this.field_40 = 0;
                      }
@@ -5972,8 +5971,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      }
 
                      this.zone = 0;
-                     this.field_221 = field_216[this.zone][this.act];
-                     this.field_222 = field_217[this.zone][this.act];
+                     this.zoneID = zoneIDs[this.zone][this.act];
+                     this.actID = actIDs[this.zone][this.act];
                      this.field_202 = true;
                      this.method_42();
                      return;
@@ -5991,8 +5990,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.resetPressedKeys();
                   this.zone = 0;
                   this.act = 0;
-                  this.field_221 = field_216[this.zone][this.act];
-                  this.field_222 = field_217[this.zone][this.act];
+                  this.zoneID = zoneIDs[this.zone][this.act];
+                  this.actID = actIDs[this.zone][this.act];
                   this.redrawAllGameScreen = true;
                   this.appState = 3;
                   this.field_249 = true;
@@ -6030,7 +6029,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                } else if (this.currentMenuItem == 8) {
                   this.currentMenuItem = 0;
                   this.viewState = 13;
-                  this.field_301 = this.field_40;
+                  this.emeralds = this.field_40;
                   this.field_70 = true;
                   this.updateMenuCommandsText(1);
                }
@@ -6111,7 +6110,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      this.audio.setOptions(this.config[1]);
                   } else {
                      this.config[2] = (byte)((this.config[2] + 1) % 5);
-                     this.loadTranslation();
+                     this.loadTexts();
                      this.setMenuHelperText(52 + this.currentMenuItem);
                      this.commandTexts[1] = this.texts[59];
                   }
@@ -6133,7 +6132,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   }
 
                   if (this.currentMenuItem == 2) {
-                     this.loadTranslation();
+                     this.loadTexts();
                      this.setMenuHelperText(52 + this.currentMenuItem);
                      this.commandTexts[1] = this.texts[59];
                   }
@@ -6162,9 +6161,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      this.resetPressedKeys();
                      this.redrawAllGameScreen = true;
                      unloadImages(menuImages);
-                     this.field_111 = 3;
-                     if (this.field_299) {
-                        this.field_40 = this.field_301;
+                     this.lives = 3;
+                     if (this.cheatsEnabled) {
+                        this.field_40 = this.emeralds;
                      } else {
                         this.field_40 = 0;
                      }
@@ -6173,20 +6172,20 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                      this.level = 0;
                      this.zone = 0;
                      this.act = 0;
-                     this.field_221 = field_216[this.zone][this.act];
-                     this.field_222 = field_217[this.zone][this.act];
+                     this.zoneID = zoneIDs[this.zone][this.act];
+                     this.actID = actIDs[this.zone][this.act];
                      this.field_202 = true;
                      this.method_42();
                   } else if (this.currentMenuItem == 1) {
                      this.resetPressedKeys();
                      this.redrawAllGameScreen = true;
                      unloadImages(menuImages);
-                     this.field_111 = this.field_244;
+                     this.lives = this.field_244;
                      this.score = this.field_245;
                      this.zone = this.level / 3;
                      this.act = this.level % 3;
-                     this.field_221 = field_216[this.zone][this.act];
-                     this.field_222 = field_217[this.zone][this.act];
+                     this.zoneID = zoneIDs[this.zone][this.act];
+                     this.actID = actIDs[this.zone][this.act];
                      this.field_202 = true;
                      this.method_42();
                   }
@@ -6289,39 +6288,39 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.field_70 = true;
                } else if (this.pressedKeys[4]) {
                   if (this.currentMenuItem == 0) {
-                     this.field_298[0] = !this.field_298[0];
+                     this.cheatsOptions[0] = !this.cheatsOptions[0];
                   } else if (this.currentMenuItem == 1) {
-                     this.field_298[2] = !this.field_298[2];
+                     this.cheatsOptions[2] = !this.cheatsOptions[2];
                   } else if (this.currentMenuItem == 2) {
-                     ++this.field_301;
-                     if (this.field_301 > 6) {
-                        this.field_301 = 0;
+                     ++this.emeralds;
+                     if (this.emeralds > 6) {
+                        this.emeralds = 0;
                      }
                   } else if (this.currentMenuItem == 3) {
-                     this.field_298[1] = !this.field_298[1];
+                     this.cheatsOptions[1] = !this.cheatsOptions[1];
                   } else if (this.currentMenuItem == 4) {
-                     this.field_298[3] = !this.field_298[3];
+                     this.cheatsOptions[3] = !this.cheatsOptions[3];
                   } else {
-                     this.field_298[4] = !this.field_298[4];
+                     this.cheatsOptions[4] = !this.cheatsOptions[4];
                   }
 
                   this.field_70 = true;
                } else if (this.pressedKeys[3]) {
                   if (this.currentMenuItem == 0) {
-                     this.field_298[0] = !this.field_298[0];
+                     this.cheatsOptions[0] = !this.cheatsOptions[0];
                   } else if (this.currentMenuItem == 1) {
-                     this.field_298[2] = !this.field_298[2];
+                     this.cheatsOptions[2] = !this.cheatsOptions[2];
                   } else if (this.currentMenuItem == 2) {
-                     --this.field_301;
-                     if (this.field_301 < 0) {
-                        this.field_301 = 6;
+                     --this.emeralds;
+                     if (this.emeralds < 0) {
+                        this.emeralds = 6;
                      }
                   } else if (this.currentMenuItem == 3) {
-                     this.field_298[1] = !this.field_298[1];
+                     this.cheatsOptions[1] = !this.cheatsOptions[1];
                   } else if (this.currentMenuItem == 4) {
-                     this.field_298[3] = !this.field_298[3];
+                     this.cheatsOptions[3] = !this.cheatsOptions[3];
                   } else {
-                     this.field_298[4] = !this.field_298[4];
+                     this.cheatsOptions[4] = !this.cheatsOptions[4];
                   }
 
                   this.field_70 = true;
@@ -6399,7 +6398,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.method_155();
             g.setColor(16777215);
             String var19 = this.texts[this.field_39[2][this.config[2]]];
-            var2 = field_14.stringWidth(var19);
+            var2 = defaultFont.stringWidth(var19);
             var1 = uiContentY + (uiContentHeight >> 1);
             g.drawString(var19, fullGameWidth >> 1, var1, 65);
             g.drawImage(menuImages[1], (fullGameWidth >> 1) + (var2 >> 1) + 5, var1, 36);
@@ -6422,12 +6421,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             this.method_154(this.texts[2 + this.currentMenuItem], fullGameWidth >> 1, var1, 16777215, 16386570);
-            g.drawImage(menuImages[1], fullGameWidth - 5, var1 + (field_15 >> 1), 6);
-            g.drawImage(menuImages[2], 2, var1 + (field_15 >> 1), 6);
+            g.drawImage(menuImages[1], fullGameWidth - 5, var1 + (defaultFontHeight >> 1), 6);
+            g.drawImage(menuImages[2], 2, var1 + (defaultFontHeight >> 1), 6);
             this.method_158(this.menuHelperText, true);
             return;
          case 5:
-            var7 = field_15;
+            var7 = defaultFontHeight;
             this.method_160(true, true);
             this.method_155();
             g.setColor(16777215);
@@ -6435,7 +6434,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.field_74 = false;
 
             for(int var8 = this.field_73; var8 < 5; ++var8) {
-               if (uiContentY + 42 + var7 * (var8 - this.field_73) + field_15 < gameY + gameHeight) {
+               if (uiContentY + 42 + var7 * (var8 - this.field_73) + defaultFontHeight < gameY + gameHeight) {
                   g.drawString("" + (var8 + 1) + " " + highscoreNames[var8] + " " + highscoreScores[var8], 6, uiContentY + 42 + var7 * (var8 - this.field_73), 20);
                   g.drawString(this.texts[31 + highscoreDiffculties[var8]], fullGameWidth - 6, uiContentY + 42 + var7 * (var8 - this.field_73), 24);
                } else {
@@ -6482,14 +6481,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             for(var13 = 0; var13 < this.field_39.length; ++var13) {
-               var9[var13] = field_14.stringWidth(this.texts[this.field_39[var13][this.config[var13]]]);
+               var9[var13] = defaultFont.stringWidth(this.texts[this.field_39[var13][this.config[var13]]]);
                g.drawString(this.texts[28 + var13], 11, gameY + 4 + var13 * 22, 20);
                g.drawString(this.texts[this.field_39[var13][this.config[var13]]], var12, gameY + 4 + var13 * 22, 24);
             }
 
-            g.drawImage(menuImages[1], var12 + var10, gameY + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
-            field_14.stringWidth(this.texts[this.field_39[this.currentMenuItem][this.config[this.currentMenuItem]]]);
-            g.drawImage(menuImages[2], var12 - var9[this.currentMenuItem], gameY + this.currentMenuItem * 22 + 4 + (field_15 >> 1), 10);
+            g.drawImage(menuImages[1], var12 + var10, gameY + this.currentMenuItem * 22 + 4 + (defaultFontHeight >> 1), 10);
+            defaultFont.stringWidth(this.texts[this.field_39[this.currentMenuItem][this.config[this.currentMenuItem]]]);
+            g.drawImage(menuImages[2], var12 - var9[this.currentMenuItem], gameY + this.currentMenuItem * 22 + 4 + (defaultFontHeight >> 1), 10);
             this.method_155();
             this.method_159();
             this.method_158(this.texts[6], false);
@@ -6500,7 +6499,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             g.setColor(16777215);
             this.method_148(this.texts[47], 2, 0, this.currentMenuItem == 0);
             this.method_148(this.texts[48], 2, 1, this.currentMenuItem == 1);
-            field_14.stringWidth(this.texts[47 + this.currentMenuItem]);
+            defaultFont.stringWidth(this.texts[47 + this.currentMenuItem]);
             this.method_159();
             return;
          case 10:
@@ -6549,7 +6548,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
             break;
          case 12:
-            var13 = field_15 + 2;
+            var13 = defaultFontHeight + 2;
             this.method_160(true, true);
             this.method_155();
             switch (this.config[2]) {
@@ -6602,21 +6601,21 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             return;
          case 13:
             this.method_160(true, true);
-            g.setColor(16777215);
+            g.setColor(0xFFFFFF);
             g.drawString(this.texts[81], 11, gameY + 4 + 0, 20);
-            g.drawString(this.texts[this.field_298[0] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 0, 24);
+            g.drawString(this.texts[this.cheatsOptions[0] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 0, 24);
             g.drawString(this.texts[83], 11, gameY + 4 + 22, 20);
-            g.drawString(this.texts[this.field_298[2] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 22, 24);
+            g.drawString(this.texts[this.cheatsOptions[2] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 22, 24);
             g.drawString(this.texts[84], 11, gameY + 4 + 44, 20);
-            g.drawString(String.valueOf(this.field_301), fullGameWidth - 10, gameY + 4 + 44, 24);
+            g.drawString(String.valueOf(this.emeralds), fullGameWidth - 10, gameY + 4 + 44, 24);
             g.drawString(this.texts[82], 11, gameY + 4 + 66, 20);
-            g.drawString(this.texts[this.field_298[1] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 66, 24);
+            g.drawString(this.texts[this.cheatsOptions[1] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 66, 24);
             g.drawString("COORDS", 11, gameY + 4 + 88, 20);
-            g.drawString(this.texts[this.field_298[3] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 88, 24);
+            g.drawString(this.texts[this.cheatsOptions[3] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 88, 24);
             g.drawString("CAMERA", 11, gameY + 4 + 110, 20);
-            g.drawString(this.texts[this.field_298[4] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 110, 24);
+            g.drawString(this.texts[this.cheatsOptions[4] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 110, 24);
             g.drawImage(menuImages[1], fullGameWidth - 8, gameY + this.currentMenuItem * 22 + 8, 20);
-            var2 = field_14.stringWidth(this.texts[35]);
+            var2 = defaultFont.stringWidth(this.texts[35]);
             g.drawImage(menuImages[2], fullGameWidth - var2 - 12, gameY + this.currentMenuItem * 22 + 8, 24);
             this.method_155();
             this.method_158("CHEATS", false);
@@ -6784,14 +6783,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: ax () void
    private void method_157() {
-      int var1 = field_14.stringWidth(this.menuHelperText) + 218;
+      int var1 = defaultFont.stringWidth(this.menuHelperText) + 218;
       this.field_62 = (this.field_62 + 1) % var1;
    }
 
    // $FF: renamed from: a (java.lang.String, boolean) void
    public final void method_158(String var1, boolean var2) {
       int var3;
-      if ((var3 = (gameY >> 1) - (field_15 >> 1)) < 2) {
+      if ((var3 = (gameY >> 1) - (defaultFontHeight >> 1)) < 2) {
          var3 = 2;
       }
 
@@ -6844,7 +6843,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          loadOptionsImages();
-         this.loadTranslation();
+         this.loadTexts();
          this.viewState = 3;
          this.updateMenuCommandsText(0);
          this.audio.play(9, 1);
@@ -6859,7 +6858,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_68 = 0;
    }
 
-   private void loadTranslation() {
+   private void loadTexts() {
       int line = 0;
 
       try {
@@ -6959,7 +6958,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_212 = 0;
 
       for(int var1 = 0; var1 < 2; ++var1) {
-         this.field_227[var1] = field_226[var1] = field_225[var1];
+         this.field_227[var1] = cameraPosition[var1] = field_225[var1];
          this.field_229[var1] = this.field_228[var1] = 0;
       }
 
@@ -7093,7 +7092,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       } else {
          this.field_212 = 0;
          if (!this.field_240 && !this.field_241) {
-            switch (this.field_221) {
+            switch (this.zoneID) {
                case 0:
                   this.field_209 = 1;
                case 1:
@@ -7104,11 +7103,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.field_209 = 1;
                case 4:
                   this.field_209 = 1;
-                  if (this.field_222 == 1 && Math.abs(var1 - 8464) < 240 && Math.abs(var2 - 640) < 80) {
+                  if (this.actID == 1 && Math.abs(var1 - 8464) < 240 && Math.abs(var2 - 640) < 80) {
                      this.field_209 = 2;
                   }
             }
-         } else if (this.field_221 == 5 && field_225[0] < 1024) {
+         } else if (this.zoneID == 5 && field_225[0] < 1024) {
             this.field_209 = 1;
          } else {
             this.field_209 = 6;
@@ -7162,8 +7161,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.field_229[1] = 40;
             break;
          default:
-            field_226[0] = field_225[0];
-            field_226[1] = field_225[1];
+            cameraPosition[0] = field_225[0];
+            cameraPosition[1] = field_225[1];
       }
 
       int var3 = Math.abs(field_225[0] - this.field_227[0]);
@@ -7208,13 +7207,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          var10000[0] += this.field_228[0] < this.field_229[0] ? 1 : -1;
       }
 
-      field_226[0] = this.field_227[0] + this.field_228[0];
+      cameraPosition[0] = this.field_227[0] + this.field_228[0];
       if (this.field_228[1] != this.field_229[1]) {
          var10000 = this.field_228;
          var10000[1] += this.field_228[1] < this.field_229[1] ? 1 : -1;
       }
 
-      field_226[1] = this.field_227[1] + this.field_228[1];
+      cameraPosition[1] = this.field_227[1] + this.field_228[1];
       int var5 = 0;
       if (this.field_85 > 0) {
          var5 = 0 + (this.field_85 << 1);
@@ -7225,12 +7224,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
 
       int var6 = this.field_275[3] - var5;
-      if (field_226[1] > var6) {
-         field_226[1] = var6;
+      if (cameraPosition[1] > var6) {
+         cameraPosition[1] = var6;
       }
 
-      if (field_226[0] < 0) {
-         field_226[0] = 0;
+      if (cameraPosition[0] < 0) {
+         cameraPosition[0] = 0;
       }
 
    }
@@ -7258,17 +7257,17 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                }
 
                this.level = (byte)(this.act + this.zone * 3);
-               this.field_244 = (byte)this.field_111;
+               this.field_244 = (byte)this.lives;
                this.field_245 = this.score;
                if (this.field_246 < this.level) {
                   this.field_246 = this.level;
                }
 
                this.saveGameProgress();
-               this.field_221 = field_216[this.zone][this.act];
-               this.field_222 = field_217[this.zone][this.act];
+               this.zoneID = zoneIDs[this.zone][this.act];
+               this.actID = actIDs[this.zone][this.act];
                this.method_176();
-               if (this.field_221 == 0 && this.field_222 == 0) {
+               if (this.zoneID == 0 && this.actID == 0) {
                   this.appState = 8;
                   this.field_44 = 0;
                } else {
@@ -7344,7 +7343,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                         this.method_25();
                         this.field_266 = true;
                         this.field_101 = -1;
-                        this.field_268 = this.field_106 * 100;
+                        this.field_268 = this.rings * 100;
                         this.field_269 = 0;
                         if (this.field_108 < 30 && this.field_109 == 0 && !this.field_281) {
                            this.field_269 = 50000;
@@ -7433,7 +7432,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
 
          if (this.field_269 == 0 && this.field_268 == 0) {
-            this.method_154(this.texts[0], fullGameWidth >> 1, gameY + gameHeight - field_15 - 2, 16777215, 0);
+            this.method_154(this.texts[0], fullGameWidth >> 1, gameY + gameHeight - defaultFontHeight - 2, 16777215, 0);
          }
       }
 
@@ -7462,13 +7461,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       } else if (this.field_101 > 0) {
          return 6;
       } else if (this.field_240) {
-         return this.field_221 == 5 ? 12 : 11;
+         return this.zoneID == 5 ? 12 : 11;
       } else {
-         switch (this.field_221) {
+         switch (this.zoneID) {
             case 0:
                return 0;
             case 1:
-               if (this.field_222 == 3) {
+               if (this.actID == 3) {
                   return 5;
                }
 
@@ -7480,7 +7479,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             case 4:
                return 4;
             case 5:
-               if (this.field_222 == 3) {
+               if (this.actID == 3) {
                   return 12;
                }
 
@@ -7495,7 +7494,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: L () void
    public final void method_178() {
-      if (this.field_240 && this.field_221 < 5) {
+      if (this.field_240 && this.zoneID < 5) {
          this.audio.play(11, -1);
       } else {
          this.audio.play(this.method_177(), -1);
@@ -7521,7 +7520,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       gameImages[44] = loadImage("/gole.png");
       gameImages[45] = loadImage("/bten.png");
       gameImages[100] = loadImage("/animal.png");
-      switch (this.field_221) {
+      switch (this.zoneID) {
          case 0:
             gameImages[41] = loadImage("/musi.png");
             gameImages[40] = loadImage("/hachi.png");
@@ -7594,7 +7593,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       gameImages[15] = null;
       gameImages[44] = null;
       gameImages[45] = null;
-      switch (this.field_221) {
+      switch (this.zoneID) {
          case 0:
             gameImages[41] = null;
             gameImages[40] = null;
@@ -7876,7 +7875,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          int var11 = (var4 >> 1) + var7;
          if (field_124) {
             if (var8 - var10 < var1 && var1 < var8 + var10 && var9 - var11 < var2 && var2 < var9 + var11) {
-               if (this.field_101 <= 0 && (!this.field_299 || !this.field_298[0])) {
+               if (this.field_101 <= 0 && (!this.cheatsEnabled || !this.cheatsOptions[0])) {
                   if (var5) {
                      return 1;
                   }
@@ -7887,7 +7886,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                return 1;
             }
          } else if (var8 - var10 < var1 && var1 < var8 + var10 && var9 - var11 < var2 && var2 < var9 + var11) {
-            if (this.field_101 <= 0 && (!this.field_299 || !this.field_298[0])) {
+            if (this.field_101 <= 0 && (!this.cheatsEnabled || !this.cheatsOptions[0])) {
                return 2;
             }
 
@@ -7925,7 +7924,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          this.method_35(this.field_297, true);
          this.method_204(var1[2], var1[3], this.field_297);
          this.method_199(2, var1[2], var1[3], 0, 0, 0, 0);
-         this.method_199(field_206[this.field_221][method_58(2)], var1[2], var1[3], 0, -300, 0, 0);
+         this.method_199(field_206[this.zoneID][method_58(2)], var1[2], var1[3], 0, -300, 0, 0);
          var1[0] = 0;
          return true;
       } else if (var4 == 2) {
@@ -8289,7 +8288,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       int var4 = var1[3] / 100;
       if (this.method_194(var3, var4, 12, 12, false) != 0) {
          this.method_199(5, var3, var4, 0, 0, 0, 0);
-         ++this.field_106;
+         ++this.rings;
          var1[0] = 0;
       } else {
          int var5;
@@ -8811,8 +8810,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: B (int[]) void
    private static void method_230(int[] var0) {
-      int var6 = (var0[2] / 100 - field_226[0]) * 3 >> 2;
-      int var7 = (var0[3] / 100 - field_226[1]) * 3 >> 2;
+      int var6 = (var0[2] / 100 - cameraPosition[0]) * 3 >> 2;
+      int var7 = (var0[3] / 100 - cameraPosition[1]) * 3 >> 2;
       int var1;
       if ((var1 = var0[8]) >= 0) {
          if (var1 > 6) {
@@ -9030,7 +9029,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    // $FF: renamed from: aF () void
    private void method_239() {
-      this.field_166 = this.field_221;
+      this.field_166 = this.zoneID;
       this.field_167 = 0;
       this.field_168 = 0;
       this.field_169 = 0;
@@ -9046,7 +9045,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.field_183 = 0;
       this.field_184 = 0;
       this.field_185 = 0;
-      if (this.field_221 != 3 && this.field_221 != 4) {
+      if (this.zoneID != 3 && this.zoneID != 4) {
          switch (this.config[0]) {
             case 1:
                this.field_186 = 6;
@@ -9070,7 +9069,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          }
       }
 
-      if (this.field_221 < 5) {
+      if (this.zoneID < 5) {
          this.audio.play(11, -1);
       }
 
@@ -9082,7 +9081,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          int[] var1 = new int[25];
          this.method_239();
          this.method_180();
-         switch (this.field_221) {
+         switch (this.zoneID) {
             case 0:
                gameImages[120] = loadImage("/boss.png");
                gameImages[121] = loadImage("/bossball.png");
@@ -9112,8 +9111,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
          gameImages[55] = loadImage("/masin.png");
          var1[0] = 1;
-         var1[2] = var1[16] = field_226[0] + 256 + 46;
-         var1[3] = var1[17] = field_226[1] + 46;
+         var1[2] = var1[16] = cameraPosition[0] + 256 + 46;
+         var1[3] = var1[17] = cameraPosition[1] + 46;
          var1[4] = 0;
          var1[14] = 0;
          var1[20] = this.field_197.length - 1;
@@ -9127,7 +9126,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: O () void
    public final void method_241() {
       gameImages[120] = null;
-      switch (this.field_221) {
+      switch (this.zoneID) {
          case 0:
             gameImages[121] = null;
             return;
@@ -9199,7 +9198,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             case 102:
                this.field_168 = 4;
                this.field_175 += 200;
-               if (var1 < field_141[this.field_221]) {
+               if (var1 < field_141[this.zoneID]) {
                   break;
                }
 
@@ -9476,7 +9475,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.field_168 = 4;
             this.field_175 += 200;
             this.method_246(var1);
-            if (var1[3] < field_141[this.field_221]) {
+            if (var1[3] < field_141[this.zoneID]) {
                return;
             }
 
@@ -10036,7 +10035,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             field_27 = loadImage("/zone1.png");
-            this.field_221 = 0;
+            this.zoneID = 0;
             this.method_55();
             this.method_29();
             this.field_236[0][0] = 3;
@@ -10054,8 +10053,8 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.field_236[2][2] = 9;
             this.field_236[2][3] = 9;
             this.field_236[2][4] = 9;
-            field_226[0] = 0;
-            field_226[1] = 28;
+            cameraPosition[0] = 0;
+            cameraPosition[1] = 28;
             this.field_46 = 0;
             this.field_47 = 0;
             this.field_49 = 0;
@@ -10308,65 +10307,64 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       g.drawRect((this.nameInputIndex + 1) * var1 - (var2 >> 1), screenGameVCenter - (var2 >> 1), var2, var2);
    }
 
-   // $FF: renamed from: e (int) int
-   public final int method_263(int var1) {
+   public final int getKey(int keyCode) {
       try {
-         switch (var1) {
+         switch (keyCode) {
             case -7:
                return 13;
             case -6:
                return 12;
-            case 35:
+            case KEY_POUND:
                return 10;
-            case 42:
+            case KEY_STAR:
                return 11;
-            case 48:
+            case KEY_NUM0:
                return 0;
-            case 49:
+            case KEY_NUM1:
                return 1;
-            case 50:
+            case KEY_NUM2:
                return 2;
-            case 51:
+            case KEY_NUM3:
                return 3;
-            case 52:
+            case KEY_NUM4:
                return 4;
-            case 53:
+            case KEY_NUM5:
                return 5;
-            case 54:
+            case KEY_NUM6:
                return 6;
-            case 55:
+            case KEY_NUM7:
                return 7;
-            case 56:
+            case KEY_NUM8:
                return 8;
-            case 57:
+            case KEY_NUM9:
                return 9;
             default:
-               switch (this.getGameAction(var1)) {
-                  case 1:
+               switch (this.getGameAction(keyCode)) {
+                  case UP:
                      return 14;
-                  case 2:
+                  case LEFT:
                      return 16;
                   case 3:
                   case 4:
                   case 7:
                   default:
                      break;
-                  case 5:
+                  case RIGHT:
                      return 17;
-                  case 6:
+                  case DOWN:
                      return 15;
-                  case 8:
+                  case FIRE:
                      return 18;
                }
          }
-      } catch (Exception var3) {
+      } catch (Exception error) {
       }
 
       return 19;
    }
 
    static {
-      field_15 = field_14.getHeight();
+      defaultFontHeight = defaultFont.getHeight();
       screenHeight = 0;
       screenWidth = 0;
       fullGameWidth = screenWidth;
@@ -10375,7 +10373,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       gameHeight = screenHeight;
       uiImages = new Image[20];
       gameImages = new Image[160];
-      field_34 = new Random();
+      random = new Random();
       field_35 = new int[]{0, 5, 3, 6, 2, 7, 1, 4};
       audioTracks = new String[]{"/greenhill_loop", "/labyrinth_loop", "/marble_loop", "/starlight_loop", "/springyard_loop", "/scrapbrain", "/invincible", "/1up", "/specialstage", "/maintitle", "/ending", "/bossstage", "/bossstagefinal_loop", "/stageclear", "/gameover", "/continue", "/credits", "/hurry", "/chaosemerald"};
       field_60 = new short[][]{{0, 90, 0}, {36, 90, 0}, {72, 90, 0}, {72, 90, 1}, {36, 90, 1}};
@@ -10417,10 +10415,10 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       field_206 = new byte[][]{{28, 31}, {32, 29}, {33, 29}, {28, 34}, {34, 30}, {31, 30}, {33, 33}, {31, 31}};
       field_213 = new short[][]{{9312, 7776}, {6736, 4176, 8208}, {6224, 6224}, {8288, 8032}, {8800, 10336}, {8544, 7648}};
       field_215 = new int[]{0, 2, 7, 12, 11, 9, 1};
-      field_216 = new int[][]{{0, 0, 0}, {2, 2, 2}, {4, 4, 4}, {1, 1, 1}, {3, 3, 3}, {5, 5, 1}, {5, 0}};
-      field_217 = new int[][]{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 3}, {3, 3}};
+      zoneIDs = new int[][]{{0, 0, 0}, {2, 2, 2}, {4, 4, 4}, {1, 1, 1}, {3, 3, 3}, {5, 5, 1}, {5, 0}};
+      actIDs = new int[][]{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 3}, {3, 3}};
       field_225 = new int[2];
-      field_226 = new int[2];
+      cameraPosition = new int[2];
       field_238 = new int[][][]{{{4, 0, 9407, 0, 768, 96}, {4, 0, 7871, 0, 768, 96}, {4, 0, 10496, 0, 768, 96}, {4, 0, 10943, 0, 768, 96}}, new int[0][], {{4, 0, 6079, 0, 464, 96}, {4, 0, 6079, 0, 1312, 96}, {4, 0, 6048, 0, 1824, 96}, {4, 0, 5823, 0, 1824, 96}}, new int[0][], {{4, 0, 8896, 0, 1056, 96}, {4, 0, 10432, 0, 1312, 96}, {4, 0, 11264, 0, 1568, 96}, {4, 0, 11968, 0, 1568, 96}}, new int[0][]};
       redrawRingAndScoreCounter = true;
       redrawTimer = true;
