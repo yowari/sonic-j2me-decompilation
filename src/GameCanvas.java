@@ -18,7 +18,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    private static int[] highscoreScores = new int[]{10000, 8000, 6000, 4000, 2000};
    private static int[] highscoreDiffculties = new int[]{0, 1, 2, 1, 0};
    // $FF: renamed from: g boolean[]
-   private boolean[] field_12 = new boolean[10];
+   private boolean[] repeatedKeys = new boolean[10];
    // $FF: renamed from: c javax.microedition.lcdui.Image[]
    private static Image[] menuImages = new Image[5];
    // $FF: renamed from: a javax.microedition.lcdui.Font
@@ -126,7 +126,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: a java.lang.String
    private String menuHelperText;
    // $FF: renamed from: c byte
-   private byte viewState;
+   private byte mainMenuViewState;
    // $FF: renamed from: d byte
    private byte titleKeyFrame;
    // $FF: renamed from: a byte
@@ -138,13 +138,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    // $FF: renamed from: M boolean
    private boolean startupLanguageSelection;
    // $FF: renamed from: a java.util.Vector
-   private Vector field_72;
+   private Vector contentTextLines;
    // $FF: renamed from: f byte
    private byte field_73;
    // $FF: renamed from: N boolean
    private boolean field_74;
    // $FF: renamed from: b javax.microedition.lcdui.Font
-   public static Font field_75;
+   public static Font contentFont;
    // $FF: renamed from: b boolean
    public boolean field_76;
    // $FF: renamed from: bb int
@@ -1319,14 +1319,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
    private void updateCommandTexts() {
       if (this.appState == 1) {
-         if (this.viewState == 3 || this.viewState == 4) {
+         if (this.mainMenuViewState == 3 || this.mainMenuViewState == 4) {
             if (this.config[1] != 0) {
                this.commandTexts[0] = this.texts[69];
             } else {
                this.commandTexts[0] = this.texts[68];
             }
 
-            if (this.viewState == 4) {
+            if (this.mainMenuViewState == 4) {
                this.commandTexts[1] = this.texts[59];
                return;
             }
@@ -1335,7 +1335,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             return;
          }
 
-         if (this.viewState == 14) {
+         if (this.mainMenuViewState == 14) {
             this.commandTexts[1] = this.texts[59];
             this.commandTexts[0] = "";
             return;
@@ -1419,7 +1419,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.field_249 = true;
                   this.field_250 = 10;
                   this.loadMenu(false);
-                  this.viewState = 4;
+                  this.mainMenuViewState = 4;
                   this.currentMenuItem = 1;
                   this.setMenuHelperText(11 + this.currentMenuItem);
                   this.updateMenuCommandsText(2);
@@ -1492,7 +1492,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             // quit
             if (this.commandTexts[commandAction].equals(this.texts[57])) {
-               this.viewState = 14;
+               this.mainMenuViewState = 14;
                this.currentMenuItem = 1;
                this.updateMenuCommandsText(3);
                return true;
@@ -5760,82 +5760,78 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
    }
 
-   // $FF: renamed from: a (java.lang.String) java.util.Vector
-   public static Vector method_143(String var0) {
-      int var1 = 0;
-      Vector var2 = new Vector();
+   public static Vector getContentTextLines(String text) {
+      int lineStart = 0;
+      Vector textLines = new Vector();
 
-      while(var1 < var0.length()) {
-         String var3 = var0.substring(var1);
-         int var4 = 0;
-         int var5 = 0;
+      while(lineStart < text.length()) {
+         String remainingText = text.substring(lineStart);
+         int lineEnd = 0;
+         int textEnd = 0;
 
-         while(method_145(var3, var4) < gameWidth - 0) {
-            var5 = var4;
-            if ((var4 = method_144(var3, var4 + 1)) == -1) {
-               var4 = var3.length();
-               if (var5 == 0) {
+         while(getSubstringWidth(remainingText, lineEnd) < gameWidth - 0) {
+            textEnd = lineEnd;
+            if ((lineEnd = getNextWordBreak(remainingText, lineEnd + 1)) == -1) {
+               lineEnd = remainingText.length();
+               if (textEnd == 0) {
                   break;
                }
 
-               if (method_145(var3, var4) < gameWidth - 0) {
-                  var5 = 0;
+               if (getSubstringWidth(remainingText, lineEnd) < gameWidth - 0) {
+                  textEnd = 0;
                   break;
                }
-            } else if (var3.charAt(var4) == '~') {
-               var5 = 0;
+            } else if (remainingText.charAt(lineEnd) == '~') {
+               textEnd = 0;
                break;
             }
          }
 
-         if (var5 == 0) {
-            var2.addElement(var3.substring(0, var4));
-            var1 += var4 + 1;
+         if (textEnd == 0) {
+            textLines.addElement(remainingText.substring(0, lineEnd));
+            lineStart += lineEnd + 1;
          } else {
-            var2.addElement(var3.substring(0, var5));
-            var1 += var5 + 1;
+            textLines.addElement(remainingText.substring(0, textEnd));
+            lineStart += textEnd + 1;
          }
       }
 
-      return var2;
+      return textLines;
    }
 
-   // $FF: renamed from: a (java.lang.String, int) int
-   private static int method_144(String var0, int var1) {
+   private static int getNextWordBreak(String text, int index) {
       while(true) {
-         if (var1 < var0.length()) {
-            char var2;
-            if ((var2 = var0.charAt(var1)) != ' ' && var2 != '~') {
-               ++var1;
+         if (index < text.length()) {
+            char character;
+            if ((character = text.charAt(index)) != ' ' && character != '~') {
+               ++index;
                continue;
             }
 
-            return var1;
+            return index;
          }
 
          return -1;
       }
    }
 
-   // $FF: renamed from: b (java.lang.String, int) int
-   private static int method_145(String var0, int var1) {
-      return field_75.substringWidth(var0, 0, var1);
+   private static int getSubstringWidth(String text, int len) {
+      return contentFont.substringWidth(text, 0, len);
    }
 
-   // $FF: renamed from: D () void
-   public final void method_146() {
+   public final void updateMainMenu() {
       this.field_249 = true;
 
       int key;
       for(key = 0; key < 10; ++key) {
-         if (this.field_12[key]) {
+         if (this.repeatedKeys[key]) {
             if (this.pressedKeys[key]) {
                this.pressedKeys[key] = false;
             } else {
-               this.field_12[key] = false;
+               this.repeatedKeys[key] = false;
             }
          } else {
-            this.field_12[key] = this.pressedKeys[key];
+            this.repeatedKeys[key] = this.pressedKeys[key];
          }
       }
 
@@ -5844,13 +5840,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       }
 
       this.field_68 = (byte)((this.field_68 + 1) % 24);
-      switch (this.viewState) {
+      switch (this.mainMenuViewState) {
          // Sega logo splashscreen
          case 0:
             ++this.animationKeyFrame;
             if (this.animationKeyFrame > 150) {
                this.animationKeyFrame = 0;
-               this.viewState = 11;
+               this.mainMenuViewState = 11;
                this.redrawAllGameScreen = true;
             }
             break;
@@ -5896,7 +5892,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             for(key = 0; key < this.pressedKeys.length; ++key) {
                if (this.pressedKeys[key]) {
-                  this.viewState = 4;
+                  this.mainMenuViewState = 4;
                   this.currentMenuItem = 0;
                   this.titleKeyFrame = 6;
                   this.setMenuHelperText(11 + this.currentMenuItem);
@@ -5905,7 +5901,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             }
 
             if (this.pressedKeys[6]) {
-               this.viewState = 14;
+               this.mainMenuViewState = 14;
                this.currentMenuItem = 1;
             }
             break;
@@ -5977,7 +5973,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.updateMenuCommandsText(1);
                   this.currentMenuItem = 1;
                   this.setMenuHelperText(50 + this.currentMenuItem);
-                  this.viewState = 9;
+                  this.mainMenuViewState = 9;
                   return;
                }
 
@@ -5999,19 +5995,19 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                if (this.currentMenuItem == 2) {
                   this.currentMenuItem = 0;
                   this.field_73 = 0;
-                  this.viewState = 10;
-                  this.field_72 = new Vector();
+                  this.mainMenuViewState = 10;
+                  this.contentTextLines = new Vector();
                   this.field_70 = true;
                   this.field_74 = false;
-                  field_75 = Font.getFont(0, 0, 0);
+                  contentFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_MEDIUM);
                   this.updateMenuCommandsText(1);
                } else if (this.currentMenuItem == 3) {
-                  this.viewState = 5;
+                  this.mainMenuViewState = 5;
                   this.updateMenuCommandsText(1);
                   this.field_73 = 0;
                } else if (this.currentMenuItem == 4) {
                   this.currentMenuItem = 0;
-                  this.viewState = 8;
+                  this.mainMenuViewState = 8;
                   this.setMenuHelperText(52 + this.currentMenuItem);
                   this.updateMenuCommandsText(1);
                   this.field_70 = true;
@@ -6019,12 +6015,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.currentMenuItem = 0;
                   this.field_73 = 0;
                   this.field_74 = false;
-                  this.viewState = 12;
+                  this.mainMenuViewState = 12;
                   this.field_70 = true;
                   this.updateMenuCommandsText(1);
                } else if (this.currentMenuItem == 8) {
                   this.currentMenuItem = 0;
-                  this.viewState = 13;
+                  this.mainMenuViewState = 13;
                   this.cheatsEmeralds = this.emeralds;
                   this.field_70 = true;
                   this.updateMenuCommandsText(1);
@@ -6033,7 +6029,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             if (this.pressedKeys[6]) {
                this.updateMenuCommandsText(0);
-               this.viewState = 3;
+               this.mainMenuViewState = 3;
                this.audio.play(9, 1);
                return;
             }
@@ -6043,12 +6039,12 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          case 5:
             if (this.pressedKeys[6]) {
                this.currentMenuItem = 3;
-               this.viewState = 4;
+               this.mainMenuViewState = 4;
                this.updateMenuCommandsText(2);
                this.setMenuHelperText(11 + this.currentMenuItem);
             } else if (this.pressedKeys[9]) {
                this.currentMenuItem = 1;
-               this.viewState = 6;
+               this.mainMenuViewState = 6;
             }
 
             if (this.pressedKeys[2] && this.field_73 > 0) {
@@ -6063,16 +6059,16 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             break;
          case 6:
             if (this.pressedKeys[6]) {
-               this.viewState = 5;
+               this.mainMenuViewState = 5;
             } else if (!this.pressedKeys[2] && !this.pressedKeys[1]) {
                if (this.pressedKeys[0]) {
-                  this.viewState = 5;
+                  this.mainMenuViewState = 5;
                   if (this.currentMenuItem == 0) {
                      highscoreScores = new int[5];
                      highscoreDiffculties = new int[5];
                      highscoreNames = new String[]{"   ", "   ", "   ", "   ", "   "};
                      this.saveHighscore();
-                     this.viewState = 7;
+                     this.mainMenuViewState = 7;
                   }
                }
             } else {
@@ -6081,7 +6077,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             break;
          case 7:
             if (this.pressedKeys[6] || this.pressedKeys[0]) {
-               this.viewState = 5;
+               this.mainMenuViewState = 5;
             }
             break;
          case 8:
@@ -6136,7 +6132,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.field_70 = true;
                }
             } else {
-               this.viewState = 4;
+               this.mainMenuViewState = 4;
                this.updateMenuCommandsText(2);
                this.currentMenuItem = 4;
                this.setMenuHelperText(11 + this.currentMenuItem);
@@ -6147,7 +6143,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             break;
          case 9:
             if (this.pressedKeys[6]) {
-               this.viewState = 4;
+               this.mainMenuViewState = 4;
                this.currentMenuItem = 0;
                this.setMenuHelperText(11 + this.currentMenuItem);
                this.updateMenuCommandsText(2);
@@ -6226,18 +6222,18 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             if (this.pressedKeys[6]) {
                this.currentMenuItem = 2;
-               this.viewState = 4;
+               this.mainMenuViewState = 4;
                this.updateMenuCommandsText(2);
             }
 
-            this.field_72 = method_143(this.manualTexts[1 + this.currentMenuItem * 2]);
+            this.contentTextLines = getContentTextLines(this.manualTexts[1 + this.currentMenuItem * 2]);
             break;
          // ifone logo splashscreen
          case 11:
             ++this.animationKeyFrame;
             if (this.animationKeyFrame > 150) {
                this.animationKeyFrame = 0;
-               this.viewState = 1;
+               this.mainMenuViewState = 1;
                this.redrawAllGameScreen = true;
             }
             break;
@@ -6266,7 +6262,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
             if (this.pressedKeys[6]) {
                this.currentMenuItem = 5;
-               this.viewState = 4;
+               this.mainMenuViewState = 4;
                this.updateMenuCommandsText(2);
             }
             break;
@@ -6322,7 +6318,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   this.field_70 = true;
                }
             } else {
-               this.viewState = 4;
+               this.mainMenuViewState = 4;
                this.updateMenuCommandsText(2);
                this.currentMenuItem = 8;
                this.setMenuHelperText(11 + this.currentMenuItem);
@@ -6336,11 +6332,11 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                   if (this.currentMenuItem == 0) {
                      this.midlet.notifyDestroyed();
                   } else {
-                     this.viewState = 3;
+                     this.mainMenuViewState = 3;
                      this.audio.play(9, 1);
                   }
                } else if (this.pressedKeys[6]) {
-                  this.viewState = 3;
+                  this.mainMenuViewState = 3;
                   this.audio.play(9, 1);
                }
             } else {
@@ -6352,8 +6348,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.pressedKeys[6] = false;
    }
 
-   // $FF: renamed from: E () void
-   public final void method_147() {
+   public final void renderMainMenu() {
       int var1;
       int textWidth;
       int var4;
@@ -6361,7 +6356,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       int var6;
       int var7;
       int var13;
-      switch (this.viewState) {
+      switch (this.mainMenuViewState) {
          case 0:
             g.setColor(0xFFFFFF);
             g.fillRect(0, 0, fullGameWidth, screenHeight);
@@ -6401,14 +6396,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             g.drawImage(menuImages[2], (fullGameWidth >> 1) - (textWidth >> 1) - 5, var1, 40);
             return;
          case 3:
-            this.method_160(true, false);
+            this.drawMainMenuBackground(true, false);
             this.drawTitle();
             this.drawScreenBorders();
             var1 = gameY + gameHeight;
             this.drawStringWithBorder(this.texts[0], fullGameWidth >> 1, var1, 16777215, 0);
             return;
          case 4:
-            this.method_160(true, false);
+            this.drawMainMenuBackground(true, false);
             this.drawTitle();
             this.drawScreenBorders();
             var1 = gameY + gameHeight;
@@ -6421,9 +6416,10 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             g.drawImage(menuImages[2], 2, var1 + (defaultFontHeight >> 1), 6);
             this.drawTopText(this.menuHelperText, true);
             return;
+         // ranking
          case 5:
             var7 = defaultFontHeight;
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
             g.setColor(0xFFFFFF);
             boolean var18 = false;
@@ -6451,7 +6447,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.drawStringWithBorder(this.texts[20], fullGameWidth >> 1, var1, 16777215, 0);
             return;
          case 6:
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
             g.setColor(0xFFFFFF);
             this.drawTopText(this.texts[21], false);
@@ -6459,14 +6455,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.method_148(this.texts[25], 2, 1, this.currentMenuItem == 1);
             return;
          case 7:
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
             g.setColor(0xFFFFFF);
             g.drawString(this.texts[26], fullGameWidth >> 1, uiContentY + (uiContentHeight >> 1) - 25, 17);
             g.drawString(this.texts[27], fullGameWidth >> 1, uiContentY + (uiContentHeight >> 1) + 2, 17);
             return;
          case 8:
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             g.setColor(0xFFFFFF);
             int[] var9 = new int[3];
             int var10 = menuImages[1].getWidth();
@@ -6490,7 +6486,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.drawTopText(this.texts[6], false);
             return;
          case 9:
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
             g.setColor(0xFFFFFF);
             this.method_148(this.texts[47], 2, 0, this.currentMenuItem == 0);
@@ -6498,23 +6494,24 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             defaultFont.stringWidth(this.texts[47 + this.currentMenuItem]);
             this.drawMenuHelperText();
             return;
+         // How to play
          case 10:
-            g.setFont(field_75);
-            int var15 = g.getFont().getHeight();
-            this.method_160(true, true);
+            g.setFont(contentFont);
+            int contentFontHeight = g.getFont().getHeight();
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
-            int var16 = uiContentY + 42;
-            var4 = gameHeight + gameY - var15;
+            int contentY = uiContentY + 42;
+            var4 = gameHeight + gameY - contentFontHeight;
             var5 = this.field_73;
             g.setColor(0xFFFFFF);
 
-            while(var16 < var4 && var5 < this.field_72.size()) {
-               g.drawString((String)this.field_72.elementAt(var5), fullGameWidth >> 1, var16, 17);
-               var16 += var15;
+            while(contentY < var4 && var5 < this.contentTextLines.size()) {
+               g.drawString((String)this.contentTextLines.elementAt(var5), fullGameWidth >> 1, contentY, Graphics.TOP|Graphics.HCENTER);
+               contentY += contentFontHeight;
                ++var5;
             }
 
-            if (var5 < this.field_72.size()) {
+            if (var5 < this.contentTextLines.size()) {
                this.field_74 = true;
                int var17 = gameHeight;
                drawRegion(g, menuImages[1], 0, 0, menuImages[1].getWidth(), menuImages[1].getHeight(), transforms[1], fullGameWidth >> 1, var17, Graphics.BOTTOM|Graphics.HCENTER, true);
@@ -6543,9 +6540,10 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
                }
             }
             break;
+         // About
          case 12:
             var13 = defaultFontHeight + 2;
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
             switch (this.config[2]) {
                case 0:
@@ -6595,8 +6593,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.drawTopText(this.manualTexts[var14], false);
             this.method_149(6);
             return;
+         // cheats
          case 13:
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             g.setColor(0xFFFFFF);
             g.drawString(this.texts[81], 11, gameY + 4 + 0, Graphics.TOP|Graphics.LEFT);
             g.drawString(this.texts[this.cheatsOptions[0] ? 34 : 35], fullGameWidth - 10, gameY + 4 + 0, Graphics.TOP|Graphics.RIGHT);
@@ -6616,8 +6615,9 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
             this.drawScreenBorders();
             this.drawTopText("CHEATS", false);
             return;
+         // quit confirmation
          case 14:
-            this.method_160(true, true);
+            this.drawMainMenuBackground(true, true);
             this.drawScreenBorders();
             this.drawTopText(this.texts[85], false);
             this.method_148(this.texts[24], 2, 0, this.currentMenuItem == 0);
@@ -6796,14 +6796,14 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
    }
 
    // $FF: renamed from: a (boolean, boolean) void
-   private void method_160(boolean var1, boolean var2) {
+   private void drawMainMenuBackground(boolean var1, boolean showBackdrop) {
       class_0.method_0(0, 0);
       class_0.method_1(g, this.field_32 * 5, 120, var1);
-      if (var2) {
+      if (showBackdrop) {
          g.setColor(0);
 
-         for(int var3 = 0; var3 < gameHeight; var3 += 2) {
-            g.drawLine(0, gameY + var3, fullGameWidth, gameY + var3);
+         for(int line = 0; line < gameHeight; line += 2) {
+            g.drawLine(0, gameY + line, fullGameWidth, gameY + line);
          }
       }
 
@@ -6817,7 +6817,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          menuImages[0] = loadImage("/t_license1.png");
          menuImages[1] = loadImage("/t_license2.png");
          menuImages[2] = loadImage("/ifone.png");
-         this.viewState = 0;
+         this.mainMenuViewState = 0;
       } else {
          unloadImages(menuImages);
          menuImages[0] = loadImage("/t_title.png");
@@ -6826,13 +6826,13 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
          menuImages[4] = loadImage("/ring.png");
          if (this.startupLanguageSelection) {
             this.startupLanguageSelection = false;
-            this.viewState = 2;
+            this.mainMenuViewState = 2;
             return;
          }
 
          loadOptionsImages();
          this.loadTexts();
-         this.viewState = 3;
+         this.mainMenuViewState = 3;
          this.updateMenuCommandsText(0);
          this.audio.play(9, 1);
       }
@@ -6840,7 +6840,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       this.animationKeyFrame = 0;
 
       for(int i = 0; i < 10; ++i) {
-         this.field_12[i] = false;
+         this.repeatedKeys[i] = false;
       }
 
       this.field_68 = 0;
@@ -10066,7 +10066,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
       g.setColor(0);
       g.fillRect(0, 0, screenWidth, screenHeight);
       if (this.field_44 == 2 || this.field_44 == 1) {
-         this.method_160(false, false);
+         this.drawMainMenuBackground(false, false);
       }
 
       this.drawScreenBorders();
@@ -10253,7 +10253,7 @@ public class GameCanvas extends Canvas implements Runnable, PlayerListener {
 
       this.appState = 1;
       this.loadMenu(false);
-      this.viewState = 5;
+      this.mainMenuViewState = 5;
       this.updateMenuCommandsText(1);
       this.score = 0;
    }

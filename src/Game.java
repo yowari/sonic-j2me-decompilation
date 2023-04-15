@@ -61,7 +61,7 @@ public final class Game extends GameCanvas {
    private void render() {
       switch (super.appState) {
          case 1:
-            this.method_147();
+            this.renderMainMenu();
             break;
          // game
          case 2:
@@ -294,7 +294,7 @@ public final class Game extends GameCanvas {
          switch (super.appState) {
             // main menu
             case 1:
-               this.method_146();
+               this.updateMainMenu();
                break;
             // game
             case 2:
